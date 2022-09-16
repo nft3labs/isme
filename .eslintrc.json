@@ -1,0 +1,22 @@
+{
+  "plugins": ["@typescript-eslint"],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["@mui/*/*/*", "!@mui/material/test-utils/*"]
+      }
+    ],
+    "no-extra-semi": "off",
+    "react/no-unescaped-entities": "off",
+    "@typescript-eslint/no-extra-semi": "off",
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/adjacent-overload-signatures": "off",
+    "@typescript-eslint/ban-types": "off"
+  }
+}
