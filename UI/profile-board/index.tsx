@@ -5,7 +5,7 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import { useProfileBoard } from 'domains/data'
+import { useNFT3Follow } from 'domains/data'
 
 import ProfileInfo from './ProfileInfo'
 import Board from './Board'
@@ -35,9 +35,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const ProfileBoard: FC = () => {
-  const profileBoard = useProfileBoard()
-  console.log('profileBoard', profileBoard)
-  const { follow } = profileBoard
+  const follow = useNFT3Follow()
   const [value, setValue] = useState(0)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)

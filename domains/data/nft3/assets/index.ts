@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { createContext } from 'app/utils/createContext'
+import { useNFT3Profile } from 'domains/data'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import type { TokenRecord, OpenseaAssetsRecord, TxRecord } from '@nft3sdk/client'
 import { NFT3Queryer } from '@nft3sdk/client'
 
-export default function useAssets(identifier: string) {
+const useAssetsService = () => {
+  const { did: identifier, didinfo } = useNFT3Profile()
   const [nfts, setNfts] = useState<OpenseaAssetsRecord[]>([])
   const [tokens, setTokens] = useState<TokenRecord[]>([])
   const [txs, setTxs] = useState<TxRecord[]>([])
@@ -11,7 +14,7 @@ export default function useAssets(identifier: string) {
     return new NFT3Queryer('http://t0.onebitdev.com:10001/')
   }, [])
 
-  const listAssets = useCallback(async () => {
+  const updateAssets = useCallback(async () => {
     if (!identifier) {
       setTokens([])
       setNfts([])
@@ -34,7 +37,7 @@ export default function useAssets(identifier: string) {
     async (owner: string) => {
       const result = await queryer.openseaAssets({
         owner,
-        limit: 30,
+        limit: 50,
       })
       setNfts(result.assets)
     },
@@ -42,13 +45,22 @@ export default function useAssets(identifier: string) {
   )
 
   useEffect(() => {
-    listAssets()
-  }, [listAssets])
+    updateAssets()
+  }, [updateAssets])
+
+  useEffect(() => {
+    if (didinfo?.addresses?.length) {
+      openseaAssets(didinfo.addresses[0].split(':')[1])
+    }
+  }, [didinfo, openseaAssets])
 
   return {
     tokens,
     nfts,
     txs,
-    openseaAssets,
   }
 }
+const { Provider: AssetsProvider, createUseContext } = createContext(useAssetsService)
+export const createAssetsContext = createUseContext
+
+export default AssetsProvider

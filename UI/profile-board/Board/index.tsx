@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { styled } from '@mui/material/styles'
 import Stack from '@mui/material/Stack'
 import { Paragraph } from 'components/Typography'
-import { useProfileBoard } from 'domains/data'
+import { useNFT3Assets } from 'domains/data'
 import BasicTable from 'components/table/BasicTable'
 import NFTCard from 'components/nft/NFTCard'
 
@@ -11,12 +11,12 @@ import { useTable } from './useTable'
 const ROOT = styled(Stack)``
 
 const Board: FC = () => {
-  const { ready, info } = useProfileBoard()
+  const { nfts, tokens } = useNFT3Assets()
   const table = useTable()
   const cards = useMemo(() => {
-    if (!info || !info.nfts) return
+    if (!nfts) return []
     const t: any[][] = [[]]
-    info.nfts.forEach((d, i) => {
+    nfts.forEach((d, i) => {
       const index = Math.floor(i / 3)
       if (!t[index]) t[index] = []
       const { id, image_preview_url, name, description } = d
@@ -28,9 +28,7 @@ const Board: FC = () => {
       })
     })
     return t
-  }, [info])
-  if (!ready || !info) return null
-  const { tokens } = info
+  }, [nfts])
   return (
     <ROOT spacing={2}>
       <Paragraph>NFTs</Paragraph>

@@ -1,10 +1,17 @@
 import UserProvider, { createUserContext } from './user'
-import ProfileBoardProvider, { createProfileBoardContext } from './profile-board'
+import NFT3Provider, {
+  createNFT3Context,
+  createAssetsContext,
+  createFollowContext,
+  createProfileContext,
+  createSocialContext,
+  createWalletContext,
+} from './nft3'
 
 const Provider: FC = ({ children }) => {
   return (
     <UserProvider>
-      <ProfileBoardProvider>{children}</ProfileBoardProvider>
+      <NFT3Provider>{children}</NFT3Provider>
     </UserProvider>
   )
 }
@@ -12,4 +19,9 @@ const Provider: FC = ({ children }) => {
 export default Provider
 
 export const useUser = createUserContext()
-export const useProfileBoard = createProfileBoardContext()
+export const useNFT3 = createNFT3Context()
+export const useNFT3Assets = createAssetsContext()
+export const useNFT3Follow = createFollowContext()
+export const useNFT3Profile = createProfileContext()
+export const useNFT3Social = createSocialContext()
+export const useNFT3Wallet = createWalletContext()

@@ -6,15 +6,17 @@ import CardActions from '@mui/material/CardActions'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import { Paragraph } from 'components/Typography'
-import { useProfileBoard, useUser } from 'domains/data'
+import { useNFT3Follow, useNFT3Profile, useNFT3, useUser } from 'domains/data'
 
 const ROOT = styled(Card)``
 
 const ProfileInfo: FC = () => {
   const { didname, selectDialog } = useUser()
-  const { ready, profile, format, follow } = useProfileBoard()
+  const { ready, profile } = useNFT3Profile()
+  const NFT3Follow = useNFT3Follow()
+  const { format } = useNFT3()
   if (!ready || !profile) return null
-  const { followed, count, followDID, unfollowDID } = follow
+  const { followed, count, follow, unfollow } = NFT3Follow
   return (
     <ROOT>
       <CardContent>
@@ -39,13 +41,13 @@ const ProfileInfo: FC = () => {
             size="small"
             onClick={() => {
               if (!didname) return selectDialog.open()
-              followDID()
+              follow()
             }}
           >
             Follow
           </Button>
         ) : (
-          <Button size="small" onClick={() => unfollowDID()}>
+          <Button size="small" onClick={() => unfollow()}>
             Unfollow
           </Button>
         )}

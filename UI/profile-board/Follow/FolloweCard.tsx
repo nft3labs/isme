@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import Stack from '@mui/material/Stack'
 import { Paragraph } from 'components/Typography'
-import { useProfileBoard, useUser } from 'domains/data'
+import { useNFT3Follow, useNFT3, useUser } from 'domains/data'
 
 import type { FollowMember } from './types'
 import { useMemo } from 'react'
@@ -19,8 +19,8 @@ const Content = styled(CardContent)`
 const FolloweCard: FC<FollowMember> = (props) => {
   const { avatar, bio, identifier } = props
   const { didname, selectDialog } = useUser()
-  const { format, follow } = useProfileBoard()
-  const { followDID, unfollowDID } = follow
+  const { follow, unfollow } = useNFT3Follow()
+  const { format } = useNFT3()
 
   const name = useMemo(() => {
     if (props.name) return props.name
@@ -44,12 +44,12 @@ const FolloweCard: FC<FollowMember> = (props) => {
           size="small"
           onClick={() => {
             if (!didname) return selectDialog.open()
-            followDID()
+            follow()
           }}
         >
           Follow
         </Button>
-        <Button size="small" onClick={() => unfollowDID()}>
+        <Button size="small" onClick={() => unfollow()}>
           Unfollow
         </Button>
       </CardActions>

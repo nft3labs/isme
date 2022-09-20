@@ -4,7 +4,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Stack from '@mui/material/Stack'
 import { Paragraph } from 'components/Typography'
-import { useProfileBoard } from 'domains/data'
+import { useNFT3Profile, useNFT3 } from 'domains/data'
 import { format as formatData } from 'date-fns'
 import { safeGet } from 'app/utils/get'
 
@@ -16,15 +16,14 @@ const Content = styled(CardContent)`
 `
 
 const TimelineCard: FC<TxRecord> = ({ timestamp, ...others }) => {
-  const { ready, profile, format } = useProfileBoard()
-  // if (!ready || !profile) return null
-  if (!ready) return null
+  const { format } = useNFT3()
+  const { profile } = useNFT3Profile()
   return (
     <ROOT>
       <Content>
-        {/* <Avatar alt={profile.name} src={format(profile.avatar)} /> */}
+        <Avatar alt={profile.name} src={format(profile.avatar)} />
         <Stack spacing={2}>
-          {/* <Paragraph>{profile.name}</Paragraph> */}
+          <Paragraph>{profile.name}</Paragraph>
           <Paragraph>{safeGet(() => formatData(parseInt(timestamp) * 1000, 'MM/dd HH:mm')) || '-'}</Paragraph>
           <Paragraph>{JSON.stringify(others, null, 2)}</Paragraph>
         </Stack>
