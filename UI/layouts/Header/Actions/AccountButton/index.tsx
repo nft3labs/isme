@@ -55,9 +55,7 @@ const AccountButton: FC = () => {
       </Button>
       <Menu id="basic-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={() => router.push('/profile-board/' + didname.split('.isme')[0])}>Your profile</MenuItem>
-        {/* <MenuItem onClick={() => router.push('/home/settings')}>Settings</MenuItem>
-        <MenuItem onClick={() => router.push('/home/wallets')}>Wallets</MenuItem>
-        <MenuItem onClick={() => router.push('/home/socials')}>Social accounts</MenuItem> */}
+        <MenuItem onClick={() => router.push('/profile')}>Settings</MenuItem>
         <MenuItem onClick={onDisconnect}>Disconnect</MenuItem>
         <MenuItem onClick={onLogout}>Logout</MenuItem>
       </Menu>

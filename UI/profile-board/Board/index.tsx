@@ -29,6 +29,7 @@ const Board: FC = () => {
     })
     return t
   }, [nfts])
+
   return (
     <ROOT spacing={2}>
       <Paragraph>NFTs</Paragraph>

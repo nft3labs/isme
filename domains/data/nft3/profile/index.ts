@@ -6,11 +6,11 @@ import { useUser } from 'domains/data'
 
 const useProfileService = () => {
   const [ready, setReady] = useState(false)
-  const [didname, setDidname] = useState('')
   const { client } = useUser()
+  const [didname, setDidname] = useState('')
   const did = useMemo(() => {
     if (!didname) return
-    return client.did.convertName(didname!)
+    return client.did.convertName(didname)
   }, [didname, client.did])
 
   const [didinfo, setDidinfo] = useState<DIDInfo>()

@@ -7,11 +7,9 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import { useRef } from 'react'
 import { inputSetValue } from 'app/utils/dom/input'
 import { safeGet } from 'app/utils/get'
-import { useRouter } from 'next/router'
 
 const SearchInput: FC<InputBaseProps> = (props) => {
   const inputRef = useRef<HTMLInputElement>()
-  const router = useRouter()
   return (
     <Paper component="form" sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}>
       <IconButton
