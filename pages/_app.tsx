@@ -10,7 +10,7 @@ import 'lib/toastify/styles.css'
 import 'simplebar-react/dist/simplebar.min.css'
 import '@nft3sdk/did-manager/dist/styles/style.css'
 
-const endpoint = 'http://t0.onebitdev.com:10000/'
+const endpoint = 'https://t0.onebitdev.com/nft3-gateway/'
 
 function MainApp(props: MyAppProps): JSX.Element {
   return (

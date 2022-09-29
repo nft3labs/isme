@@ -12,7 +12,7 @@ const useSocialService = () => {
   const [socials, setSocials] = useState<SocialRecord[]>([])
 
   const verifier = useMemo(() => {
-    return new NFT3Verifier(client, 'http://t0.onebitdev.com:10002/')
+    return new NFT3Verifier(client, 'https://t0.onebitdev.com/nft3-verifier/')
   }, [client])
 
   const update = useCallback(
