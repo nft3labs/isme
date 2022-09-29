@@ -49,10 +49,10 @@ const Wallets: FC = () => {
       })}
       <Stack spacing={2} direction="row">
         <Button variant="outlined" disabled={loading || added} onClick={onAdd} startIcon={<AddRoundedIcon />}>
-          Add this wallet
+          Add current wallet
         </Button>
         <Button variant="outlined" disabled={loading || accounts.length <= 1} onClick={onRemove}>
-          Remove this wallet
+          Remove current wallet
         </Button>
       </Stack>
     </ROOT>

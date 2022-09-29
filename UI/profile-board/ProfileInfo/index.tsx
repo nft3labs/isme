@@ -85,6 +85,7 @@ const ProfileInfo: FC = () => {
                 display: '-webkit-box',
                 WebkitLineClamp: '2',
                 WebkitBoxOrient: 'vertical',
+                textAlign: 'center'
               }}
             >
               {profile.bio}

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { styled } from '@mui/material/styles'
+import { styled, useTheme } from '@mui/material/styles'
 import Stack from '@mui/material/Stack'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -23,10 +23,11 @@ import SubmitBotton from 'components/form/SubmitBotton'
 import { useForm } from './useForm'
 
 const ROOT = styled('form')`
-  padding-top: 16px;
+  padding-top: 30px;
 `
 
 const Profile: FC = () => {
+  const theme = useTheme()
   const { ready, profile, setDidname } = useNFT3Profile()
   const { identifier } = useUser()
 
@@ -42,11 +43,12 @@ const Profile: FC = () => {
     <ROOT onSubmit={formik.handleSubmit}>
       <Card
         sx={{
+          padding: '50px',
           '.MuiCardContent-root': {
-            padding: '16px 56px',
+            // padding: '50px',
           },
           '.MuiCardActions-root': {
-            padding: '16px 56px',
+            // padding: '0 50px 50px 50px',
             justifyContent: 'flex-end',
           },
         }}
@@ -68,8 +70,13 @@ const Profile: FC = () => {
                           borderRadius: '100%',
                           padding: 0,
                           background: '#fff',
+                          color: theme.palette.text.primary,
+                          boxShadow: theme.shadows[3],
+                          '&:hover': {
+                            backgroundColor: theme.palette.grey[200],
+                          }
                         }}
-                        variant="contained"
+                        variant="text"
                         aria-label="upload picture"
                         component="label"
                       >

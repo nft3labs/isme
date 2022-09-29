@@ -237,17 +237,17 @@ export const getTheme = (options: ThemeOptions) => {
       MuiInputBase: {
         styleOverrides: {
           root: {
-            borderRadius: 5,
+            borderRadius: 12,
           },
         },
       },
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            borderRadius: 5,
+            borderRadius: 12,
           },
           input: {
-            borderRadius: 5,
+            borderRadius: 12,
           },
         },
       },

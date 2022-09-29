@@ -21,7 +21,7 @@ const Form = (): JSX.Element => {
           <Stack spacing={1} direction="row">
             <Image src={ETHImg} alt="ETH" />
             <Paragraph lineHeight="24px">{textCenterEllipsis(account)}</Paragraph>
-            <Tiny color="#666" lineHeight="24px">
+            <Tiny color="text.secondary" lineHeight="24px">
               (Current)
             </Tiny>
           </Stack>
@@ -36,7 +36,7 @@ const Form = (): JSX.Element => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <Tiny color="#666">.isme</Tiny>
+                  <Tiny color="text.secondary">.isme</Tiny>
                 </InputAdornment>
               ),
             }}
@@ -46,8 +46,8 @@ const Form = (): JSX.Element => {
             helperText={formik.touched.didname && formik.errors.didname}
           />
         </Stack>
-        <SubmitBotton size="large" variant="contained" isSubmitting={formik.isSubmitting}>
-          Create account
+        <SubmitBotton size="large" variant="gradient" isSubmitting={formik.isSubmitting}>
+          Create Account
         </SubmitBotton>
       </Stack>
     </form>
