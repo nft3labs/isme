@@ -111,7 +111,7 @@ export const ROOT = styled('div')`
     will-change: transform;
     &:hover {
       ${({ theme }) => ({
-        backgroundColor: theme.palette.secondary[400],
+        backgroundColor: theme.palette.grey[100],
       })}
     }
     &.end-row {

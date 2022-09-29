@@ -9,7 +9,7 @@ export const cellRendererToken: TableCellRenderer = ({ rowData }) => {
   return (
     <TableCell component="div">
       <Stack spacing={2} direction="row" alignItems="center">
-        <Avatar alt={rowData.symbol} sx={{ width: 24, height: 24 }} src={rowData.icon} />
+        <Avatar alt={rowData.symbol} sx={{ width: 32, height: 32 }} src={rowData.icon} />
         <Stack spacing={0}>
           <Span fontWeight={600}>{rowData.symbol}</Span>
           <Tiny>{rowData.symbol}</Tiny>

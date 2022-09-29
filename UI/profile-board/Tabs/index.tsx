@@ -32,8 +32,8 @@ const TabPanel: FC<TabPanelProps> = (props) => {
   )
 }
 
-const Tab = styled(MuiTab)(() => ({
-  color: '#666666',
+const Tab = styled(MuiTab)(({ theme }) => ({
+  color: theme.palette.text.secondary,
 }))
 
 type TabTitleProps = {
@@ -71,7 +71,7 @@ const Tabs: FC<TabsProps> = ({ tabs }) => {
         <MuiTabs
           sx={{
             '.MuiTabs-indicator': {
-              height: 4,
+              height: 3,
               background: theme.palette.gradientColors.main,
             },
           }}
@@ -81,7 +81,7 @@ const Tabs: FC<TabsProps> = ({ tabs }) => {
           onChange={handleChange}
         >
           {tabs.map(({ title }, index) => {
-            return <Tab key={title.label} label={<TabTitle {...title} />} {...applyProps(index)} />
+            return <Tab sx={{ width: '23%' }} key={title.label} label={<TabTitle {...title} />} {...applyProps(index)} />
           })}
         </MuiTabs>
       </Box>

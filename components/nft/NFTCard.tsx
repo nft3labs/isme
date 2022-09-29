@@ -12,14 +12,14 @@ export type NFTCardProps = Partial<{
 }>
 
 const ROOT = styled(Card)`
-  width: 230px;
+  width: 1;
   position: relative;
 `
 
 const NFTCard: FC<NFTCardProps> = ({ name, description, image }) => {
   return (
     <ROOT>
-      <CardMedia component="img" height="200" image={image} alt={description} />
+      <CardMedia component="img" width={1} image={image} alt={description} />
       <CardContent>
         <Small fontWeight={600}>{name}</Small>
         <Small

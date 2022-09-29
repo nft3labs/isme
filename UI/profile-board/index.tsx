@@ -3,6 +3,10 @@ import { styled } from '@mui/material/styles'
 import Stack from '@mui/material/Stack'
 import Grid from '@mui/material/Grid'
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded'
+import ViewTimelineRoundedIcon from '@mui/icons-material/ViewTimelineRounded'
+import GroupRoundedIcon from '@mui/icons-material/GroupRounded'
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
+
 import { useNFT3Follow } from 'domains/data'
 import { safeGet } from 'app/utils/get'
 import Follow from 'components/Follow'
@@ -31,7 +35,7 @@ const ProfileBoard: FC = () => {
       {
         title: {
           label: 'Timeline',
-          icon: <GridViewRoundedIcon />,
+          icon: <ViewTimelineRoundedIcon />,
         },
         children: {
           component: Timeline,
@@ -40,7 +44,7 @@ const ProfileBoard: FC = () => {
       {
         title: {
           label: 'Following',
-          icon: <GridViewRoundedIcon />,
+          icon: <PersonRoundedIcon />,
         },
         children: {
           component: Follow,
@@ -52,7 +56,7 @@ const ProfileBoard: FC = () => {
       {
         title: {
           label: 'Followers',
-          icon: <GridViewRoundedIcon />,
+          icon: <GroupRoundedIcon />,
         },
         children: {
           component: Follow,
@@ -67,7 +71,7 @@ const ProfileBoard: FC = () => {
 
   return (
     <ROOT spacing={2}>
-      <Grid container spacing={3}>
+      <Grid container spacing={6}>
         <Grid item xs={4}>
           <ProfileInfo />
         </Grid>

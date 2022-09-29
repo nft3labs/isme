@@ -23,7 +23,7 @@ const NFTs: FC = () => {
     <Box>
       <Grid container spacing={2}>
         {cards.map((nft) => (
-          <Grid item sm={4} xs={6} key={nft.id}>
+          <Grid item sm={3} xs={6} key={nft.id}>
             <NFTCard {...nft} />
           </Grid>
         ))}

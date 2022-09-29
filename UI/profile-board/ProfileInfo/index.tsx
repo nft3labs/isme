@@ -56,10 +56,10 @@ const ProfileInfo: FC = () => {
   )
   if (!ready || !profile) return null
   return (
-    <ROOT sx={{ paddingBottom: 2 }}>
+    <ROOT sx={{ paddingX: 2, paddingY: 4 }}>
       <CardContent>
         <Stack spacing={3}>
-          <Stack spacing={1} alignItems="center">
+          <Stack spacing={1.5} alignItems="center">
             <Avatar
               alt={profile.name}
               src={format(profile.avatar)}
@@ -117,7 +117,7 @@ const ProfileInfo: FC = () => {
       <CardActions>
         {isUser ? (
           <Button
-            variant="gradientOutlined"
+            variant="outlined"
             size="large"
             fullWidth
             onClick={() => {

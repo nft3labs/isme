@@ -113,7 +113,7 @@ const AccountButton: FC = () => {
           <ListItemText>View profile</ListItemText>
         </MenuItem>
         <MenuItem
-          onClick={() => router.push('/profile')}
+          onClick={() => router.push('/edit-profile')}
           sx={{
             borderBottom: `solid 1px ${theme.palette.divider}`,
           }}

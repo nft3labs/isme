@@ -18,9 +18,11 @@ import { writeText } from 'app/utils/dom/clipboard'
 import ETHImg from 'public/eth.svg'
 import { toast } from 'lib/toastify'
 import { Paragraph } from 'components/Typography'
+import { useTheme } from '@mui/material/styles'
 
 type WalletsProps = {}
 const Wallets: FC<WalletsProps> = () => {
+  const theme = useTheme()
   const { accounts, account, setAccount } = useNFT3Wallet()
   const [copyValue, setCopyValue] = useState('')
   const handleChange = (event: SelectChangeEvent) => {
@@ -48,7 +50,7 @@ const Wallets: FC<WalletsProps> = () => {
             key={wallet}
             value={wallet}
             sx={{
-              borderBottom: index >= accounts.length - 1 ? 'none' : '1px solid #E9E9E9',
+              borderBottom: index >= accounts.length - 1 ? 'none' : `1px solid ${theme.palette.divider}`,
               paddingTop: '2px',
               paddingBottom: '2px',
             }}

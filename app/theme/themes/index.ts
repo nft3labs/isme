@@ -34,6 +34,7 @@ declare module '@mui/material/styles/createPalette' {
     }
     gradientColors: {
       main: string
+      button: string
     }
     alternate: {
       main: string
@@ -48,6 +49,7 @@ declare module '@mui/material/styles/createPalette' {
     }
     gradientColors: {
       main: string
+      button: string
     }
     alternate: {
       main: string
@@ -151,7 +153,7 @@ export const getTheme = (options: ThemeOptions) => {
             style: {
               willChange: 'transform',
               color: '#fff',
-              backgroundImage: gradientColors.main,
+              backgroundImage: gradientColors.button,
               backgroundSize: '200%',
               transition: theme.transitions.create('all'),
               ':hover': {
@@ -182,7 +184,7 @@ export const getTheme = (options: ThemeOptions) => {
             style: {
               willChange: 'transform',
               color: primary.main,
-              backgroundImage: gradientColors.main,
+              backgroundImage: gradientColors.button,
               transition: theme.transitions.create('all'),
               ':hover': {
                 color: '#fff',

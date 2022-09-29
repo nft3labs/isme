@@ -12,7 +12,7 @@ import { useNFT3Profile, useNFT3, useNFT3Wallet } from 'domains/data'
 import { format as formatData } from 'date-fns'
 import { safeGet } from 'app/utils/get'
 import type { TimelineRecord, TxRecord } from '@nft3sdk/client'
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows'
+import TokenIcon from '@mui/icons-material/Token'
 import { DisplayNumber } from 'components/Number'
 
 const ROOT = styled(Card)``
@@ -37,7 +37,18 @@ const DisplayTxs: FC<TxRecord> = ({ symbol, amount, from, to }) => {
         </Link>
       </Paragraph>
       <Stack spacing={2} direction="row">
-        <Chip color="primary" icon={<CompareArrowsIcon />} label="Transfer" />
+        <Chip 
+          sx={{ 
+            backgroundColor: '#AAEEA3', 
+            color: '#52BC47', 
+            fontWeight: 'bold',
+            '& .MuiChip-icon': {
+              color: '#52BC47'
+            }
+          }} 
+          icon={<TokenIcon />} 
+          label="DeFi" 
+        />
       </Stack>
     </Fragment>
   )

@@ -4,7 +4,9 @@ import { getShadows } from './utils'
 
 const primaryMain = '#52C8AD'
 const secondaryMain = '#1362FF'
-const gradientColorMain = `linear-gradient(271.69deg, ${secondaryMain}, ${primaryMain}, ${secondaryMain})`
+const gradientColorMain = `linear-gradient(271.69deg, ${primaryMain}, ${secondaryMain})`
+const gradientColorButton = `linear-gradient(271.69deg, ${secondaryMain}, ${primaryMain}, ${secondaryMain})`
+
 
 export const lightThemeOptions: ThemeOptions = {
   palette: {
@@ -14,6 +16,7 @@ export const lightThemeOptions: ThemeOptions = {
     },
     gradientColors: {
       main: gradientColorMain,
+      button: gradientColorButton
     },
     card: {
       shadow: 'rgba(140, 152, 164, .13)',
@@ -88,6 +91,7 @@ export const darkThemeOptions: ThemeOptions = {
     },
     gradientColors: {
       main: gradientColorMain,
+      button: gradientColorButton,
     },
     common: {
       black: '#000',

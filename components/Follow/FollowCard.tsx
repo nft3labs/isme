@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import Avatar from '@mui/material/Avatar'
-import { styled } from '@mui/material/styles'
+import { styled, useTheme } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -18,6 +18,7 @@ import { DisplayNumber } from 'components/Number'
 import { useRouter } from 'next/router'
 
 const ROOT = styled(Card)``
+
 const Content = styled(CardContent)`
   display: flex;
   justify-content: space-between;
@@ -25,6 +26,7 @@ const Content = styled(CardContent)`
 const CardActions = styled(Box)``
 
 const FollowCard: FC<FollowMember> = (props) => {
+  const theme = useTheme()
   const { bio, identifier } = props
   const avatar = useMemo(() => props.avatar || getDefaultProfileAvatar(props.name), [props.avatar, props.name])
   const { identifier: did, selectDialog } = useUser()
@@ -110,8 +112,8 @@ const FollowCard: FC<FollowMember> = (props) => {
             onClick={goToProfileBoard}
           />
           <Stack spacing={1}>
-            <H4 sx={{ cursor: 'pointer' }} onClick={goToProfileBoard}>
-              {name}
+            <H4 sx={{ cursor: 'pointer', '&:hover': { color: theme.palette.primary.main } }} onClick={goToProfileBoard} fontWeight="medium">
+              {name}.isme
             </H4>
             <Paragraph sx={{ color: 'text.secondary' }}>
               <DisplayNumber value={count.followers} />
