@@ -10,15 +10,13 @@ const WalletSelect: FC = () => {
       onClose={(wallet) => {
         if (wallet) {
           selectWallet(wallet)
-          login()
-            .then(({ result, needRegister }) => {
+          setTimeout(() => {
+            login().then(({ result, needRegister }) => {
               if (result === false && needRegister === true) {
                 registerDialog.open()
               }
             })
-            .catch((e) => {
-              console.log('login', e)
-            })
+          }, 300)
         }
         selectDialog.close()
       }}
