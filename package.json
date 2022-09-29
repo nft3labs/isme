@@ -24,6 +24,7 @@
     "@nft3sdk/did-manager": "^0.1.2",
     "@reduxjs/toolkit": "^1.8.2",
     "axios": "^0.27.2",
+    "bignumber.js": "^9.1.0",
     "date-fns": "^2.29.3",
     "ethers": "^5.7.0",
     "formik": "^2.2.6",
