@@ -1,48 +1,54 @@
-import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
 import InputAdornment from '@mui/material/InputAdornment'
+import Image from 'next/image'
 
 import SubmitBotton from 'components/form/SubmitBotton'
+import { H5, Paragraph, Tiny } from 'components/Typography'
+import ETHImg from 'public/eth.svg'
+import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
+
 import { useForm } from './useForm'
-import FlexRowAlign from 'components/flexbox/FlexRowAlign'
 
 const Form = (): JSX.Element => {
   const { formik, account } = useForm()
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing={2}>
-        <Box>
-          <Typography variant="subtitle2" sx={{ marginBottom: 2 }}>
-            Connect wallet
-          </Typography>
-          <TextField label="First name *" variant="outlined" name="first_name" fullWidth value={account} />
-        </Box>
-        <Box>
-          <Typography variant="subtitle2" sx={{ marginBottom: 2 }}>
-            Enter your DID name
-          </Typography>
+      <Stack spacing={3}>
+        <Stack spacing={2}>
+          <H5>Connect wallet</H5>
+          <Stack spacing={1} direction="row">
+            <Image src={ETHImg} alt="ETH" />
+            <Paragraph lineHeight="24px">{textCenterEllipsis(account)}</Paragraph>
+            <Tiny color="#666" lineHeight="24px">
+              (Current)
+            </Tiny>
+          </Stack>
+        </Stack>
+        <Stack spacing={2}>
+          <H5>Enter your DID name</H5>
           <TextField
-            label="DID name *"
             variant="outlined"
             name="didname"
             fullWidth
+            placeholder="DID name"
             InputProps={{
-              endAdornment: <InputAdornment position="end">.isme</InputAdornment>,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tiny color="#666">.isme</Tiny>
+                </InputAdornment>
+              ),
             }}
             value={formik.values.didname}
             onChange={formik.handleChange}
             error={formik.touched.didname && Boolean(formik.errors.didname)}
             helperText={formik.touched.didname && formik.errors.didname}
           />
-        </Box>
-        <FlexRowAlign>
-          <SubmitBotton size="large" variant="contained" isSubmitting={formik.isSubmitting}>
-            Create account
-          </SubmitBotton>
-        </FlexRowAlign>
+        </Stack>
+        <SubmitBotton size="large" variant="contained" isSubmitting={formik.isSubmitting}>
+          Create account
+        </SubmitBotton>
       </Stack>
     </form>
   )

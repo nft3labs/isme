@@ -9,6 +9,9 @@ const GlobalStyles: FC = () => {
         body: {
           background: theme.palette.background.paper,
         },
+        '.nft3-modal__title': {
+          fontWeight: '700 !important',
+        },
       }}
     />
   )
