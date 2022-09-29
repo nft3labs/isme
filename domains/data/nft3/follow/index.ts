@@ -11,8 +11,9 @@ const useFollowService = () => {
   const { count, following, followers, follow, unfollow, check, updateFollower } = useFollow(did)
 
   const checkUserFollow = useCallback(() => {
-    if (!identifier || !did) return
+    if (!did) return
     updateFollower()
+    if (!identifier) return
     return check(identifier, did).then((result) => {
       setFollowed(result)
     })
