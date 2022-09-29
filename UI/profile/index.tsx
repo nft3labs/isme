@@ -6,16 +6,15 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import Avatar from '@mui/material/Avatar'
 import Badge from '@mui/material/Badge'
-import TextareaAutosize from '@mui/material/TextareaAutosize'
 import TextField from '@mui/material/TextField'
-import IconButton from '@mui/material/IconButton'
-import PhotoCamera from '@mui/icons-material/PhotoCamera'
+import Button from '@mui/material/Button'
+import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import { format as formatData } from 'date-fns'
 
 import { useNFT3, useNFT3Profile, useUser } from 'domains/data'
-import { Paragraph } from 'components/Typography'
+import { Paragraph, H2, H5 } from 'components/Typography'
 import FlexRowAlign from 'components/flexbox/FlexRowAlign'
 
 import Twitter from './Twitter'
@@ -23,7 +22,9 @@ import Wallets from './Wallets'
 import SubmitBotton from 'components/form/SubmitBotton'
 import { useForm } from './useForm'
 
-const ROOT = styled('form')``
+const ROOT = styled('form')`
+  padding-top: 16px;
+`
 
 const Profile: FC = () => {
   const { ready, profile, setDidname } = useNFT3Profile()
@@ -39,9 +40,19 @@ const Profile: FC = () => {
   if (!ready) return null
   return (
     <ROOT onSubmit={formik.handleSubmit}>
-      <Card>
+      <Card
+        sx={{
+          '.MuiCardContent-root': {
+            padding: '16px 56px',
+          },
+          '.MuiCardActions-root': {
+            padding: '16px 56px',
+            justifyContent: 'flex-end',
+          },
+        }}
+      >
         <CardContent>
-          <Stack spacing={2}>
+          <Stack spacing={4}>
             <FlexRowAlign>
               <Stack spacing={2}>
                 <FlexRowAlign>
@@ -49,46 +60,75 @@ const Profile: FC = () => {
                     overlap="circular"
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     badgeContent={
-                      <IconButton color="primary" aria-label="upload picture" component="label">
+                      <Button
+                        sx={{
+                          width: 32,
+                          minWidth: 0,
+                          height: 32,
+                          borderRadius: '100%',
+                          padding: 0,
+                          background: '#fff',
+                        }}
+                        variant="contained"
+                        aria-label="upload picture"
+                        component="label"
+                      >
                         <input hidden accept="image/*" type="file" onChange={onAvatarChange} />
-                        <PhotoCamera />
-                      </IconButton>
+                        <EditRoundedIcon
+                          sx={{
+                            width: 18,
+                            height: 18,
+                          }}
+                        />
+                      </Button>
                     }
                   >
-                    <Avatar alt={formik.values.name} src={format(formik.values.avatar)} />
+                    <Avatar
+                      alt={formik.values.name}
+                      sx={{
+                        width: 100,
+                        height: 100,
+                        borderRadius: '30px',
+                      }}
+                      src={format(formik.values.avatar)}
+                    />
                   </Badge>
                 </FlexRowAlign>
-                <Paragraph>{profile.name}</Paragraph>
-                <Paragraph>Joined {formatData(formik.values.createdAt * 1000 || 0, 'MM yyyy')}</Paragraph>
+                <Stack spacing={1} textAlign="center">
+                  <H2>{`${profile.name}.isme`}</H2>
+                  <Paragraph sx={{ color: 'text.secondary' }}>
+                    Joined {formatData(formik.values.createdAt * 1000 || 0, 'MM yyyy')}
+                  </Paragraph>
+                </Stack>
               </Stack>
             </FlexRowAlign>
 
             <Stack spacing={2}>
-              <Paragraph>Connected wallets</Paragraph>
+              <H5>Connected wallets</H5>
               <Wallets />
             </Stack>
             <Stack spacing={2}>
-              <Paragraph>Twitter</Paragraph>
+              <H5>Twitter</H5>
               <Twitter />
             </Stack>
             <Stack spacing={2}>
-              <Paragraph>Bio</Paragraph>
+              <H5>Bio</H5>
               <FormControl variant="standard">
-                <TextareaAutosize
-                  minRows={3}
+                <TextField
                   name="bio"
                   placeholder="Tell us about yourself"
                   value={formik.values.bio}
                   onChange={formik.handleChange}
+                  rows={3}
+                  multiline
                 />
                 <FormHelperText error>{formik.touched.bio && formik.errors.bio}</FormHelperText>
               </FormControl>
             </Stack>
             <Stack spacing={2}>
-              <Paragraph>Url</Paragraph>
+              <H5>Url</H5>
 
               <TextField
-                label="Url"
                 variant="outlined"
                 name="url"
                 fullWidth
@@ -102,7 +142,7 @@ const Profile: FC = () => {
           </Stack>
         </CardContent>
         <CardActions>
-          <SubmitBotton size="large" variant="contained" isSubmitting={formik.isSubmitting}>
+          <SubmitBotton size="large" variant="outlined" isSubmitting={formik.isSubmitting}>
             Save
           </SubmitBotton>
         </CardActions>

@@ -123,7 +123,7 @@ export const Paragraph: React.FC<BoxProps & Props> = (props) => {
     <StyledBox
       fontSize={16}
       component="p"
-      fontWeight={500}
+      fontWeight={400}
       ellipsis={ellipsis}
       className={clsx({ [className || '']: true })}
       {...others}

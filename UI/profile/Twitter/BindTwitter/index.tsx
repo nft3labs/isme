@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Box, Stepper, Step, StepLabel } from '@mui/material'
+import { Stepper, Step, StepLabel, Button, Stack, Box } from '@mui/material'
 import { createToastifyPromise } from 'app/utils/promise/toastify'
 import type { BindTwitterInfo } from './type'
 import { useNFT3Social } from 'domains/data'
@@ -8,12 +8,15 @@ import { useNFT3Social } from 'domains/data'
 import InputTwitterAccount from './InputTwitterAccount'
 import OpenTwitter from './OpenTwitter'
 import VerifyTwitter from './VerifyTwitter'
+import { useDialog } from 'app/hooks/useDialog'
+import { Paragraph } from 'components/Typography'
 
-const ROOT = styled(Box)``
+const ROOT = styled(Stack)``
 
 const steps = ['Input twitter account', 'Open twitter', 'Verify']
 
 const BindTwitter: FC = () => {
+  const { visible, open } = useDialog()
   const [activeStep, setActiveStep] = useState(0)
   const [account, setAccount] = useState('')
   const { twitter, update } = useNFT3Social()
@@ -25,6 +28,10 @@ const BindTwitter: FC = () => {
 
   const onBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1)
+  }
+
+  const reset = () => {
+    setActiveStep(0)
   }
 
   const verify = () => {
@@ -49,8 +56,21 @@ const BindTwitter: FC = () => {
     })
   }
 
+  if (!visible) {
+    return (
+      <ROOT sx={{ width: '100%' }} spacing={2}>
+        <Paragraph sx={{ color: 'text.secondary' }}>Twitter not yet linked</Paragraph>
+        <Box>
+          <Button variant="outlined" onClick={open}>
+            Verify
+          </Button>
+        </Box>
+      </ROOT>
+    )
+  }
+
   return (
-    <ROOT sx={{ width: '100%' }}>
+    <ROOT sx={{ width: '100%' }} spacing={4}>
       <Stepper activeStep={activeStep}>
         {steps.map((label) => {
           return (
@@ -60,9 +80,9 @@ const BindTwitter: FC = () => {
           )
         })}
       </Stepper>
-      <InputTwitterAccount {...{ activeStep, onNext, onBack, value: 0, setAccount, setInfo }} />
-      <OpenTwitter {...{ activeStep, onNext, onBack, value: 1, info, verify }} />
-      <VerifyTwitter {...{ activeStep, value: 2 }} />
+      <InputTwitterAccount {...{ activeStep, onNext, onBack, value: 0, setAccount, setInfo, account }} />
+      <OpenTwitter {...{ activeStep, onNext, onBack, value: 1, info }} />
+      <VerifyTwitter {...{ activeStep, value: 2, verify, reset }} />
     </ROOT>
   )
 }

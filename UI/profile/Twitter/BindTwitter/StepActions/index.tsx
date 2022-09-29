@@ -4,9 +4,10 @@ import Button from '@mui/material/Button'
 
 type StepActionsProps = StepProps & {
   title: string
+  disabled?: boolean
 }
 
-const StepActions: FC<StepActionsProps> = ({ onNext, onBack, activeStep, title }) => {
+const StepActions: FC<StepActionsProps> = ({ onNext, onBack, activeStep, title, disabled }) => {
   return (
     <FlexBetween>
       {onBack && (
@@ -14,7 +15,11 @@ const StepActions: FC<StepActionsProps> = ({ onNext, onBack, activeStep, title }
           Back
         </Button>
       )}
-      {onNext && <Button onClick={onNext}>{title}</Button>}
+      {onNext && (
+        <Button variant="contained" disabled={disabled} onClick={onNext}>
+          {title}
+        </Button>
+      )}
     </FlexBetween>
   )
 }
