@@ -59,14 +59,6 @@ export const getTheme = (options: ThemeOptions) => {
   const { primary } = theme.palette
 
   return createTheme(options, {
-    typography: {
-      fontFamily: '"Helvetica Neue", "Inter", sans-serif',
-      button: {
-        // fontSize: '1rem',
-        textTransform: 'none',
-        fontWeight: 'bold',
-      },
-    },
     zIndex: {
       appBar: 1200,
       drawer: 1300,
@@ -217,10 +209,27 @@ export type CreateThemeOptionsProps = {
   }
 }
 
+const withTypography = (options: any) => {
+  const returnValue = merge(
+    {
+      typography: {
+        fontFamily: ['Poppins', 'sans-serif'].join(','),
+        button: {
+          // fontSize: '1rem',
+          textTransform: 'none',
+          fontWeight: 'bold',
+        },
+      },
+    },
+    options
+  )
+  return returnValue
+}
+
 export const createThemeOptions = ({
   mode,
   themeOptions: { lightThemeOptions, darkThemeOptions },
-}: CreateThemeOptionsProps) =>
-  responsiveFontSizes(
-    createTheme(mode === 'light' ? lightThemeOptions : merge({}, lightThemeOptions, darkThemeOptions))
-  )
+}: CreateThemeOptionsProps) => {
+  const options = mode === 'light' ? lightThemeOptions : merge({}, lightThemeOptions, darkThemeOptions)
+  return responsiveFontSizes(createTheme(withTypography(options)))
+}
