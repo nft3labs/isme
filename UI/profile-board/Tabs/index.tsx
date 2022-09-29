@@ -24,6 +24,7 @@ const TabPanel: FC<TabPanelProps> = (props) => {
     <Box
       sx={{
         display: value != index ? 'none' : 'block',
+        paddingTop: 2,
       }}
     >
       {children}

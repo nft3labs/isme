@@ -138,10 +138,10 @@ export const Small: React.FC<BoxProps & Props> = (props) => {
 
   return (
     <StyledBox
-      fontSize={13}
+      fontSize={12}
       component="small"
-      fontWeight={500}
-      lineHeight={1.6}
+      fontWeight={600}
+      lineHeight="21px"
       ellipsis={ellipsis}
       className={clsx({ [className || '']: true })}
       {...others}
