@@ -3,13 +3,14 @@ import { useState, useEffect, useCallback } from 'react'
 import { useNFT3Profile, useUser } from 'domains/data'
 import { useNFT3 } from '@nft3sdk/did-manager'
 import { safeGet } from 'app/utils/get'
+import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 
 import type { AccountRecord } from './types'
 
 const useWalletService = () => {
   const { client } = useNFT3()
   const { account } = useUser()
-  const { isUser, didinfo } = useNFT3Profile()
+  const { isUser, didinfo, didname } = useNFT3Profile()
   const [value, setValue] = useState('')
   const [accounts, setAccounts] = useState<AccountRecord[]>([])
 
@@ -43,6 +44,15 @@ const useWalletService = () => {
     setValue(isUser ? account : safeGet(() => accounts[0].account) || '')
   }, [account, accounts, isUser])
 
+  const displayAddress = useCallback(
+    (address: string) => {
+      return accounts.find(({ account }) => account.toLocaleLowerCase() === address.toLocaleLowerCase())
+        ? `${didname}.isme`
+        : textCenterEllipsis(address)
+    },
+    [accounts, didname]
+  )
+
   return {
     account: value,
     setAccount: setValue,
@@ -50,6 +60,8 @@ const useWalletService = () => {
     update,
     add,
     remove,
+
+    displayAddress,
   }
 }
 const { Provider: WalletProvider, createUseContext } = createContext(useWalletService)
