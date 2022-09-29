@@ -3,16 +3,12 @@ import TableCell from '@mui/material/TableCell'
 
 export const headerRenderer: TableHeaderRenderer = ({ label }) => {
   return (
-    <TableCell align="center" component="div" variant="head">
+    <TableCell component="div" variant="head">
       {label as any}
     </TableCell>
   )
 }
 
 export const cellRenderer: TableCellRenderer = ({ cellData }) => {
-  return (
-    <TableCell align="center" component="div">
-      {cellData || '-'}
-    </TableCell>
-  )
+  return <TableCell component="div">{cellData || '-'}</TableCell>
 }

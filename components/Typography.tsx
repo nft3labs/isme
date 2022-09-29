@@ -158,6 +158,7 @@ export const Span: React.FC<BoxProps & Props> = (props) => {
     <StyledBox
       fontSize={14}
       component="span"
+      lineHeight="20.02px"
       ellipsis={ellipsis}
       className={clsx({ [className || '']: true })}
       {...others}
@@ -173,9 +174,9 @@ export const Tiny: React.FC<BoxProps & Props> = (props) => {
   return (
     <StyledBox
       component="p"
-      fontSize={13}
-      fontWeight={500}
-      lineHeight={1.65}
+      fontSize={14}
+      fontWeight={400}
+      lineHeight="20.02px"
       ellipsis={ellipsis}
       color="text.secondary"
       className={clsx({ [className || '']: true })}
