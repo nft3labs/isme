@@ -1,17 +1,18 @@
 import { createContext } from 'app/utils/createContext'
 import { useState, useEffect, useCallback } from 'react'
+import { useNFT3Profile } from 'domains/data'
 import { useNFT3 } from '@nft3sdk/did-manager'
 
 import type { AccountRecord } from './types'
 
 const useWalletService = () => {
-  const { client, identifier } = useNFT3()
+  const { client } = useNFT3()
+  const { didinfo } = useNFT3Profile()
   const [accounts, setAccounts] = useState<AccountRecord[]>([])
 
   const update = useCallback(async () => {
-    if (!identifier) return
-    const result = await client.did.accounts()
-    const accounts = result.map((item) => {
+    if (!didinfo || !didinfo.addresses) return
+    const accounts = didinfo.addresses.map((item) => {
       const arr = item.split(':')
       return {
         network: arr[0],
@@ -19,7 +20,7 @@ const useWalletService = () => {
       }
     })
     setAccounts(accounts)
-  }, [client.did, identifier])
+  }, [didinfo])
 
   const add = useCallback(async () => {
     await client.did.addKey()
