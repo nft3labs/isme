@@ -11,11 +11,11 @@ const useFollowService = () => {
   const { count, following, followers, follow, unfollow, check } = useFollow(did)
 
   const checkUserFollow = useCallback(() => {
-    if (!identifier) return
-    return check(identifier).then((result) => {
+    if (!identifier || !did) return
+    return check(identifier, did).then((result) => {
       setFollowed(result)
     })
-  }, [check, identifier])
+  }, [check, did, identifier])
 
   useEffect(() => {
     checkUserFollow()
@@ -30,6 +30,7 @@ const useFollowService = () => {
   }, [checkUserFollow, unfollow])
 
   return {
+    check,
     followed,
     count,
     following,

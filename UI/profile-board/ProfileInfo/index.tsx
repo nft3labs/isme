@@ -9,18 +9,38 @@ import { Paragraph } from 'components/Typography'
 import TwitterButton from 'components/btn/TwitterButton'
 import { useNFT3Follow, useNFT3Profile, useNFT3, useUser, useNFT3Social } from 'domains/data'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 
 const ROOT = styled(Card)``
 
 const ProfileInfo: FC = () => {
   const router = useRouter()
-  const { didname, selectDialog } = useUser()
-  const { ready, profile } = useNFT3Profile()
+  const { didname, selectDialog, identifier } = useUser()
+  const { ready, profile, did } = useNFT3Profile()
   const NFT3Follow = useNFT3Follow()
   const { twitter } = useNFT3Social()
   const { format } = useNFT3()
-  if (!ready || !profile) return null
   const { followed, count, follow, unfollow } = NFT3Follow
+  const followContent = useMemo(
+    () =>
+      !followed ? (
+        <Button
+          size="small"
+          onClick={() => {
+            if (!didname) return selectDialog.open()
+            follow()
+          }}
+        >
+          Follow
+        </Button>
+      ) : (
+        <Button size="small" onClick={() => unfollow()}>
+          Unfollow
+        </Button>
+      ),
+    [didname, follow, followed, selectDialog, unfollow]
+  )
+  if (!ready || !profile) return null
   return (
     <ROOT>
       <CardContent>
@@ -43,30 +63,18 @@ const ProfileInfo: FC = () => {
         </Stack>
       </CardContent>
       <CardActions>
-        {!followed ? (
+        {identifier === did ? (
           <Button
             size="small"
             onClick={() => {
-              if (!didname) return selectDialog.open()
-              follow()
+              router.push('/profile')
             }}
           >
-            Follow
+            Edit Profile
           </Button>
         ) : (
-          <Button size="small" onClick={() => unfollow()}>
-            Unfollow
-          </Button>
+          followContent
         )}
-        {/* {didname === profile.name && <Button size="small">Edit Profile</Button>} */}
-        <Button
-          size="small"
-          onClick={() => {
-            router.push('/profile')
-          }}
-        >
-          Edit Profile
-        </Button>
       </CardActions>
     </ROOT>
   )

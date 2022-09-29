@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useNFT3 } from '@nft3sdk/did-manager'
 import type { FollowMember } from 'UI/profile-board/Follow/types'
+import { useDebounceMemo } from 'app/hooks/useDebounceMemo'
 
 export const useFollow = (identifier: string) => {
   const { client } = useNFT3()
@@ -18,7 +19,7 @@ export const useFollow = (identifier: string) => {
   }, [client.follow, identifier])
 
   const getFollowing = useCallback(
-    async (offset = 0, limit = 30) => {
+    async (offset = 0, limit = 10) => {
       if (!identifier) return
       const items = await client.follow.following({
         identifier,
@@ -31,7 +32,7 @@ export const useFollow = (identifier: string) => {
   )
 
   const getFollowers = useCallback(
-    async (offset = 0, limit = 30) => {
+    async (offset = 0, limit = 10) => {
       if (!identifier) return
       const items = await client.follow.followers({
         identifier,
@@ -62,15 +63,15 @@ export const useFollow = (identifier: string) => {
   }, [client.follow, identifier, updateFollow])
 
   const check = useCallback(
-    async (followingDid: string) => {
+    async (identifier: string, followingDid: string) => {
       if (!identifier || !followingDid) return
-      const result = await client.follow.check(followingDid, identifier)
+      const result = await client.follow.check(identifier, followingDid)
       return result
     },
-    [client.follow, identifier]
+    [client.follow]
   )
 
-  useEffect(() => {
+  useDebounceMemo(() => {
     updateFollow()
   }, [updateFollow])
 
