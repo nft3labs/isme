@@ -34,9 +34,9 @@ const AccountButton: FC = () => {
   }
 
   const onLogout = () => {
+    disconnect()
     sessionStorage.removeItem('sessionKey')
     logout()
-    disconnect()
   }
 
   if (!account) {

@@ -18,7 +18,7 @@ const initialValues = {
 }
 
 export const useForm = () => {
-  const { register, account, login, registerDialog } = useUser()
+  const { register, account, login, registerDialog, logout, disconnect } = useUser()
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -26,7 +26,14 @@ export const useForm = () => {
       return createToastifyPromise(
         register(values.didname).then(() => {
           registerDialog.close()
-          login()
+          login().then(({ result, needRegister }) => {
+            if (result) return
+            if (needRegister === true) {
+            } else {
+              logout()
+              disconnect()
+            }
+          })
         }),
         {
           formikHelpers,
