@@ -14,6 +14,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useRouter } from 'next/router'
 import { useNFT3, useNFT3Profile, useUser } from 'domains/data'
 import { H4 } from 'components/Typography'
+import * as sessionStorage from 'app/utils/cache/sessionStorage'
 
 const AccountButton: FC = () => {
   const { format } = useNFT3()
@@ -31,6 +32,7 @@ const AccountButton: FC = () => {
   }
 
   const onLogout = () => {
+    sessionStorage.removeItem('sessionKey')
     logout()
     disconnect()
   }
