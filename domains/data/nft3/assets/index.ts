@@ -1,14 +1,14 @@
 import { createContext } from 'app/utils/createContext'
 import { useNFT3Profile } from 'domains/data'
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import type { TokenRecord, OpenseaAssetsRecord, TxRecord, ENSRecord, TimelineRecord } from '@nft3sdk/client'
+import type { TokenRecord, OpenseaAssetsRecord, ENSRecord, TimelineRecord } from '@nft3sdk/client'
 import { NFT3Queryer } from '@nft3sdk/client'
 
 const useAssetsService = () => {
   const { did: identifier, didinfo } = useNFT3Profile()
   const [nfts, setNfts] = useState<OpenseaAssetsRecord[]>([])
   const [tokens, setTokens] = useState<TokenRecord[]>([])
-  const [txs, setTxs] = useState<TxRecord[]>([])
+  // const [txs, setTxs] = useState<TxRecord[]>([])
   const [ens, setEns] = useState<ENSRecord[]>([])
   const [timeline, setTimeline] = useState<TimelineRecord[]>([])
 
@@ -20,7 +20,7 @@ const useAssetsService = () => {
     if (!identifier) {
       setTokens([])
       setNfts([])
-      setTxs([])
+      // setTxs([])
       return
     }
     const data = await queryer.query({
@@ -30,9 +30,9 @@ const useAssetsService = () => {
       poaps: {
         did: identifier,
       },
-      txs: {
-        did: identifier,
-      },
+      // txs: {
+      //   did: identifier,
+      // },
       ens: {
         did: identifier,
       },
@@ -41,7 +41,7 @@ const useAssetsService = () => {
       },
     })
     setTokens(data.tokens)
-    setTxs(data.txs)
+    // setTxs(data.txs)
     setEns(data.ens)
     setTimeline(data.timeline)
   }, [identifier, queryer])
@@ -70,7 +70,7 @@ const useAssetsService = () => {
   return {
     tokens,
     nfts,
-    txs,
+    // txs,
     ens,
     timeline,
   }

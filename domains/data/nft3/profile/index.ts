@@ -3,6 +3,7 @@ import type { ProfileModel, DIDInfo } from '@nft3sdk/client'
 import { createContext } from 'app/utils/createContext'
 
 import { useUser } from 'domains/data'
+import { getProfile } from './adapter'
 
 const useProfileService = () => {
   const [ready, setReady] = useState(false)
@@ -20,7 +21,7 @@ const useProfileService = () => {
   const updateProfile = useCallback(() => {
     return client.profile.info(did).then((profile) => {
       if (!profile) return
-      setProfileInternal(profile)
+      setProfileInternal(getProfile(profile))
     })
   }, [client.profile, did])
 
@@ -47,6 +48,8 @@ const useProfileService = () => {
       setReady(true)
     })
   }, [did, client, updateProfile])
+
+  console.log('profile', profile)
 
   return {
     ready,

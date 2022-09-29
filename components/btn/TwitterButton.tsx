@@ -6,6 +6,7 @@ type TwitterButtonProps = {
 }
 
 const TwitterButton: FC<TwitterButtonProps> = ({ account }) => {
+  if (!account) return null
   return (
     <Button
       startIcon={<TwitterIcon />}

@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Stack from '@mui/material/Stack'
-import { H4, H5, Paragraph } from 'components/Typography'
+import { H4, Paragraph } from 'components/Typography'
 import { useNFT3, useUser, useNFT3Follow } from 'domains/data'
 import { useFollow } from 'domains/data/nft3/follow/hooks'
 
@@ -14,6 +14,7 @@ import type { FollowMember } from './types'
 import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { useDebounceMemo } from 'app/hooks/useDebounceMemo'
 import { useNumberFormat } from 'app/utils/number/hooks'
+import { getDefaultProfileAvatar } from 'domains/data/nft3/profile/adapter/profileAvatar'
 
 const ROOT = styled(Card)``
 const Content = styled(CardContent)`
@@ -23,7 +24,8 @@ const Content = styled(CardContent)`
 const CardActions = styled(Box)``
 
 const FollowCard: FC<FollowMember> = (props) => {
-  const { avatar, bio, identifier } = props
+  const { bio, identifier } = props
+  const avatar = useMemo(() => props.avatar || getDefaultProfileAvatar(props.name), [props.avatar, props.name])
   const { identifier: did, selectDialog } = useUser()
   const { format } = useNFT3()
   const { checkUserFollow } = useNFT3Follow()
