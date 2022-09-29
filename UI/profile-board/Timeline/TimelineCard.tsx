@@ -23,11 +23,11 @@ const DisplayTxs: FC<TxRecord> = ({ symbol, amount, from, to }) => {
   return (
     <Fragment>
       <Paragraph>
-        Exchange{' '}
+        Transfer{' '}
         <Typography component="span" color="primary">
           <DisplayNumber value={amount} />
         </Typography>{' '}
-        {symbol}{' '}
+        {symbol} from{' '}
         <Link href={'https://etherscan.io/address/' + from} target="_blank" underline="hover">
           {displayAddress(from)}
         </Link>{' '}

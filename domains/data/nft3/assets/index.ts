@@ -50,11 +50,11 @@ const useAssetsService = () => {
         did: identifier,
       },
     })
-    setTokens(data.tokens)
-    // setTxs(data.txs)
-    setEns(data.ens)
-    setTimeline(data.timeline)
-    setPoaps(data.poaps)
+    setTokens(data.tokens || [])
+    // setTxs(data.txs || [])
+    setEns(data.ens || [])
+    setTimeline(data.timeline || [])
+    setPoaps(data.poaps || [])
   }, [identifier, queryer])
 
   const openseaAssets = useCallback(

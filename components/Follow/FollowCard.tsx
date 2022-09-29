@@ -15,6 +15,7 @@ import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { useDebounceMemo } from 'app/hooks/useDebounceMemo'
 import { getDefaultProfileAvatar } from 'domains/data/nft3/profile/adapter/profileAvatar'
 import { DisplayNumber } from 'components/Number'
+import { useRouter } from 'next/router'
 
 const ROOT = styled(Card)``
 const Content = styled(CardContent)`
@@ -31,6 +32,7 @@ const FollowCard: FC<FollowMember> = (props) => {
   const { checkUserFollow } = useNFT3Follow()
   const { count, follow, unfollow, check } = useFollow(identifier)
   const [followed, setFollowed] = useState(false)
+  const router = useRouter()
   const checkFollow = useCallback(() => {
     if (!did || !identifier) return
     return check(did, identifier).then((result) => {
@@ -87,6 +89,10 @@ const FollowCard: FC<FollowMember> = (props) => {
     )
   }, [did, followed, identifier, selectDialog, userFollow, userUnfollow])
 
+  const goToProfileBoard = useCallback(() => {
+    router.push(`/profile-board/` + name)
+  }, [name, router])
+
   return (
     <ROOT>
       <Content>
@@ -97,9 +103,16 @@ const FollowCard: FC<FollowMember> = (props) => {
             flex: 1,
           }}
         >
-          <Avatar alt={name} sx={{ width: 60, height: 60 }} src={format(avatar)} />
+          <Avatar
+            alt={name}
+            sx={{ width: 60, height: 60, cursor: 'pointer' }}
+            src={format(avatar)}
+            onClick={goToProfileBoard}
+          />
           <Stack spacing={1}>
-            <H4>{name}</H4>
+            <H4 sx={{ cursor: 'pointer' }} onClick={goToProfileBoard}>
+              {name}
+            </H4>
             <Paragraph sx={{ color: 'grey.700' }}>
               <DisplayNumber value={count.followers} />
               <span> Followers</span>
