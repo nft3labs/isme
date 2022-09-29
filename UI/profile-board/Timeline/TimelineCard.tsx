@@ -65,7 +65,7 @@ const TimelineCard: FC<TimelineRecord> = ({ timestamp, item, type }) => {
           <Stack spacing={2}>
             <Stack spacing={0}>
               <H4>{profile.name}.isme</H4>
-              <Tiny>{safeGet(() => formatData(parseInt(timestamp) * 1000, 'MM/dd HH:mm')) || '-'}</Tiny>
+              <Tiny>{safeGet(() => formatData(parseInt(timestamp) * 1000, 'E MMM, yyyy')) || '-'}</Tiny>
             </Stack>
             {type === 'txs' && <DisplayTxs {...(item as any)} />}
           </Stack>

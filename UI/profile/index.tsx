@@ -103,7 +103,7 @@ const Profile: FC = () => {
                 <Stack spacing={1} textAlign="center">
                   <H2>{`${profile.name}.isme`}</H2>
                   <Paragraph sx={{ color: 'text.secondary' }}>
-                    Joined {formatData(formik.values.createdAt * 1000 || 0, 'MM yyyy')}
+                    Joined {formatData(formik.values.createdAt * 1000 || 0, 'MMM yyyy')}
                   </Paragraph>
                 </Stack>
               </Stack>

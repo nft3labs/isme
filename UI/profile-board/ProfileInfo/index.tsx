@@ -73,7 +73,7 @@ const ProfileInfo: FC = () => {
             <Stack spacing={0} direction="row" alignItems="center">
               <Wallets />
               <Paragraph sx={{ color: 'text.secondary' }}>
-                Joined {formatData(profile.createdAt * 1000 || 0, 'MM yyyy')}
+                Joined {formatData(profile.createdAt * 1000 || 0, 'MMM yyyy')}
               </Paragraph>
             </Stack>
             <Paragraph
