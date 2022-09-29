@@ -10,10 +10,10 @@ const useProfileService = () => {
   const { client, identifier } = useUser()
   const [didname, setDidname] = useState('')
   const did = useMemo(() => {
-    if (!didname) return
+    if (!didname) return identifier
     if (didname.startsWith('did:')) return didname
     return client.did.convertName(didname)
-  }, [didname, client.did])
+  }, [didname, identifier, client.did])
 
   const [didinfo, setDidinfo] = useState<DIDInfo>()
   const [profile, setProfileInternal] = useState<ProfileModel & { createdAt: number }>({} as any)
