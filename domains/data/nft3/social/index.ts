@@ -4,9 +4,11 @@ import { useNFT3 } from '@nft3sdk/did-manager'
 import { NFT3Verifier } from '@nft3sdk/client'
 import type { SocialRecord } from './types'
 import { useTwitter } from './hooks'
+import { useNFT3Profile } from 'domains/data'
 
 const useSocialService = () => {
   const { client } = useNFT3()
+  const { did } = useNFT3Profile()
   const [socials, setSocials] = useState<SocialRecord[]>([])
 
   const verifier = useMemo(() => {
@@ -15,7 +17,7 @@ const useSocialService = () => {
 
   const update = useCallback(
     async (identifier?: string) => {
-      identifier = identifier || client.did.identifier
+      identifier = identifier || did
       if (!identifier) return
       const items = await client.socialAccount.list(identifier)
       const rows: SocialRecord[] = items.map((item) => ({
@@ -30,7 +32,7 @@ const useSocialService = () => {
       }))
       setSocials(rows)
     },
-    [client.did.identifier, client.socialAccount, verifier]
+    [client.socialAccount, did, verifier]
   )
 
   const twitter = useTwitter({ socials, verifier })
