@@ -13,8 +13,8 @@ import { useFollow } from 'domains/data/nft3/follow/hooks'
 import type { FollowMember } from './types'
 import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { useDebounceMemo } from 'app/hooks/useDebounceMemo'
-import { useNumberFormat } from 'app/utils/number/hooks'
 import { getDefaultProfileAvatar } from 'domains/data/nft3/profile/adapter/profileAvatar'
+import { DisplayNumber } from 'components/Number'
 
 const ROOT = styled(Card)``
 const Content = styled(CardContent)`
@@ -87,8 +87,6 @@ const FollowCard: FC<FollowMember> = (props) => {
     )
   }, [did, followed, identifier, selectDialog, userFollow, userUnfollow])
 
-  const NF = useNumberFormat()
-
   return (
     <ROOT>
       <Content>
@@ -103,7 +101,8 @@ const FollowCard: FC<FollowMember> = (props) => {
           <Stack spacing={1}>
             <H4>{name}</H4>
             <Paragraph sx={{ color: 'grey.700' }}>
-              {NF.format(count.followers, NF.getOptions('number'))} Followers
+              <DisplayNumber value={count.followers} />
+              <span>Followers</span>
             </Paragraph>
             <Paragraph sx={{ color: 'grey.400' }}>{bio}</Paragraph>
           </Stack>

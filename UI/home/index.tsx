@@ -7,10 +7,10 @@ import Image from 'next/image'
 import BackgroundImage from './images/001-background.png'
 import { H1, H2, H3, H5 } from 'components/Typography'
 import FollowGrid from 'components/Follow/FollowGrid'
-import { useNumberFormat } from 'app/utils/number/hooks'
 import type { FollowMember } from 'components/Follow/types'
 import { DEFAULT_AVATARS, getFilePath } from 'app/constant'
 import { useUser } from 'domains/data'
+import { DisplayNumber } from 'components/Number'
 
 const FEATURED_PEOPLES: FollowMember[] = [
   {
@@ -54,7 +54,6 @@ const ROOT = styled(Stack)``
 const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
 
 const Home: FC = () => {
-  const NF = useNumberFormat()
   const { account, selectDialog } = useUser()
   return (
     <ROOT spacing={2}>
@@ -67,7 +66,9 @@ const Home: FC = () => {
             </Stack>
             <Stack spacing={4} direction="row">
               <Stack spacing={2}>
-                <H2>{NF.format(1234123, NF.getOptions('number'))}</H2>
+                <H2>
+                  <DisplayNumber value={1234123} />
+                </H2>
                 <H5 sx={{ color: 'grey.400' }}>Total Users</H5>
               </Stack>
               <Stack spacing={2}>

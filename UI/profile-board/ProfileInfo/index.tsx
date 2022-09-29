@@ -9,7 +9,6 @@ import CardActions from '@mui/material/CardActions'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
-import { useNumberFormat } from 'app/utils/number/hooks'
 import { Paragraph, H2, H3 } from 'components/Typography'
 import TwitterButton from 'components/btn/TwitterButton'
 import { useNFT3Follow, useNFT3Profile, useNFT3, useUser, useNFT3Social, useNFT3Wallet } from 'domains/data'
@@ -21,6 +20,7 @@ import etherscanIcon from './images/etherscan.svg'
 import looksrareIcon from './images/looksrare.svg'
 import openseaIcon from './images/opensea.svg'
 import FlexBetween from 'components/flexbox/FlexBetween'
+import { DisplayNumber } from 'components/Number'
 
 const ROOT = styled(Card)``
 
@@ -32,7 +32,6 @@ const ProfileInfo: FC = () => {
   const NFT3Follow = useNFT3Follow()
   const { twitter } = useNFT3Social()
   const { format } = useNFT3()
-  const NF = useNumberFormat()
   const { followed, count, follow, unfollow } = NFT3Follow
   const followContent = useMemo(
     () =>
@@ -100,12 +99,16 @@ const ProfileInfo: FC = () => {
           </Stack>
           <FlexBetween>
             <Stack spacing={2} flex="1" textAlign="center">
-              <H3 fontWeight={700}>{NF.format(count.following, NF.getOptions('number'))}</H3>
+              <H3 fontWeight={700}>
+                <DisplayNumber value={count.following} />
+              </H3>
               <Paragraph sx={{ color: 'text.secondary' }}>Following</Paragraph>
             </Stack>
             <Divider orientation="vertical" sx={{ height: 30 }} />
             <Stack spacing={2} flex="1" textAlign="center">
-              <H3 fontWeight={700}>{NF.format(count.followers, NF.getOptions('number'))}</H3>
+              <H3 fontWeight={700}>
+                <DisplayNumber value={count.followers} />
+              </H3>
               <Paragraph sx={{ color: 'text.secondary' }}>Follows</Paragraph>
             </Stack>
           </FlexBetween>
