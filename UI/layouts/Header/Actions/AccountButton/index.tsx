@@ -86,7 +86,7 @@ const AccountButton: FC = () => {
         onClose={handleClose}
       >
         <MenuItem
-          onClick={() => router.push('/profile-board/' + didname.split('.isme')[0])}
+          onClick={() => router.push('/profile/' + didname.split('.isme')[0])}
           sx={{
             borderBottom: '1px solid #E9E9E9',
           }}

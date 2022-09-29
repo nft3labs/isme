@@ -22,7 +22,7 @@ const SearchInput: FC<InputBaseProps> = (props) => {
         aria-label="search"
         onClick={() => {
           if (props.value) {
-            router.push('/profile-board/' + props.value)
+            router.push('/profile/' + props.value)
           } else {
             const input = safeGet(() => inputRef.current)
             if (input) input.focus()
@@ -37,7 +37,7 @@ const SearchInput: FC<InputBaseProps> = (props) => {
         {...props}
         onKeyDown={(e) => {
           if (e.code === 'Enter' && props.value) {
-            router.push('/profile-board/' + props.value)
+            router.push('/profile/' + props.value)
             e.preventDefault()
           }
         }}

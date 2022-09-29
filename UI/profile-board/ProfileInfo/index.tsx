@@ -121,7 +121,7 @@ const ProfileInfo: FC = () => {
             size="large"
             fullWidth
             onClick={() => {
-              router.push('/profile')
+              router.push('/edit-profile')
             }}
           >
             Edit Profile
