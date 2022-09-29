@@ -15,7 +15,7 @@ const SearchInput: FC<InputBaseProps> = (props) => {
   return (
     <Paper
       component="form"
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400, borderRadius: '12px' }}
+      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 450, borderRadius: '12px' }}
     >
       <IconButton
         sx={{ p: '10px' }}

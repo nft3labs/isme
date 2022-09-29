@@ -18,7 +18,7 @@ export const H1: React.FC<BoxProps & Props> = (props) => {
 
   return (
     <StyledBox
-      fontSize={28}
+      fontSize={36}
       component="h1"
       fontWeight={600}
       ellipsis={ellipsis}
@@ -52,9 +52,9 @@ export const H3: React.FC<BoxProps & Props> = (props) => {
 
   return (
     <StyledBox
-      fontSize={18}
+      fontSize={20}
       component="h3"
-      fontWeight={600}
+      fontWeight={400}
       ellipsis={ellipsis}
       className={clsx({ [className || '']: true })}
       {...others}
@@ -69,7 +69,7 @@ export const H4: React.FC<BoxProps & Props> = (props) => {
 
   return (
     <StyledBox
-      fontSize={16}
+      fontSize={18}
       component="h4"
       fontWeight={600}
       ellipsis={ellipsis}
@@ -86,7 +86,7 @@ export const H5: React.FC<BoxProps & Props> = (props) => {
 
   return (
     <StyledBox
-      fontSize={14}
+      fontSize={16}
       component="h5"
       lineHeight={1}
       fontWeight={600}

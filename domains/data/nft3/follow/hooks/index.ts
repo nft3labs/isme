@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useNFT3 } from '@nft3sdk/did-manager'
-import type { FollowMember } from 'UI/profile-board/Follow/types'
+import type { FollowMember } from 'components/Follow/types'
 import { useDebounceMemo } from 'app/hooks/useDebounceMemo'
 
 export const useFollow = (identifier: string) => {

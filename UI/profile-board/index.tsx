@@ -6,12 +6,12 @@ import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import { useNFT3Follow } from 'domains/data'
+import { safeGet } from 'app/utils/get'
+import Follow from 'components/Follow'
 
 import ProfileInfo from './ProfileInfo'
 import Board from './Board'
 import Timeline from './Timeline'
-import Follow from './Follow'
-import { safeGet } from 'app/utils/get'
 
 const ROOT = styled(Stack)``
 

@@ -66,7 +66,7 @@ declare module '@mui/material/styles' {
 
 export const getTheme = (options: ThemeOptions) => {
   const theme = createTheme(options)
-  const { primary, gradientColors, card } = theme.palette
+  const { primary, gradientColors, card, text } = theme.palette
 
   return createTheme(options, {
     zIndex: {
@@ -144,6 +144,20 @@ export const getTheme = (options: ThemeOptions) => {
             },
           },
           {
+            props: { variant: 'gradient', size: 'small' },
+            style: {
+              padding: '8px 16px',
+              fontSize: theme.typography.pxToRem(14),
+            },
+          },
+          {
+            props: { variant: 'gradient', size: 'large' },
+            style: {
+              padding: '8px 22px',
+              fontSize: theme.typography.pxToRem(15),
+            },
+          },
+          {
             props: { variant: 'gradientOutlined' },
             style: {
               willChange: 'transform',
@@ -155,12 +169,30 @@ export const getTheme = (options: ThemeOptions) => {
                 boxShadow: 'none',
               },
               ':disabled': {
-                color: '#F94432',
+                color: text.disabled,
                 opacity: '50%',
               },
               border: 'solid 1px transparent',
               backgroundOrigin: 'border-box',
               boxShadow: '2px 1000px 1px #fff inset',
+            },
+          },
+          {
+            props: { variant: 'gradientOutlined', size: 'small' },
+            style: {
+              padding: '4px 10px',
+              fontSize: theme.typography.pxToRem(13),
+              large: {
+                padding: '8px 22px',
+                fontSize: theme.typography.pxToRem(15),
+              },
+            },
+          },
+          {
+            props: { variant: 'gradientOutlined', size: 'large' },
+            style: {
+              padding: '8px 22px',
+              fontSize: theme.typography.pxToRem(15),
             },
           },
         ],

@@ -1,3 +1,4 @@
+import { getFilePath } from 'app/constant'
 import axios from 'axios'
 import { useCallback } from 'react'
 
@@ -15,9 +16,7 @@ export default function useIpfs() {
     const form = new FormData()
     form.append('file', file)
     const { data } = await axios.post(`${BaseUrl}/api/v0/add`, form)
-    if (data.Hash) {
-      return `ipfs://${data.Hash}`
-    }
+    return getFilePath(data)
   }, [])
 
   return {

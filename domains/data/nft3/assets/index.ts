@@ -67,8 +67,6 @@ const useAssetsService = () => {
     }
   }, [didinfo, openseaAssets])
 
-  console.log(timeline)
-
   return {
     tokens,
     nfts,
