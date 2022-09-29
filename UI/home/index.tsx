@@ -10,6 +10,7 @@ import FollowGrid from 'components/Follow/FollowGrid'
 import { useNumberFormat } from 'app/utils/number/hooks'
 import type { FollowMember } from 'components/Follow/types'
 import { DEFAULT_AVATARS, getFilePath } from 'app/constant'
+import { useUser } from 'domains/data'
 
 const FEATURED_PEOPLES: FollowMember[] = [
   {
@@ -54,6 +55,7 @@ const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
 
 const Home: FC = () => {
   const NF = useNumberFormat()
+  const { account, selectDialog } = useUser()
   return (
     <ROOT spacing={2}>
       <Grid container justifyContent="center" alignItems="center">
@@ -74,7 +76,21 @@ const Home: FC = () => {
               </Stack>
             </Stack>
             <Stack spacing={2} direction="row">
-              <Button variant="gradient"> Create Now</Button>
+              {!account ? (
+                <Button
+                  variant="gradient"
+                  onClick={() => {
+                    selectDialog.open()
+                  }}
+                >
+                  Create Now
+                </Button>
+              ) : (
+                <Button variant="gradient" disabled>
+                  DID Created
+                </Button>
+              )}
+
               {/* <Button> Search Address</Button> */}
             </Stack>
           </Stack>
