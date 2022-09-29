@@ -44,23 +44,29 @@ export const useFollow = (identifier: string) => {
     [client.follow, identifier]
   )
 
-  const updateFollow = useCallback(() => {
-    return Promise.all([getCount(), getFollowing(), getFollowers()])
-  }, [getCount, getFollowers, getFollowing])
+  const updateFollowCount = useCallback(() => {
+    return Promise.all([getCount()])
+  }, [getCount])
+
+  const updateFollower = useCallback(() => {
+    return Promise.all([getFollowing(), getFollowers()])
+  }, [getFollowers, getFollowing])
 
   const follow = useCallback(async () => {
     if (!identifier) return
     const result = await client.follow.follow(identifier)
-    updateFollow()
+    updateFollowCount()
+    updateFollower()
     return result
-  }, [client.follow, identifier, updateFollow])
+  }, [client.follow, identifier, updateFollowCount, updateFollower])
 
   const unfollow = useCallback(async () => {
     if (!identifier) return
     const result = await client.follow.unfollow(identifier)
-    updateFollow()
+    updateFollowCount()
+    updateFollower()
     return result
-  }, [client.follow, identifier, updateFollow])
+  }, [client.follow, identifier, updateFollowCount, updateFollower])
 
   const check = useCallback(
     async (identifier: string, followingDid: string) => {
@@ -72,8 +78,8 @@ export const useFollow = (identifier: string) => {
   )
 
   useDebounceMemo(() => {
-    updateFollow()
-  }, [updateFollow])
+    updateFollowCount()
+  }, [updateFollowCount])
 
   return {
     count,
@@ -82,5 +88,7 @@ export const useFollow = (identifier: string) => {
     follow,
     unfollow,
     check,
+    updateFollower,
+    updateFollowCount,
   }
 }

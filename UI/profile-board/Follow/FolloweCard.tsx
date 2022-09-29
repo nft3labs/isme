@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import Stack from '@mui/material/Stack'
 import { Paragraph } from 'components/Typography'
-import { useNFT3, useUser } from 'domains/data'
+import { useNFT3, useUser, useNFT3Follow } from 'domains/data'
 import { useFollow } from 'domains/data/nft3/follow/hooks'
 
 import type { FollowMember } from './types'
@@ -23,9 +23,10 @@ const FolloweCard: FC<FollowMember> = (props) => {
   const { avatar, bio, identifier } = props
   const { identifier: did, selectDialog } = useUser()
   const { format } = useNFT3()
+  const { checkUserFollow } = useNFT3Follow()
   const { count, follow, unfollow, check } = useFollow(identifier)
   const [followed, setFollowed] = useState(false)
-  const checkUserFollow = useCallback(() => {
+  const checkFollow = useCallback(() => {
     if (!did || !identifier) return
     return check(did, identifier).then((result) => {
       setFollowed(result)
@@ -33,16 +34,26 @@ const FolloweCard: FC<FollowMember> = (props) => {
   }, [check, did, identifier])
 
   useDebounceMemo(() => {
-    checkUserFollow()
-  }, [checkUserFollow])
+    checkFollow()
+  }, [checkFollow])
 
   const userFollow = useCallback(() => {
-    return createToastifyPromise(follow().then(() => checkUserFollow()))
-  }, [checkUserFollow, follow])
+    return createToastifyPromise(
+      follow().then(() => {
+        checkFollow()
+        checkUserFollow()
+      })
+    )
+  }, [checkFollow, checkUserFollow, follow])
 
   const userUnfollow = useCallback(() => {
-    return createToastifyPromise(unfollow().then(() => checkUserFollow()))
-  }, [checkUserFollow, unfollow])
+    return createToastifyPromise(
+      unfollow().then(() => {
+        checkFollow()
+        checkUserFollow()
+      })
+    )
+  }, [checkFollow, checkUserFollow, unfollow])
 
   const name = useMemo(() => {
     if (props.name) return props.name
