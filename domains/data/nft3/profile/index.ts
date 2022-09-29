@@ -10,6 +10,7 @@ const useProfileService = () => {
   const [didname, setDidname] = useState('')
   const did = useMemo(() => {
     if (!didname) return
+    if (didname.startsWith('did:')) return didname
     return client.did.convertName(didname)
   }, [didname, client.did])
 
@@ -24,8 +25,8 @@ const useProfileService = () => {
   }, [client.profile, did])
 
   const setProfile = useCallback(
-    async (data: ProfileModel) => {
-      const result = await client.profile.update(data)
+    async (data: Partial<ProfileModel>) => {
+      const result = await client.profile.update(data as any)
       updateProfile()
       return result
     },
