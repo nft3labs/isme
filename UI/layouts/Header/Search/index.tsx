@@ -11,7 +11,7 @@ const Search = () => {
   }
   return (
     <ROOT>
-      <SearchInput value={value} onChange={onChange} placeholder="Search by DID name or ETH address" />
+      <SearchInput value={value} onChange={onChange} placeholder="Search by DID name" />
     </ROOT>
   )
 }

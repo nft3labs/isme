@@ -7,7 +7,7 @@ import { getProfile } from './adapter'
 
 const useProfileService = () => {
   const [ready, setReady] = useState(false)
-  const { client } = useUser()
+  const { client, identifier } = useUser()
   const [didname, setDidname] = useState('')
   const did = useMemo(() => {
     if (!didname) return
@@ -16,12 +16,12 @@ const useProfileService = () => {
   }, [didname, client.did])
 
   const [didinfo, setDidinfo] = useState<DIDInfo>()
-  const [profile, setProfileInternal] = useState<ProfileModel>({} as any)
+  const [profile, setProfileInternal] = useState<ProfileModel & { createdAt: number }>({} as any)
 
   const updateProfile = useCallback(() => {
     return client.profile.info(did).then((profile) => {
       if (!profile) return
-      setProfileInternal(getProfile(profile))
+      setProfileInternal(getProfile(profile) as any)
     })
   }, [client.profile, did])
 
@@ -49,7 +49,7 @@ const useProfileService = () => {
     })
   }, [did, client, updateProfile])
 
-  console.log('profile', profile)
+  const isUser = useMemo(() => did === identifier, [did, identifier])
 
   return {
     ready,
@@ -60,6 +60,8 @@ const useProfileService = () => {
 
     setDidname,
     setProfile,
+
+    isUser,
   }
 }
 const { Provider: ProfileProvider, createUseContext } = createContext(useProfileService)

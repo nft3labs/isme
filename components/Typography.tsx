@@ -121,7 +121,7 @@ export const Paragraph: React.FC<BoxProps & Props> = (props) => {
 
   return (
     <StyledBox
-      fontSize={14}
+      fontSize={16}
       component="p"
       fontWeight={500}
       ellipsis={ellipsis}

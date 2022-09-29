@@ -13,27 +13,19 @@ import Stack from '@mui/material/Stack'
 
 import { useNFT3Wallet } from 'domains/data'
 import MenuItem from '@mui/material/MenuItem'
-import { safeGet } from 'app/utils/get'
 import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 import { writeText } from 'app/utils/dom/clipboard'
 import ETHImg from 'public/eth.svg'
 import { toast } from 'lib/toastify'
 import { Paragraph } from 'components/Typography'
 
-type WalletsProps = {
-  account: string
-}
-const Wallets: FC<WalletsProps> = ({ account }) => {
-  const { accounts } = useNFT3Wallet()
-  const [value, setValue] = useState(account)
+type WalletsProps = {}
+const Wallets: FC<WalletsProps> = () => {
+  const { accounts, account, setAccount } = useNFT3Wallet()
   const [copyValue, setCopyValue] = useState('')
   const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value)
+    setAccount(event.target.value || '')
   }
-
-  useEffect(() => {
-    setValue(account || safeGet(() => accounts[0].account))
-  }, [account, accounts])
 
   return (
     <Select
@@ -43,7 +35,7 @@ const Wallets: FC<WalletsProps> = ({ account }) => {
           color: '#000',
         },
       }}
-      value={value}
+      value={account}
       onChange={handleChange}
       input={<InputBase />}
       IconComponent={ExpandMoreRoundedIcon}
