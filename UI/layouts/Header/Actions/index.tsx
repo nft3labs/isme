@@ -8,7 +8,7 @@ import NFT3Register from './NFT3Register'
 
 const ROOT = styled('div')``
 const Content = styled(Stack)`
-  min-width: 300px;
+  min-width: 200px;
   justify-content: right;
 `
 

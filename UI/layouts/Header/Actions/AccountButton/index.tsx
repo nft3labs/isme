@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { useUser } from 'domains/data'
 
 const AccountButton: FC = () => {
-  const { ready, didname, account, logout, login, selectDialog, registerDialog, disconnect } = useUser()
+  const { didname, account, logout, selectDialog, disconnect } = useUser()
   const router = useRouter()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -21,42 +21,31 @@ const AccountButton: FC = () => {
 
   const onLogout = () => {
     logout()
-  }
-
-  const onDisconnect = () => {
     disconnect()
-  }
-
-  const onLogin = async () => {
-    const info = await login()
-    if (info.result === false && info.needRegister === true) {
-      registerDialog.open()
-    }
   }
 
   if (!account) {
     return (
-      <Button size="large" onClick={() => selectDialog.open()}>
+      <Button variant="gradientOutlined" size="large" onClick={() => selectDialog.open()}>
         Connect Wallet
       </Button>
     )
   }
   if (!didname) {
     return (
-      <Button size="large" onClick={onLogin} disabled={!ready}>
-        Login NFT3
+      <Button variant="gradientOutlined" size="large" disabled={true}>
+        Logging in
       </Button>
     )
   }
   return (
     <>
-      <Button size="large" onClick={handleClick}>
+      <Button variant="gradient" size="large" onClick={handleClick}>
         {didname}
       </Button>
       <Menu id="basic-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={() => router.push('/profile-board/' + didname.split('.isme')[0])}>Your profile</MenuItem>
         <MenuItem onClick={() => router.push('/profile')}>Settings</MenuItem>
-        <MenuItem onClick={onDisconnect}>Disconnect</MenuItem>
         <MenuItem onClick={onLogout}>Logout</MenuItem>
       </Menu>
     </>
