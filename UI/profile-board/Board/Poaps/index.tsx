@@ -8,17 +8,19 @@ const Poaps: FC = () => {
   const { poaps } = useNFT3Assets()
   const cards = useMemo(() => {
     if (!poaps) return []
-    return poaps.map((d) => {
-      const {
-        event: { name, image_url, id, description },
-      } = d
-      return {
-        name,
-        id,
-        description,
-        image: image_url,
-      }
-    })
+    return poaps
+      .filter((d) => d.event)
+      .map((d) => {
+        const {
+          event: { name, image_url, id, description },
+        } = d
+        return {
+          name,
+          id,
+          description,
+          image: image_url,
+        }
+      })
   }, [poaps])
 
   return (
