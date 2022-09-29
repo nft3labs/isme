@@ -14,6 +14,7 @@ declare module '@mui/material/Button/Button' {
   interface ButtonPropsVariantOverrides {
     gradient: true
     gradientOutlined: true
+    twitter: true
   }
 }
 
@@ -126,6 +127,25 @@ export const getTheme = (options: ThemeOptions) => {
           },
         },
         variants: [
+          {
+            props: { variant: 'twitter' },
+            style: {
+              willChange: 'transform',
+              color: '#fff',
+              background: 'rgb(29, 155, 240)',
+              transition: theme.transitions.create('background'),
+              ':hover': {
+                background: 'rgb(26, 140, 216)',
+              },
+            },
+          },
+          {
+            props: { variant: 'twitter', size: 'small' },
+            style: {
+              padding: '8px 16px',
+              fontSize: theme.typography.pxToRem(14),
+            },
+          },
           {
             props: { variant: 'gradient' },
             style: {
