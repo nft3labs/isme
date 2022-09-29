@@ -7,15 +7,14 @@ import { Paragraph } from 'components/Typography'
 import { useNFT3Profile, useNFT3 } from 'domains/data'
 import { format as formatData } from 'date-fns'
 import { safeGet } from 'app/utils/get'
-
-import type { TxRecord } from './types'
+import type { TimelineRecord } from '@nft3sdk/client'
 
 const ROOT = styled(Card)``
 const Content = styled(CardContent)`
   display: flex;
 `
 
-const TimelineCard: FC<TxRecord> = ({ timestamp, ...others }) => {
+const TimelineCard: FC<TimelineRecord> = ({ timestamp, ...others }) => {
   const { format } = useNFT3()
   const { profile } = useNFT3Profile()
   return (
