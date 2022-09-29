@@ -4,7 +4,7 @@ import Container from '@mui/material/Container'
 import Header from './Header'
 import Footer from './Footer'
 
-import GlobalStyles from 'styles/globalStyles'
+import GlobalStyles from 'styles/GlobalStyles'
 
 const Content = styled(Container)(() => ({
   minHeight: 'calc(100vh - 256px)',

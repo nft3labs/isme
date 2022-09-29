@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import InputBase from '@mui/material/InputBase'
 import Image from 'next/image'
 import type { SelectChangeEvent } from '@mui/material/Select'
