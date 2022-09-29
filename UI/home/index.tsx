@@ -49,6 +49,42 @@ const FEATURED_PEOPLES: FollowMember[] = [
     avatar: getFilePath(DEFAULT_AVATARS[5]),
     bio: '',
   },
+  {
+    identifier: 'did:nft3:Zoe',
+    name: 'Zoe',
+    avatar: getFilePath(DEFAULT_AVATARS[6]),
+    bio: '',
+  },
+  {
+    identifier: 'did:nft3:Fox',
+    name: 'Fox',
+    avatar: getFilePath(DEFAULT_AVATARS[7]),
+    bio: '',
+  },
+  {
+    identifier: 'did:nft3:Anya',
+    name: 'Anya',
+    avatar: getFilePath(DEFAULT_AVATARS[8]),
+    bio: '',
+  },
+  {
+    identifier: 'did:nft3:Sterling',
+    name: 'Sterling',
+    avatar: getFilePath(DEFAULT_AVATARS[0]),
+    bio: '',
+  },
+  {
+    identifier: 'did:nft3:John',
+    name: 'John',
+    avatar: getFilePath(DEFAULT_AVATARS[1]),
+    bio: '',
+  },
+  {
+    identifier: 'did:nft3:Jones',
+    name: 'Jones',
+    avatar: getFilePath(DEFAULT_AVATARS[2]),
+    bio: '',
+  },
 ]
 const ROOT = styled(Stack)``
 const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
