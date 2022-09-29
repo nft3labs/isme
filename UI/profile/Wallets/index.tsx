@@ -9,6 +9,7 @@ import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { Paragraph, Tiny } from 'components/Typography'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import ETHImg from 'public/eth.svg'
+import Alert from '@mui/material/Alert'
 
 const ROOT = styled(Stack)``
 
@@ -55,6 +56,7 @@ const Wallets: FC = () => {
           Remove current wallet
         </Button>
       </Stack>
+      <Alert severity="info">Switch to another wallet before adding a new one.</Alert>
     </ROOT>
   )
 }
