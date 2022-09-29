@@ -78,7 +78,7 @@ const FollowCard: FC<FollowMember> = (props) => {
     ) : (
       <Button
         size="small"
-        variant="gradient"
+        variant="outlined"
         onClick={() => {
           if (!did) return selectDialog.open()
           userFollow()
@@ -105,7 +105,7 @@ const FollowCard: FC<FollowMember> = (props) => {
         >
           <Avatar
             alt={name}
-            sx={{ width: 60, height: 60, cursor: 'pointer' }}
+            sx={{ width: 48, height: 48, cursor: 'pointer' }}
             src={format(avatar)}
             onClick={goToProfileBoard}
           />
@@ -113,7 +113,7 @@ const FollowCard: FC<FollowMember> = (props) => {
             <H4 sx={{ cursor: 'pointer' }} onClick={goToProfileBoard}>
               {name}
             </H4>
-            <Paragraph sx={{ color: 'grey.700' }}>
+            <Paragraph sx={{ color: 'text.secondary' }}>
               <DisplayNumber value={count.followers} />
               <span> Followers</span>
             </Paragraph>

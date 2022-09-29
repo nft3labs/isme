@@ -18,9 +18,9 @@ function MainApp(props: MyAppProps): JSX.Element {
       <StoreProvider store={store}>
         <DomainsProvider>
           <Head>
-            <title>NFT3Pass</title>
+            <title>NFT3 Pass</title>
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-            {/* <link rel="icon" href="/favicon.ico" /> */}
+            <link rel="icon" href="/favicon.ico" />
           </Head>
           <App {...props} />
         </DomainsProvider>

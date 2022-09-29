@@ -17,11 +17,13 @@ const ROOT = styled(Box)`
 `
 
 const Content = styled(Container)`
-  padding-top: 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #e9e9e9;
+  ${({ theme }) => ({
+    paddingTop: '32px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderTop: `1px solid ${theme.palette.divider}`
+  })}
 `
 
 const CopyRight = styled(Typography)`
@@ -40,7 +42,7 @@ const Footer: FC = () => {
           <Logo imgSrc={LogoImg} />
           <Links />
         </Stack>
-        <CopyRight variant="caption">© 2022, NFT3. All Rights Reserved</CopyRight>
+        <CopyRight variant="caption" color="grey.400">© 2022, NFT3. All Rights Reserved</CopyRight>
       </Content>
     </ROOT>
   )

@@ -13,7 +13,7 @@ type FollowProps = {
 const FollowGrid: FC<FollowProps> = ({ followers }) => {
   return (
     <ROOT>
-      <Grid container spacing={4} sx={{ margin: '-32px 0 0 -32px' }}>
+      <Grid container spacing={2}>
         {followers.map((member, index) => {
           return (
             <Grid key={index} item xs={4}>

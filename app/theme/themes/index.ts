@@ -215,6 +215,12 @@ export const getTheme = (options: ThemeOptions) => {
               fontSize: theme.typography.pxToRem(15),
             },
           },
+          {
+            props: { variant: 'contained' },
+            style: {
+              color: 'white'
+            },
+          },
         ],
       },
       MuiLink: {

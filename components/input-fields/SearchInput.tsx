@@ -3,19 +3,32 @@ import type { InputBaseProps } from '@mui/material/InputBase'
 import InputBase from '@mui/material/InputBase'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import CloseIcon from '@mui/icons-material/Close'
 import { useRef } from 'react'
 import { inputSetValue } from 'app/utils/dom/input'
 import { safeGet } from 'app/utils/get'
 import { useRouter } from 'next/router'
+import { useTheme } from '@mui/material/styles'
 
 const SearchInput: FC<InputBaseProps> = (props) => {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>()
+  const theme = useTheme()
   return (
     <Paper
       component="form"
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 450, borderRadius: '12px' }}
+      elevation={3}
+      sx={{ 
+        p: '2px 4px', 
+        display: 'flex', 
+        alignItems: 'center', 
+        width: 450, 
+        borderRadius: '12px',
+        border: 'solid 1px transparent',
+        '&:hover': {
+          borderColor: theme.palette.primary.main
+        },
+      }}
     >
       <IconButton
         sx={{ p: '10px' }}
@@ -52,7 +65,7 @@ const SearchInput: FC<InputBaseProps> = (props) => {
             if (input) inputSetValue(input, '')
           }}
         >
-          <HighlightOffIcon />
+          <CloseIcon />
         </IconButton>
       )}
     </Paper>

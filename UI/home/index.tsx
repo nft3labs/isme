@@ -5,12 +5,12 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Image from 'next/image'
 import BackgroundImage from './images/001-background.png'
-import { H1, H2, H3, H5 } from 'components/Typography'
+import { H1, H2, H3 } from 'components/Typography'
 import FollowGrid from 'components/Follow/FollowGrid'
 import type { FollowMember } from 'components/Follow/types'
 import { DEFAULT_AVATARS, getFilePath } from 'app/constant'
 import { useUser } from 'domains/data'
-import { DisplayNumber } from 'components/Number'
+// import { DisplayNumber } from 'components/Number'
 
 const FEATURED_PEOPLES: FollowMember[] = [
   {
@@ -62,20 +62,20 @@ const Home: FC = () => {
           <Stack spacing={4}>
             <Stack spacing={2}>
               <H1>Your Decentralized Identity for Web 3.0</H1>
-              <H3 sx={{ color: 'grey.700' }}>Connect everything in the first unified social idendity network</H3>
+              <H3 sx={{ color: 'text.secondary' }}>Connect everything in the first unified social idendity network</H3>
             </Stack>
-            <Stack spacing={4} direction="row">
+            {/* <Stack spacing={4} direction="row">
               <Stack spacing={2}>
                 <H2>
                   <DisplayNumber value={1234123} />
                 </H2>
-                <H5 sx={{ color: 'grey.400' }}>Total Users</H5>
+                <Span sx={{ color: 'grey.400' }}>Total Users</Span>
               </Stack>
               <Stack spacing={2}>
                 <H2>12M</H2>
-                <H5 sx={{ color: 'grey.400' }}>Total Connections</H5>
+                <Span sx={{ color: 'grey.400' }}>Total Connections</Span>
               </Stack>
-            </Stack>
+            </Stack> */}
             <Stack spacing={2} direction="row">
               {!account ? (
                 <Button
@@ -83,6 +83,7 @@ const Home: FC = () => {
                   onClick={() => {
                     selectDialog.open()
                   }}
+                  size="large"
                 >
                   Create Now
                 </Button>

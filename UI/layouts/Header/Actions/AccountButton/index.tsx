@@ -15,12 +15,14 @@ import { useRouter } from 'next/router'
 import { useNFT3, useNFT3Profile, useUser } from 'domains/data'
 import { H4 } from 'components/Typography'
 import * as sessionStorage from 'app/utils/cache/sessionStorage'
+import { useTheme } from '@mui/material/styles'
 
 const AccountButton: FC = () => {
   const { format } = useNFT3()
   const { didname, account, logout, selectDialog, disconnect } = useUser()
   const { profile } = useNFT3Profile()
   const router = useRouter()
+  const theme = useTheme()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -39,22 +41,35 @@ const AccountButton: FC = () => {
 
   if (!account) {
     return (
-      <Button variant="gradientOutlined" size="large" onClick={() => selectDialog.open()}>
-        Connect Wallet
+      <Button variant="gradient" size="large" onClick={() => selectDialog.open()}>
+        Login
       </Button>
     )
   }
   if (!didname) {
     return (
-      <Button variant="gradientOutlined" size="large" disabled={true}>
+      <Button variant="outlined" size="large">
         Logging in
       </Button>
     )
   }
   return (
     <Fragment>
-      <Paper component={Button} sx={{ p: '12px 20px', borderRadius: '12px' }} onClick={handleClick}>
-        <Stack spacing={1} direction="row" justifyContent="center">
+      <Paper 
+        component='button'
+        elevation={3}
+        sx={{ 
+          p: '10px 20px', 
+          borderRadius: '12px',
+          border: 'solid 1px transparent',
+          '&:hover': {
+            cursor: 'pointer',
+            borderColor: theme.palette.primary.main,
+          } 
+        }} 
+        onClick={handleClick}
+      >
+        <Stack spacing={2} direction="row" justifyContent="center">
           <Avatar
             alt={profile.name}
             src={format(profile.avatar)}
@@ -63,13 +78,14 @@ const AccountButton: FC = () => {
               height: 36,
             }}
           />
-          <H4 fontWeight="400" lineHeight="36px">
+          <H4 fontWeight="medium" lineHeight="36px">
             {didname}
           </H4>
         </Stack>
       </Paper>
       <Menu
         sx={{
+          marginTop: 1,
           '.MuiList-root': {
             padding: '6px 0',
             width: 180,
@@ -88,7 +104,7 @@ const AccountButton: FC = () => {
         <MenuItem
           onClick={() => router.push('/profile/' + didname.split('.isme')[0])}
           sx={{
-            borderBottom: '1px solid #E9E9E9',
+            borderBottom: `solid 1px ${theme.palette.divider}`,
           }}
         >
           <ListItemIcon>
@@ -99,7 +115,7 @@ const AccountButton: FC = () => {
         <MenuItem
           onClick={() => router.push('/profile')}
           sx={{
-            borderBottom: '1px solid #E9E9E9',
+            borderBottom: `solid 1px ${theme.palette.divider}`,
           }}
         >
           <ListItemIcon>

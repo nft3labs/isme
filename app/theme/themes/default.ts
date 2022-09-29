@@ -3,8 +3,8 @@ import { alpha } from '@mui/material/styles'
 import { getShadows } from './utils'
 
 const primaryMain = '#52C8AD'
-const secondaryMain = '#f4f4f4'
-const gradientColorMain = 'linear-gradient(271.69deg, #1362FF -1.72%, #52C8AD 41.84%)'
+const secondaryMain = '#1362FF'
+const gradientColorMain = `linear-gradient(271.69deg, ${secondaryMain}, ${primaryMain}, ${secondaryMain})`
 
 export const lightThemeOptions: ThemeOptions = {
   palette: {
@@ -16,35 +16,35 @@ export const lightThemeOptions: ThemeOptions = {
       main: gradientColorMain,
     },
     card: {
-      shadow: 'rgba(23, 70, 161, .11)',
+      shadow: 'rgba(140, 152, 164, .13)',
       background: '#fff',
     },
     mode: 'light',
     primary: {
       main: primaryMain,
-      light: '#ffd6a8',
-      dark: '#f0b068',
-      contrastText: '#171717',
+      // light: '#ffd6a8',
+      // dark: '#f0b068',
+      // contrastText: '#171717',
       100: alpha(primaryMain, 0.08),
       200: alpha(primaryMain, 0.2),
       300: alpha(primaryMain, 0.3),
       400: alpha(primaryMain, 0.4),
     },
     secondary: {
-      light: '#fdfdfd',
       main: secondaryMain,
-      dark: '#e2e2e2',
-      contrastText: '#3D3D3D',
+      // main: secondaryMain,
+      // dark: '#e2e2e2',
+      // contrastText: '#3D3D3D',
       100: alpha(secondaryMain, 0.08),
       200: alpha(secondaryMain, 0.2),
       300: alpha(secondaryMain, 0.3),
       400: alpha(secondaryMain, 0.4),
     },
     text: {
-      primary: '#000',
-      secondary: '#bbb',
+      primary: 'rgba(0, 0, 0, 0.87)',
+      secondary: 'rgba(0, 0, 0, 0.6)',
     },
-    divider: 'rgba(0, 0, 0, 0.12)',
+    divider: 'rgba(0, 0, 0, 0.05)',
     background: {
       paper: '#FBFDFF',
       default: '#ffffff',
@@ -73,7 +73,7 @@ export const lightThemeOptions: ThemeOptions = {
       light: '#8ba8f1',
     },
   },
-  shadows: getShadows('#8c98a4'),
+  shadows: getShadows('#8C98A4'),
 }
 
 export const darkThemeOptions: ThemeOptions = {
