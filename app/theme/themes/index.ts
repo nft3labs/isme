@@ -232,6 +232,21 @@ export const getTheme = (options: ThemeOptions) => {
           },
         },
       },
+      MuiPopover: {
+        styleOverrides: {
+          paper: {
+            borderRadius: 12,
+            background: card.background,
+          },
+        },
+      },
+      MuiList: {
+        styleOverrides: {
+          root: {
+            padding: 0,
+          },
+        },
+      },
     },
   })
 }
