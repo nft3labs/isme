@@ -4,6 +4,8 @@ import Container from '@mui/material/Container'
 import Header from './Header'
 import Footer from './Footer'
 
+import GlobalStyles from 'styles/globalStyles'
+
 const Content = styled(Container)(() => ({
   minHeight: 'calc(100vh - 256px)',
 }))
@@ -11,6 +13,7 @@ const Content = styled(Container)(() => ({
 const ActiveLayout: FC<PropsWithChildren<unknown>> = ({ children }) => {
   return (
     <>
+      <GlobalStyles />
       <Header />
       <Content>{children}</Content>
       <Footer />

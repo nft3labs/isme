@@ -12,9 +12,8 @@ export type Themes = keyof typeof themes
 
 declare module '@mui/material/Button/Button' {
   interface ButtonPropsVariantOverrides {
-    linear: true
-    linearOutlined: true
-    transOutlined: true
+    gradient: true
+    gradientOutlined: true
   }
 }
 
@@ -27,9 +26,14 @@ declare module '@mui/material/styles/createPalette' {
     footer: string
     contrast: string
   }
-
   interface PaletteOptions {
-    cardShadow?: string
+    card: {
+      shadow: string
+      background: string
+    }
+    gradientColors: {
+      main: string
+    }
     alternate: {
       main: string
       dark: string
@@ -37,7 +41,13 @@ declare module '@mui/material/styles/createPalette' {
   }
 
   interface Palette {
-    cardShadow?: string
+    card: {
+      shadow: string
+      background: string
+    }
+    gradientColors: {
+      main: string
+    }
     alternate: {
       main: string
       dark: string
@@ -56,7 +66,7 @@ declare module '@mui/material/styles' {
 
 export const getTheme = (options: ThemeOptions) => {
   const theme = createTheme(options)
-  const { primary } = theme.palette
+  const { primary, gradientColors, card } = theme.palette
 
   return createTheme(options, {
     zIndex: {
@@ -104,7 +114,7 @@ export const getTheme = (options: ThemeOptions) => {
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: 100,
+            borderRadius: 12,
             paddingTop: '0.75em',
             paddingBottom: '0.75em',
             paddingLeft: '1.5em',
@@ -117,19 +127,28 @@ export const getTheme = (options: ThemeOptions) => {
         },
         variants: [
           {
-            props: { variant: 'linear', size: 'large' },
+            props: { variant: 'gradient' },
             style: {
-              padding: '8px 22px',
-              fontSize: theme.typography.pxToRem(15),
+              willChange: 'transform',
+              color: '#fff',
+              backgroundImage: gradientColors.main,
+              backgroundSize: '200%',
+              transition: theme.transitions.create('all'),
+              ':hover': {
+                backgroundPosition: 'right',
+              },
+              ':disabled': {
+                color: '#fff',
+                opacity: '50%',
+              },
             },
           },
           {
-            props: { variant: 'linearOutlined' },
+            props: { variant: 'gradientOutlined' },
             style: {
               willChange: 'transform',
-              color: '#F94432',
-              backgroundImage: `linear-gradient(135deg, ${primary.dark}, ${primary.main}, ${primary.dark})`,
-              backgroundSize: '200%',
+              color: primary.main,
+              backgroundImage: gradientColors.main,
               transition: theme.transitions.create('all'),
               ':hover': {
                 color: '#fff',
@@ -142,24 +161,6 @@ export const getTheme = (options: ThemeOptions) => {
               border: 'solid 1px transparent',
               backgroundOrigin: 'border-box',
               boxShadow: '2px 1000px 1px #fff inset',
-            },
-          },
-          {
-            props: { variant: 'transOutlined' },
-            style: {
-              color: '#fff',
-              border: `1px solid ${primary.main}`,
-              background: 'rgba(249, 68, 50, 0.12)',
-              ':hover': {
-                color: '#fff',
-                background: primary.main,
-                '.MuiButton-startIcon': {
-                  color: '#fff',
-                },
-              },
-              '.MuiButton-startIcon': {
-                color: primary.main,
-              },
             },
           },
         ],
@@ -193,7 +194,9 @@ export const getTheme = (options: ThemeOptions) => {
       MuiCard: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
+            borderRadius: 20,
+            background: card.background,
+            shadow: card.shadow,
           },
         },
       },

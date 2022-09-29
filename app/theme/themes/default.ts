@@ -2,8 +2,9 @@ import type { ThemeOptions } from '@mui/material/styles'
 import { alpha } from '@mui/material/styles'
 import { getShadows } from './utils'
 
-const primaryMain = '#FFCA8E'
+const primaryMain = '#52C8AD'
 const secondaryMain = '#f4f4f4'
+const gradientColorMain = 'linear-gradient(271.69deg, #1362FF -1.72%, #52C8AD 41.84%)'
 
 export const lightThemeOptions: ThemeOptions = {
   palette: {
@@ -11,7 +12,13 @@ export const lightThemeOptions: ThemeOptions = {
       main: '#f7faff',
       dark: '#edf1f7',
     },
-    cardShadow: 'rgba(23, 70, 161, .11)',
+    gradientColors: {
+      main: gradientColorMain,
+    },
+    card: {
+      shadow: 'rgba(23, 70, 161, .11)',
+      background: '#fff',
+    },
     mode: 'light',
     primary: {
       main: primaryMain,
@@ -39,14 +46,14 @@ export const lightThemeOptions: ThemeOptions = {
     },
     divider: 'rgba(0, 0, 0, 0.12)',
     background: {
-      paper: '#ffffff',
+      paper: '#FBFDFF',
       default: '#ffffff',
       level2: '#f8f8f8',
       level1: '#ffffff',
       contrast: '#222222',
     },
     error: {
-      main: '#f45553',
+      main: '#ED6A6A',
       dark: '#ce2b29',
       light: '#ff8685',
     },
@@ -75,7 +82,13 @@ export const darkThemeOptions: ThemeOptions = {
       main: '#1a2138',
       dark: '#151a30',
     },
-    cardShadow: 'rgba(0, 0, 0, .11)',
+    card: {
+      shadow: 'rgba(0, 0, 0, .11)',
+      background: '#FBFDFF',
+    },
+    gradientColors: {
+      main: gradientColorMain,
+    },
     common: {
       black: '#000',
       white: '#fff',
