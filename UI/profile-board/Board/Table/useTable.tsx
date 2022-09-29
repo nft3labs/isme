@@ -40,8 +40,6 @@ export const useTable = () => {
     []
   )
 
-  console.log('tokens', tokens)
-
   return {
     columns,
     data: tokens,

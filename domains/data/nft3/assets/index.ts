@@ -4,6 +4,14 @@ import { useState, useMemo, useCallback, useEffect } from 'react'
 import type { TokenRecord, OpenseaAssetsRecord, ENSRecord, TimelineRecord } from '@nft3sdk/client'
 import { NFT3Queryer } from '@nft3sdk/client'
 
+interface POAPRecord {
+  tokenId: string
+  owner: string
+  network: string
+  created: string
+  event: any
+}
+
 const useAssetsService = () => {
   const { did: identifier, didinfo } = useNFT3Profile()
   const [nfts, setNfts] = useState<OpenseaAssetsRecord[]>([])
@@ -11,6 +19,7 @@ const useAssetsService = () => {
   // const [txs, setTxs] = useState<TxRecord[]>([])
   const [ens, setEns] = useState<ENSRecord[]>([])
   const [timeline, setTimeline] = useState<TimelineRecord[]>([])
+  const [poaps, setPoaps] = useState<POAPRecord[]>([])
 
   const queryer = useMemo(() => {
     return new NFT3Queryer('http://t0.onebitdev.com:10001/')
@@ -20,6 +29,7 @@ const useAssetsService = () => {
     if (!identifier) {
       setTokens([])
       setNfts([])
+      setPoaps([])
       // setTxs([])
       return
     }
@@ -44,6 +54,7 @@ const useAssetsService = () => {
     // setTxs(data.txs)
     setEns(data.ens)
     setTimeline(data.timeline)
+    setPoaps(data.poaps)
   }, [identifier, queryer])
 
   const openseaAssets = useCallback(
@@ -73,6 +84,7 @@ const useAssetsService = () => {
     // txs,
     ens,
     timeline,
+    poaps,
   }
 }
 const { Provider: AssetsProvider, createUseContext } = createContext(useAssetsService)
