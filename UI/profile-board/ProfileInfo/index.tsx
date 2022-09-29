@@ -8,7 +8,9 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
-import { Paragraph, H2 } from 'components/Typography'
+import Divider from '@mui/material/Divider'
+import { useNumberFormat } from 'app/utils/number/hooks'
+import { Paragraph, H2, H3 } from 'components/Typography'
 import TwitterButton from 'components/btn/TwitterButton'
 import { useNFT3Follow, useNFT3Profile, useNFT3, useUser, useNFT3Social, useNFT3Wallet } from 'domains/data'
 
@@ -18,6 +20,7 @@ import circleLinkIcon from './images/circle-link.svg'
 import etherscanIcon from './images/etherscan.svg'
 import looksrareIcon from './images/looksrare.svg'
 import openseaIcon from './images/opensea.svg'
+import FlexBetween from 'components/flexbox/FlexBetween'
 
 const ROOT = styled(Card)``
 
@@ -29,12 +32,15 @@ const ProfileInfo: FC = () => {
   const NFT3Follow = useNFT3Follow()
   const { twitter } = useNFT3Social()
   const { format } = useNFT3()
+  const NF = useNumberFormat()
   const { followed, count, follow, unfollow } = NFT3Follow
   const followContent = useMemo(
     () =>
       !followed ? (
         <Button
-          size="small"
+          fullWidth
+          variant="gradient"
+          size="large"
           onClick={() => {
             if (!didname) return selectDialog.open()
             follow()
@@ -43,7 +49,7 @@ const ProfileInfo: FC = () => {
           Follow
         </Button>
       ) : (
-        <Button size="small" onClick={() => unfollow()}>
+        <Button variant="outlined" color="error" fullWidth size="large" onClick={() => unfollow()}>
           Unfollow
         </Button>
       ),
@@ -51,9 +57,9 @@ const ProfileInfo: FC = () => {
   )
   if (!ready || !profile) return null
   return (
-    <ROOT>
+    <ROOT sx={{ paddingBottom: 2 }}>
       <CardContent>
-        <Stack spacing={2}>
+        <Stack spacing={3}>
           <Stack spacing={1} alignItems="center">
             <Avatar
               alt={profile.name}
@@ -64,20 +70,22 @@ const ProfileInfo: FC = () => {
                 borderRadius: '30px',
               }}
             />
-            <H2 color="#000">{`${profile.name}.isme`}</H2>
+            <H2>{`${profile.name}.isme`}</H2>
             <Stack spacing={0} direction="row" alignItems="center">
               <Wallets />
-              <Paragraph color="#BBBBBB">Joined {formatData(profile.createdAt * 1000 || 0, 'MM yyyy')}</Paragraph>
+              <Paragraph sx={{ color: 'text.secondary' }}>
+                Joined {formatData(profile.createdAt * 1000 || 0, 'MM yyyy')}
+              </Paragraph>
             </Stack>
             <Paragraph
-              color="#BBBBBB"
               width="100%"
               sx={{
+                color: 'text.secondary',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 display: '-webkit-box',
-                '-webkit-line-clamp': '2',
-                '-webkit-box-orient': 'vertical',
+                WebkitLineClamp: '2',
+                WebkitBoxOrient: 'vertical',
               }}
             >
               {profile.bio}
@@ -90,22 +98,25 @@ const ProfileInfo: FC = () => {
             <IconButton url={`https://opensea.io/${account}`} alt="opensea" icon={openseaIcon} />
             <IconButton url={`https://looksrare.org/accounts/${account}`} alt="looksrare" icon={looksrareIcon} />
           </Stack>
-          <Stack spacing={2} direction="row">
-            <Stack spacing={2}>
-              <Paragraph>{count.following}</Paragraph>
-              <Paragraph>Following</Paragraph>
+          <FlexBetween>
+            <Stack spacing={2} flex="1" textAlign="center">
+              <H3 fontWeight={700}>{NF.format(count.following, NF.getOptions('number'))}</H3>
+              <Paragraph sx={{ color: 'text.secondary' }}>Following</Paragraph>
             </Stack>
-            <Stack spacing={2}>
-              <Paragraph>{count.followers}</Paragraph>
-              <Paragraph>Follows</Paragraph>
+            <Divider orientation="vertical" sx={{ height: 30 }} />
+            <Stack spacing={2} flex="1" textAlign="center">
+              <H3 fontWeight={700}>{NF.format(count.followers, NF.getOptions('number'))}</H3>
+              <Paragraph sx={{ color: 'text.secondary' }}>Follows</Paragraph>
             </Stack>
-          </Stack>
+          </FlexBetween>
         </Stack>
       </CardContent>
       <CardActions>
         {isUser ? (
           <Button
-            size="small"
+            variant="gradientOutlined"
+            size="large"
+            fullWidth
             onClick={() => {
               router.push('/profile')
             }}

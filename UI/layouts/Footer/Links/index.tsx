@@ -16,7 +16,7 @@ const Links = () => {
     <Link href={linkTo} key={linkTo} target="_blank" underline="none" sx={{ padding: '0 10px' }}>
       <IconButton
         sx={{
-          color: '#BBBBBB',
+          color: 'text.secondary',
           padding: 0,
         }}
         size="large"

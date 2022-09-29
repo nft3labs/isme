@@ -41,8 +41,8 @@ export const lightThemeOptions: ThemeOptions = {
       400: alpha(secondaryMain, 0.4),
     },
     text: {
-      primary: '#3D3D3D',
-      secondary: '#646E73',
+      primary: '#000',
+      secondary: '#bbb',
     },
     divider: 'rgba(0, 0, 0, 0.12)',
     background: {

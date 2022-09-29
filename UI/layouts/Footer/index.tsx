@@ -12,7 +12,7 @@ import Links from './Links'
 const ROOT = styled(Box)`
   ${({ theme }) => ({
     padding: `${theme.spacing(8)} 0 ${theme.spacing(4)} 0`,
-    color: '#BBBBBB',
+    color: theme.palette.text.secondary,
   })}
 `
 

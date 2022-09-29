@@ -29,12 +29,6 @@ const Wallets: FC<WalletsProps> = () => {
 
   return (
     <Select
-      sx={{
-        color: '#000',
-        '.MuiSelect-icon': {
-          color: '#000',
-        },
-      }}
       value={account}
       onChange={handleChange}
       input={<InputBase />}
@@ -54,7 +48,6 @@ const Wallets: FC<WalletsProps> = () => {
             key={wallet}
             value={wallet}
             sx={{
-              color: '#000',
               borderBottom: index >= accounts.length - 1 ? 'none' : '1px solid #E9E9E9',
               paddingTop: '2px',
               paddingBottom: '2px',
@@ -75,19 +68,9 @@ const Wallets: FC<WalletsProps> = () => {
               }}
             >
               {copyValue === wallet ? (
-                <InventoryRoundedIcon
-                  sx={{
-                    color: '#000',
-                  }}
-                  fontSize="small"
-                />
+                <InventoryRoundedIcon fontSize="small" sx={{ color: 'text.primary' }} />
               ) : (
-                <ContentCopyRoundedIcon
-                  sx={{
-                    color: '#000',
-                  }}
-                  fontSize="small"
-                />
+                <ContentCopyRoundedIcon fontSize="small" sx={{ color: 'text.primary' }} />
               )}
             </IconButton>
           </MenuItem>
