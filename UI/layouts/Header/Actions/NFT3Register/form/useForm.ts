@@ -3,6 +3,7 @@ import * as yup from 'yup'
 
 import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { useUser } from 'domains/data'
+import { useRouter } from 'next/router'
 
 const validationSchema = yup.object({
   didname: yup
@@ -18,6 +19,7 @@ const initialValues = {
 }
 
 export const useForm = () => {
+  const router = useRouter()
   const { register, account, login, registerDialog, logout, disconnect } = useUser()
   const formik = useFormik({
     initialValues,
@@ -27,8 +29,9 @@ export const useForm = () => {
         register(values.didname).then(() => {
           registerDialog.close()
           login().then(({ result, needRegister }) => {
-            if (result) return
-            if (needRegister === true) {
+            if (result) {
+              router.push(`/profile/` + values.didname)
+            } else if (needRegister === true) {
             } else {
               logout()
               disconnect()
