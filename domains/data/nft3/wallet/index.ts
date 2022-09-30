@@ -10,7 +10,7 @@ import type { AccountRecord } from './types'
 const useWalletService = () => {
   const { client } = useNFT3()
   const { account } = useUser()
-  const { isUser, didinfo, didname } = useNFT3Profile()
+  const { isUser, didinfo, didname, updateDidInfo } = useNFT3Profile()
   const [value, setValue] = useState('')
   const [accounts, setAccounts] = useState<AccountRecord[]>([])
 
@@ -28,13 +28,13 @@ const useWalletService = () => {
 
   const add = useCallback(async () => {
     await client.did.addKey()
-    update()
-  }, [client.did, update])
+    updateDidInfo()
+  }, [client.did, updateDidInfo])
 
   const remove = useCallback(async () => {
     await client.did.removeKey()
-    update()
-  }, [client.did, update])
+    updateDidInfo()
+  }, [client.did, updateDidInfo])
 
   useEffect(() => {
     update()

@@ -20,7 +20,8 @@ const Wallets: FC = () => {
   const [loading, setLoading] = useState(false)
 
   const added = useMemo(() => {
-    const index = accounts.findIndex((item) => item.account.toLowerCase() === account?.toLowerCase() && account)
+    if (!account) return false
+    const index = accounts.findIndex((item) => item.account.toLowerCase() === account?.toLowerCase())
     return index > -1
   }, [accounts, account])
 
@@ -53,7 +54,7 @@ const Wallets: FC = () => {
         <Button variant="outlined" disabled={loading || added} onClick={onAdd} startIcon={<AddRoundedIcon />}>
           Add current wallet
         </Button>
-        <Button variant="outlined" disabled={loading || accounts.length <= 1} onClick={onRemove}>
+        <Button variant="outlined" disabled={loading || accounts.length <= 1 || !added} onClick={onRemove}>
           Remove current wallet
         </Button>
       </Stack>

@@ -25,6 +25,12 @@ const useProfileService = () => {
     })
   }, [client.profile, did])
 
+  const updateDidInfo = useCallback(() => {
+    return client.did.info(did).then((didinfo) => {
+      setDidinfo(didinfo)
+    })
+  }, [client.did, did])
+
   const setProfile = useCallback(
     async (data: Partial<ProfileModel>) => {
       const result = await client.profile.update(data as any)
@@ -38,16 +44,12 @@ const useProfileService = () => {
     if (!did) return
     setReady(false)
     const promises = []
-    promises.push(
-      client.did.info(did).then((didinfo) => {
-        setDidinfo(didinfo)
-      })
-    )
+    promises.push(updateDidInfo())
     promises.push(updateProfile())
     Promise.all(promises).then(() => {
       setReady(true)
     })
-  }, [did, client, updateProfile])
+  }, [did, client, updateProfile, updateDidInfo])
 
   const isUser = useMemo(() => did === identifier, [did, identifier])
 
@@ -60,6 +62,8 @@ const useProfileService = () => {
 
     setDidname,
     setProfile,
+    updateProfile,
+    updateDidInfo,
 
     isUser,
   }
