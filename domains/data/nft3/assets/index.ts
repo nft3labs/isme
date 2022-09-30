@@ -3,6 +3,7 @@ import { useNFT3Profile } from 'domains/data'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import type { TokenRecord, OpenseaAssetsRecord, ENSRecord, TimelineRecord } from '@nft3sdk/client'
 import { NFT3Queryer } from '@nft3sdk/client'
+import { useTimeline } from './timeline'
 
 interface POAPRecord {
   tokenId: string
@@ -20,7 +21,7 @@ const useAssetsService = () => {
   const [tokens, setTokens] = useState<TokenRecord[]>([])
   // const [txs, setTxs] = useState<TxRecord[]>([])
   const [ens, setEns] = useState<ENSRecord[]>([])
-  const [timeline, setTimeline] = useState<TimelineRecord[]>([])
+  const [timelineData, setTimelineData] = useState<TimelineRecord[]>([])
   const [poaps, setPoaps] = useState<POAPRecord[]>([])
 
   const queryer = useMemo(() => {
@@ -58,7 +59,7 @@ const useAssetsService = () => {
       setTokens(data.tokens || [])
       // setTxs(data.txs || [])
       setEns(data.ens || [])
-      setTimeline(data.timeline || [])
+      setTimelineData(data.timeline || [])
       setPoaps(data.poaps || [])
     } catch (e) {}
 
@@ -79,6 +80,13 @@ const useAssetsService = () => {
     },
     [queryer]
   )
+
+  const timeline = useTimeline({
+    baseData: timelineData,
+    baseLoading: loading,
+    queryer,
+    identifier,
+  })
 
   useEffect(() => {
     updateAssets()
