@@ -1,7 +1,7 @@
 import type { SVGProps } from 'react'
 
 const MetaMask = (props: SVGProps<SVGSVGElement>) => (
-  <svg height="355" viewBox="0 0 397 355" width="397" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <svg width="30" height="30" viewBox="0 0 397 355" xmlns="http://www.w3.org/2000/svg" {...props}>
     <g fill="none" fillRule="evenodd" transform="translate(-1 -1)">
       <path
         d="m114.622644 327.195472 52.004717 13.810198v-18.05949l4.245283-4.249292h29.716982v21.246459 14.872523h-31.839624l-39.268868-16.997169z"
