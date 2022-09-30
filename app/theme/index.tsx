@@ -6,7 +6,7 @@ import { useMount } from 'app/hooks/useMount'
 import { getItem } from 'app/utils/cache/localStorage'
 import { createContext } from 'app/utils/createContext'
 
-import { useAppDispatch, useAppSelector } from 'store'
+import { useAppDispatch, useAppSelector } from 'store/hooks'
 import { selectData, THEME_MODE_KEY, setMode } from './store'
 
 import { createThemeOptions, getTheme, themes } from './themes'

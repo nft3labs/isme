@@ -6,11 +6,10 @@ import { ToastContainer } from 'lib/toastify'
 import ActiveLayout from 'UI/layouts'
 
 import ThemeProvider from './theme'
-
-// import { useRouteChange } from './router'
+import { useRouteChange } from './router'
 
 export function useAppService() {
-  // useRouteChange()
+  useRouteChange()
 }
 
 export const { Context, Provider: APP, createUseContext } = createContext(useAppService)

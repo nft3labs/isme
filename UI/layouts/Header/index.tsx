@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import { styled, useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import NProgress from 'lib/nprogress/NProgress'
 
 import Logo from './Logo'
 
@@ -44,6 +45,7 @@ const Header: FC = () => {
 
   return (
     <ROOT>
+      <NProgress />
       {matches ? (
         <BODY>
           <Logo />
