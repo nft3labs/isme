@@ -16,7 +16,7 @@ const FollowGrid: FC<FollowProps> = ({ followers }) => {
       <Grid container spacing={2}>
         {followers.map((member, index) => {
           return (
-            <Grid key={index} item xs={12} sm={4}>
+            <Grid key={index} item xs={12} sm={6} md={4}>
               <FollowCard {...member} />
             </Grid>
           )

@@ -61,7 +61,7 @@ const BindTwitter: FC = () => {
       <ROOT sx={{ width: '100%' }} spacing={2}>
         <Paragraph sx={{ color: 'text.secondary' }}>Twitter not yet linked</Paragraph>
         <Box>
-          <Button variant="outlined" onClick={open}>
+          <Button variant="outlined" onClick={open} sx={{ width: { xs: 1, sm: 'auto'} }}>
             Verify
           </Button>
         </Box>

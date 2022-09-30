@@ -43,9 +43,8 @@ const Profile: FC = () => {
     <ROOT onSubmit={formik.handleSubmit}>
       <Card
         sx={{
-          padding: '50px',
+          padding: { xs: theme.spacing(2), sm: theme.spacing(4)},
           '.MuiCardContent-root': {
-            // padding: '50px',
           },
           '.MuiCardActions-root': {
             // padding: '0 50px 50px 50px',
@@ -149,7 +148,7 @@ const Profile: FC = () => {
           </Stack>
         </CardContent>
         <CardActions>
-          <SubmitBotton size="large" variant="outlined" isSubmitting={formik.isSubmitting}>
+          <SubmitBotton sx={{ width: { xs: 1, sm: 'auto'} }} size="large" variant="outlined" isSubmitting={formik.isSubmitting}>
             Save
           </SubmitBotton>
         </CardActions>

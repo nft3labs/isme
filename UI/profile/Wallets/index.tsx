@@ -10,6 +10,7 @@ import { Paragraph, Tiny } from 'components/Typography'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import ETHImg from 'public/eth.svg'
 import Alert from '@mui/material/Alert'
+import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 
 const ROOT = styled(Stack)``
 
@@ -43,12 +44,12 @@ const Wallets: FC = () => {
         return (
           <Stack key={wallet} spacing={1} direction="row">
             <Image src={ETHImg} alt="ETH" />
-            <Paragraph>{wallet}</Paragraph>
+            <Paragraph>{textCenterEllipsis(wallet)}</Paragraph>
             <Tiny lineHeight="24px">{wallet === account && '(Current)'}</Tiny>
           </Stack>
         )
       })}
-      <Stack spacing={2} direction="row">
+      <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
         <Button variant="outlined" disabled={loading || added} onClick={onAdd} startIcon={<AddRoundedIcon />}>
           Add current wallet
         </Button>
