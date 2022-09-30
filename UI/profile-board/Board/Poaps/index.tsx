@@ -9,7 +9,7 @@ const Poaps: FC = () => {
   const cards = useMemo(() => {
     if (!poaps) return []
     return poaps
-      .filter((d) => d.event)
+      .filter((d) => d && d.event)
       .map((d) => {
         const {
           event: { name, image_url, id, description },
