@@ -37,17 +37,17 @@ const DisplayTxs: FC<TxRecord> = ({ symbol, amount, from, to }) => {
         </Link>
       </Paragraph>
       <Stack spacing={2} direction="row">
-        <Chip 
-          sx={{ 
-            backgroundColor: '#AAEEA3', 
-            color: '#52BC47', 
+        <Chip
+          sx={{
+            backgroundColor: '#AAEEA3',
+            color: '#52BC47',
             fontWeight: 'bold',
             '& .MuiChip-icon': {
               color: '#52BC47'
             }
-          }} 
-          icon={<TokenIcon />} 
-          label="DeFi" 
+          }}
+          icon={<TokenIcon />}
+          label="DeFi"
         />
       </Stack>
     </Fragment>
@@ -65,7 +65,7 @@ const TimelineCard: FC<TimelineRecord> = ({ timestamp, item, type }) => {
           <Stack spacing={2}>
             <Stack spacing={0}>
               <H4>{profile.name}.isme</H4>
-              <Tiny>{safeGet(() => formatData(parseInt(timestamp) * 1000, 'E MMM, yyyy')) || '-'}</Tiny>
+              <Tiny>{safeGet(() => formatData(parseInt(timestamp) * 1000, 'MMM d, yyyy')) || '-'}</Tiny>
             </Stack>
             {type === 'txs' && <DisplayTxs {...(item as any)} />}
           </Stack>
