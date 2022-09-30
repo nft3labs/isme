@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import Avatar from '@mui/material/Avatar'
 import { styled } from '@mui/material/styles'
 import Card from '@mui/material/Card'
@@ -15,6 +15,7 @@ import type { TimelineRecord, TxRecord, POAPRecord } from '@nft3sdk/client'
 import TokenIcon from '@mui/icons-material/Token'
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded'
 import { DisplayNumber } from 'components/Number'
+import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 
 import { ChipNetwork, ChipStack } from './Chip'
 import Actions from './Actions'
@@ -23,23 +24,10 @@ const ROOT = styled(Card)``
 const Content = styled(CardContent)``
 
 const DisplayTxs: FC<TxRecord> = ({ network, symbol, amount, from, to }) => {
-  const { displayAddress } = useNFT3Wallet()
-  return (
-    <Fragment>
-      <Paragraph>
-        Transfer{' '}
-        <Typography component="span" color="primary">
-          <DisplayNumber value={amount} />
-        </Typography>{' '}
-        {symbol} from{' '}
-        <Link href={'https://etherscan.io/address/' + from} target="_blank" underline="hover">
-          {displayAddress(from)}
-        </Link>{' '}
-        to{' '}
-        <Link href={'https://etherscan.io/address/' + to} target="_blank" underline="hover">
-          {displayAddress(to)}
-        </Link>
-      </Paragraph>
+  const { userHadAddress } = useNFT3Wallet()
+  const isSend = userHadAddress(from)
+  const chips = useMemo(() => {
+    return (
       <ChipStack>
         <Chip
           sx={{
@@ -55,8 +43,42 @@ const DisplayTxs: FC<TxRecord> = ({ network, symbol, amount, from, to }) => {
         />
         <ChipNetwork network={network} />
       </ChipStack>
-    </Fragment>
-  )
+    )
+  }, [network])
+
+  if (isSend) {
+    return (
+      <Fragment>
+        <Paragraph>
+          Sent{' '}
+          <Typography component="span" color="primary">
+            <DisplayNumber value={amount} />
+          </Typography>{' '}
+          {symbol} to{' '}
+          <Link href={'https://etherscan.io/address/' + to} target="_blank" underline="hover">
+            {textCenterEllipsis(to)}
+          </Link>
+        </Paragraph>
+        {chips}
+      </Fragment>
+    )
+  } else {
+    return (
+      <Fragment>
+        <Paragraph>
+          Received{' '}
+          <Typography component="span" color="primary">
+            <DisplayNumber value={amount} />
+          </Typography>{' '}
+          {symbol} from{' '}
+          <Link href={'https://etherscan.io/address/' + from} target="_blank" underline="hover">
+            {textCenterEllipsis(from)}
+          </Link>
+        </Paragraph>
+        {chips}
+      </Fragment>
+    )
+  }
 }
 const DisplayPoaps: FC<POAPRecord> = (props) => {
   const { name, description, image_url: image } = safeGet(() => props.event) || {}

@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { useNFT3Profile, useUser } from 'domains/data'
 import { useNFT3 } from '@nft3sdk/did-manager'
 import { safeGet } from 'app/utils/get'
-import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 
 import type { AccountRecord } from './types'
 
@@ -44,13 +43,11 @@ const useWalletService = () => {
     setValue(isUser ? account : safeGet(() => accounts[0].account) || '')
   }, [account, accounts, didname, isUser])
 
-  const displayAddress = useCallback(
+  const userHadAddress = useCallback(
     (address: string) => {
-      return accounts.find(({ account }) => account.toLocaleLowerCase() === address.toLocaleLowerCase())
-        ? `${didname}.isme`
-        : textCenterEllipsis(address)
+      return !!accounts.find(({ account }) => account.toLocaleLowerCase() === address.toLocaleLowerCase())
     },
-    [accounts, didname]
+    [accounts]
   )
 
   return {
@@ -61,7 +58,7 @@ const useWalletService = () => {
     add,
     remove,
 
-    displayAddress,
+    userHadAddress,
   }
 }
 const { Provider: WalletProvider, createUseContext } = createContext(useWalletService)
