@@ -1,6 +1,6 @@
 import { useNFT3Profile } from 'domains/data'
 import type { GetStaticPaths, GetStaticProps } from 'next'
-import React, { useEffect } from 'react'
+import { useEffect, Fragment } from 'react'
 import ProfileBoard from 'UI/profile-board'
 import Head from 'next/head'
 
@@ -28,12 +28,12 @@ const IndexPage: FC<{ id: string }> = (props) => {
   }, [props.id, setDidname])
 
   return (
-    <>
+    <Fragment>
       <Head>
-        <title>{props.id}.isme | NFT3 Pass</title>
+        <title>{`${props.id}.isme | NFT3 Pass`}</title>
       </Head>
       <ProfileBoard />
-    </>
+    </Fragment>
   )
 }
 
