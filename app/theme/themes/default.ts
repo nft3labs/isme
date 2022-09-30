@@ -7,7 +7,6 @@ const secondaryMain = '#1362FF'
 const gradientColorMain = `linear-gradient(271.69deg, ${primaryMain}, ${secondaryMain})`
 const gradientColorButton = `linear-gradient(271.69deg, ${secondaryMain}, ${primaryMain}, ${secondaryMain})`
 
-
 export const lightThemeOptions: ThemeOptions = {
   palette: {
     alternate: {
@@ -16,7 +15,7 @@ export const lightThemeOptions: ThemeOptions = {
     },
     gradientColors: {
       main: gradientColorMain,
-      button: gradientColorButton
+      button: gradientColorButton,
     },
     card: {
       shadow: 'rgba(140, 152, 164, .13)',

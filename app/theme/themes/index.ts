@@ -220,7 +220,7 @@ export const getTheme = (options: ThemeOptions) => {
           {
             props: { variant: 'contained' },
             style: {
-              color: 'white'
+              color: 'white',
             },
           },
         ],

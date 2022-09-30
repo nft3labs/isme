@@ -25,8 +25,7 @@ const Content = styled(Container)`
     borderTop: `1px solid ${theme.palette.divider}`,
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
-
-    }
+    },
   })}
 `
 
@@ -34,7 +33,7 @@ const CopyRight = styled(Typography)`
   ${({ theme }) => ({
     fontWeight: 'normal',
     fontSize: theme.typography.pxToRem(16),
-})}
+  })}
 `
 
 const Footer: FC = () => {
@@ -45,7 +44,9 @@ const Footer: FC = () => {
           <Logo imgSrc={LogoImg} />
           <Links />
         </Stack>
-        <CopyRight variant="caption" color="grey.400">© 2022, NFT3. All Rights Reserved</CopyRight>
+        <CopyRight variant="caption" color="grey.400">
+          © 2022, NFT3. All Rights Reserved
+        </CopyRight>
       </Content>
     </ROOT>
   )

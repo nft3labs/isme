@@ -1,4 +1,4 @@
-import NFT3Modal from '@nft3sdk/did-manager/dist/es/components/NFT3Modal'
+import Dialog from 'components/Dialog'
 import { useUser } from 'domains/data'
 
 import Form from './form'
@@ -7,7 +7,7 @@ const NFT3Register: FC = () => {
   const { registerDialog, disconnect } = useUser()
 
   return (
-    <NFT3Modal
+    <Dialog
       visible={registerDialog.visible}
       onClose={() => {
         registerDialog.close()
@@ -16,7 +16,7 @@ const NFT3Register: FC = () => {
       title="Create your DID account"
     >
       <Form />
-    </NFT3Modal>
+    </Dialog>
   )
 }
 

@@ -92,7 +92,7 @@ const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
 const Home: FC = () => {
   const { account, selectDialog } = useUser()
   return (
-    <ROOT spacing={{ xs: 8, sm: 2}}>
+    <ROOT spacing={{ xs: 8, sm: 2 }}>
       <Grid container justifyContent="center" alignItems="center" flexDirection={{ xs: 'column-reverse', sm: 'row' }}>
         <Grid item xs={12} sm={5}>
           <Stack spacing={4}>

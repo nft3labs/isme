@@ -31,7 +31,7 @@ function MainApp(props: MyAppProps): JSX.Element {
 
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:title" content="NFT3 Pass | Your Decentralized Identity for Web 3.0" />
-            <meta name="twitter:site" content="@nft3com" />            
+            <meta name="twitter:site" content="@nft3com" />
           </Head>
           <App {...props} />
         </DomainsProvider>

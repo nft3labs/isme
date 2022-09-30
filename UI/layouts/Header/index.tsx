@@ -44,12 +44,13 @@ const Header: FC = () => {
 
   return (
     <ROOT>
-      {matches ?
+      {matches ? (
         <BODY>
           <Logo />
           <Search />
           <Actions />
-        </BODY> :
+        </BODY>
+      ) : (
         <MobileBODY>
           <MobileRow>
             <Logo />
@@ -57,7 +58,7 @@ const Header: FC = () => {
           </MobileRow>
           <Search />
         </MobileBODY>
-      } 
+      )}
     </ROOT>
   )
 }

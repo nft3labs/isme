@@ -43,8 +43,8 @@ const DisplayTxs: FC<TxRecord> = ({ symbol, amount, from, to }) => {
             color: '#52BC47',
             fontWeight: 'bold',
             '& .MuiChip-icon': {
-              color: '#52BC47'
-            }
+              color: '#52BC47',
+            },
           }}
           icon={<TokenIcon />}
           label="DeFi"

@@ -55,18 +55,18 @@ const AccountButton: FC = () => {
   }
   return (
     <Fragment>
-      <Paper 
-        component='button'
+      <Paper
+        component="button"
         elevation={3}
-        sx={{ 
-          p: '10px 20px', 
+        sx={{
+          p: '10px 20px',
           borderRadius: '12px',
           border: 'solid 1px transparent',
           '&:hover': {
             cursor: 'pointer',
             borderColor: theme.palette.primary.main,
-          } 
-        }} 
+          },
+        }}
         onClick={handleClick}
       >
         <Stack spacing={2} direction="row" justifyContent="center">

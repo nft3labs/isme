@@ -43,7 +43,7 @@ export const useTwitter = (props: TwitterProps) => {
 
   const account = useMemo(() => {
     const record = socials.find((item) => item.type === 'twitter' && item.verified === true)
-    return record || {} as undefined
+    return record || ({} as undefined)
   }, [socials])
 
   return {

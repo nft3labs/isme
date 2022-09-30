@@ -81,7 +81,14 @@ const Tabs: FC<TabsProps> = ({ tabs }) => {
           onChange={handleChange}
         >
           {tabs.map(({ title }, index) => {
-            return <Tab sx={{ width: { xs: 'auto', sm: '23%' } }} key={title.label} label={<TabTitle {...title} />} {...applyProps(index)} />
+            return (
+              <Tab
+                sx={{ width: { xs: 'auto', sm: '23%' } }}
+                key={title.label}
+                label={<TabTitle {...title} />}
+                {...applyProps(index)}
+              />
+            )
           })}
         </MuiTabs>
       </Box>

@@ -9,7 +9,9 @@ const IndexPage = (): JSX.Element => {
       <Head>
         <title>NFT3 Pass | Edit Profile</title>
       </Head>
-      <Container sx={{ width: { sm: 1, md: 0.6 }, padding: 0 }}><UI /></Container>
+      <Container sx={{ width: { sm: 1, md: 0.6 }, padding: 0 }}>
+        <UI />
+      </Container>
     </>
   )
 }

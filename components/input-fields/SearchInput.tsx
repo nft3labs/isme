@@ -18,15 +18,15 @@ const SearchInput: FC<InputBaseProps> = (props) => {
     <Paper
       component="form"
       elevation={3}
-      sx={{ 
-        p: '2px 4px', 
-        display: 'flex', 
-        alignItems: 'center', 
-        width: { xs: 1, sm: 450 }, 
+      sx={{
+        p: '2px 4px',
+        display: 'flex',
+        alignItems: 'center',
+        width: { xs: 1, sm: 450 },
         borderRadius: '12px',
         border: 'solid 1px transparent',
         '&:hover': {
-          borderColor: theme.palette.primary.main
+          borderColor: theme.palette.primary.main,
         },
       }}
     >

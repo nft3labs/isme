@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 import { Stepper, Step, StepLabel, Stack } from '@mui/material'
 import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { useNFT3Social } from 'domains/data'
-import NFT3Modal from '@nft3sdk/did-manager/dist/cjs/components/NFT3Modal'
+import Dialog from 'components/Dialog'
 
 import InputTwitterAccount from './InputTwitterAccount'
 import OpenTwitter from './OpenTwitter'
@@ -60,7 +60,7 @@ const BindTwitter: FC<BindTwitterProps> = ({ visible, close }) => {
   }
 
   return (
-    <NFT3Modal
+    <Dialog
       visible={visible}
       onClose={() => {
         close()
@@ -82,7 +82,7 @@ const BindTwitter: FC<BindTwitterProps> = ({ visible, close }) => {
         <OpenTwitter {...{ activeStep, onNext, onBack, value: 1, info }} />
         <VerifyTwitter {...{ activeStep, value: 2, verify, reset }} />
       </ROOT>
-    </NFT3Modal>
+    </Dialog>
   )
 }
 
