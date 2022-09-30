@@ -23,6 +23,8 @@ const NFTCard: FC<NFTCardProps> = ({ name, description, image }) => {
       <CardContent>
         <Small fontWeight={600}>{name}</Small>
         <Small
+          fontWeight={400}
+          color="text.secondary"
           sx={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',

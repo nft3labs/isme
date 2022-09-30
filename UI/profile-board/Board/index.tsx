@@ -10,13 +10,19 @@ const ROOT = styled(Stack)``
 
 const Board: FC = () => {
   return (
-    <ROOT spacing={2}>
-      <H2>NFTs</H2>
-      <NFTs />
-      <H2>Tokens</H2>
-      <Table />
-      <H2>Poaps</H2>
-      <Poaps />
+    <ROOT spacing={6}>
+      <Stack spacing={2}>
+        <H2>NFTs</H2>
+        <NFTs />
+      </Stack>
+      <Stack spacing={2}>
+        <H2>Tokens</H2>
+        <Table />
+      </Stack>
+      <Stack spacing={2}>
+        <H2>Poaps</H2>
+        <Poaps />
+      </Stack>
     </ROOT>
   )
 }

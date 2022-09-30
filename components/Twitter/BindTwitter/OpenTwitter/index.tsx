@@ -13,7 +13,7 @@ const OpenTwitter: FC<OpenTwitterProps> = (props) => {
       <StepActions
         {...{
           ...props,
-          title: 'Open',
+          title: 'Make a tweet',
           disabled: !info,
           onNext: () => {
             window.open(info.link)

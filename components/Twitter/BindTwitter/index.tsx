@@ -12,7 +12,7 @@ import type { BindTwitterInfo } from './type'
 
 const ROOT = styled(Stack)``
 
-const steps = ['Input twitter account', 'Open twitter', 'Verify']
+const steps = ['Enter twitter account', 'Make a tweet', 'Verify']
 
 type BindTwitterProps = {
   visible: boolean

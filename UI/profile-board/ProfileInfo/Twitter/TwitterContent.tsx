@@ -1,4 +1,4 @@
-import IconButton from '@mui/material/IconButton'
+import Button from '@mui/material/Button'
 import TwitterIcon from '@mui/icons-material/Twitter'
 
 type TwitterContentProps = {
@@ -6,9 +6,18 @@ type TwitterContentProps = {
 }
 const TwitterContent: FC<TwitterContentProps> = ({ onClick }) => {
   return (
-    <IconButton onClick={onClick} size="small">
-      <TwitterIcon />
-    </IconButton>
+    <Button
+      variant="twitter"
+      size="small"
+      sx={{
+        borderRadius: '100px',
+        margin: '0 5px',
+      }}
+      startIcon={<TwitterIcon />}
+      onClick={onClick}
+    >
+      Verify
+    </Button>
   )
 }
 
