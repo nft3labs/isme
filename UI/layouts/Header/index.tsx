@@ -1,7 +1,8 @@
 import type { FC } from 'react'
 import dynamic from 'next/dynamic'
-import { styled } from '@mui/material/styles'
+import { styled, useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 import Logo from './Logo'
 
@@ -21,14 +22,42 @@ const BODY = styled(Box)`
   })}
 `
 
+const MobileBODY = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  ${({ theme }) => ({
+    padding: `${theme.spacing(3)} ${theme.spacing(2)}`,
+  })}
+`
+
+const MobileRow = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  ${({ theme }) => ({
+    marginBottom: `${theme.spacing(2)}`,
+  })}
+`
+
 const Header: FC = () => {
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'))
+
   return (
     <ROOT>
-      <BODY>
-        <Logo />
-        <Search />
-        <Actions />
-      </BODY>
+      {matches ?
+        <BODY>
+          <Logo />
+          <Search />
+          <Actions />
+        </BODY> :
+        <MobileBODY>
+          <MobileRow>
+            <Logo />
+            <Actions />
+          </MobileRow>
+          <Search />
+        </MobileBODY>
+      } 
     </ROOT>
   )
 }

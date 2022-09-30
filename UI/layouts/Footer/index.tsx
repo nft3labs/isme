@@ -22,7 +22,11 @@ const Content = styled(Container)`
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderTop: `1px solid ${theme.palette.divider}`
+    borderTop: `1px solid ${theme.palette.divider}`,
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+
+    }
   })}
 `
 
@@ -30,15 +34,14 @@ const CopyRight = styled(Typography)`
   ${({ theme }) => ({
     fontWeight: 'normal',
     fontSize: theme.typography.pxToRem(16),
-    marginLeft: theme.spacing(1),
-  })}
+})}
 `
 
 const Footer: FC = () => {
   return (
     <ROOT component="footer">
       <Content>
-        <Stack spacing={4} direction="row">
+        <Stack spacing={4} direction={{ xs: 'column', sm: 'row' }} alignItems="center">
           <Logo imgSrc={LogoImg} />
           <Links />
         </Stack>

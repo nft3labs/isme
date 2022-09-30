@@ -22,7 +22,7 @@ const SearchInput: FC<InputBaseProps> = (props) => {
         p: '2px 4px', 
         display: 'flex', 
         alignItems: 'center', 
-        width: 450, 
+        width: { xs: 1, sm: 450 }, 
         borderRadius: '12px',
         border: 'solid 1px transparent',
         '&:hover': {

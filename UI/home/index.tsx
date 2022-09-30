@@ -56,9 +56,9 @@ const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
 const Home: FC = () => {
   const { account, selectDialog } = useUser()
   return (
-    <ROOT spacing={2}>
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item xs={5}>
+    <ROOT spacing={{ xs: 8, sm: 2}}>
+      <Grid container justifyContent="center" alignItems="center" flexDirection={{ xs: 'column-reverse', sm: 'row' }}>
+        <Grid item xs={12} sm={5}>
           <Stack spacing={4}>
             <Stack spacing={2}>
               <H1>Your Decentralized Identity for Web 3.0</H1>
@@ -76,7 +76,7 @@ const Home: FC = () => {
                 <Span sx={{ color: 'grey.400' }}>Total Connections</Span>
               </Stack>
             </Stack> */}
-            <Stack spacing={2} direction="row">
+            <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
               {!account ? (
                 <Button
                   variant="gradient"
@@ -98,7 +98,7 @@ const Home: FC = () => {
           </Stack>
         </Grid>
         <Grid item xs={1}></Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Image src={BackgroundImage} alt="background.png" />
         </Grid>
       </Grid>
