@@ -4,7 +4,7 @@ import type { AsyncThunk } from '@reduxjs/toolkit'
 
 import { useLatest } from 'app/hooks/useLatest'
 import { useObjectMemo } from 'app/hooks/useValues'
-import { useAppDispatch } from 'store'
+import { useAppDispatch } from 'store/hooks'
 
 import type { RequestSliceState } from './state'
 import { REQUEST_STATUS } from './state'
