@@ -15,7 +15,9 @@ import type { TimelineRecord, TxRecord, POAPRecord } from '@nft3sdk/client'
 import TokenIcon from '@mui/icons-material/Token'
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded'
 import { DisplayNumber } from 'components/Number'
+
 import { ChipNetwork, ChipStack } from './Chip'
+import Actions from './Actions'
 
 const ROOT = styled(Card)``
 const Content = styled(CardContent)``
@@ -93,7 +95,7 @@ const TimelineCard: FC<TimelineRecord> = ({ timestamp, item, type }) => {
   const { profile } = useNFT3Profile()
   return (
     <ROOT>
-      <Content>
+      <Content sx={{ justifyContent: 'space-between', display: 'flex', alignItems: 'flex-start' }}>
         <Stack spacing={2} direction="row">
           <Avatar alt={profile.name} src={format(profile.avatar)} sx={{ width: 48, height: 48 }} />
           <Stack spacing={2}>
@@ -105,6 +107,7 @@ const TimelineCard: FC<TimelineRecord> = ({ timestamp, item, type }) => {
             {type === 'poaps' && <DisplayPoaps {...(item as any)} />}
           </Stack>
         </Stack>
+        <Actions network={item.network} transaction={(item as any).hash} />
       </Content>
     </ROOT>
   )

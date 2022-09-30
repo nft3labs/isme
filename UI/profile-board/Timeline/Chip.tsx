@@ -26,7 +26,7 @@ export const ChipNetwork: FC<ChipNetworkProps> = ({ network }) => {
   const item = NETWORK_MAP[network]
   if (!item) return null
 
-  const { name, icon, exploreUrl } = item
+  const { name, icon, explorerUrl } = item
 
   return (
     <Chip
@@ -40,7 +40,7 @@ export const ChipNetwork: FC<ChipNetworkProps> = ({ network }) => {
         cursor: 'pointer',
       }}
       onClick={() => {
-        window.open(exploreUrl)
+        window.open(explorerUrl)
       }}
       icon={
         <Box display="flex" alignItems="center">

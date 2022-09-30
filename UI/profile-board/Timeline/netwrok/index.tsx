@@ -9,54 +9,54 @@ import optimism from './images/optimism.svg'
 import solana from './images/solana.svg'
 import polygon from './images/polygon.svg'
 
-export const NETWORK_MAP: Record<string, { exploreUrl: string; icon: any; name: string }> = {
+export const NETWORK_MAP: Record<string, { explorerUrl: string; icon: any; name: string }> = {
   ethereum: {
-    exploreUrl: 'https://etherscan.io/',
+    explorerUrl: 'https://etherscan.io/',
     icon: eth,
     name: 'ETH',
   },
   'binance-smart-chain': {
-    exploreUrl: 'https://bscscan.com/',
+    explorerUrl: 'https://bscscan.com/',
     icon: bsc,
     name: 'BSC',
   },
   polygon: {
-    exploreUrl: 'https://polygonscan.com/',
+    explorerUrl: 'https://polygonscan.com/',
     icon: polygon,
     name: 'Polygon',
   },
   arbitrum: {
-    exploreUrl: 'https://arbiscan.io/',
+    explorerUrl: 'https://arbiscan.io/',
     icon: arbitrum,
     name: 'Arbitrum',
   },
   avalanche: {
-    exploreUrl: 'https://snowtrace.io/',
+    explorerUrl: 'https://snowtrace.io/',
     icon: avax,
     name: 'AVAX',
   },
   fantom: {
-    exploreUrl: 'https://ftmscan.com/',
+    explorerUrl: 'https://ftmscan.com/',
     icon: fantom,
     name: 'Fantom',
   },
   harmony: {
-    exploreUrl: 'https://explorer.harmony.one/',
+    explorerUrl: 'https://explorer.harmony.one/',
     icon: harmony,
     name: 'Harmony',
   },
   optimism: {
-    exploreUrl: 'https://optimistic.etherscan.io/',
+    explorerUrl: 'https://optimistic.etherscan.io/',
     icon: optimism,
     name: 'Optimism',
   },
   moonbeam: {
-    exploreUrl: 'https://moonscan.io/',
+    explorerUrl: 'https://moonscan.io/',
     icon: moonbeam,
     name: 'Moonbeam',
   },
   solana: {
-    exploreUrl: 'https://explorer.solana.com/',
+    explorerUrl: 'https://explorer.solana.com/',
     icon: solana,
     name: 'Solana',
   },
