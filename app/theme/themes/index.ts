@@ -291,16 +291,16 @@ export const getTheme = (options: ThemeOptions) => {
               text: {
                 fill: 'white',
                 fontWeight: 'bold',
-              }
-            }
-          }
+              },
+            },
+          },
         },
       },
       MuiStepConnector: {
         styleOverrides: {
           line: {
             borderColor: theme.palette.divider,
-          }
+          },
         },
       },
     },

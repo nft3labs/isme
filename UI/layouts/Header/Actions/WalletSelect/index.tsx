@@ -77,8 +77,8 @@ const WalletSelect: FC = () => {
                 onClick(item.wallet)
               } else window.open(item.link)
             }}
-            sx={{ 
-              border: 'solid 1px', 
+            sx={{
+              border: 'solid 1px',
               borderColor: theme.palette.divider,
               borderRadius: 3,
               padding: theme.spacing(3),
@@ -86,7 +86,7 @@ const WalletSelect: FC = () => {
               cursor: 'pointer',
               '&:hover': {
                 backgroundColor: theme.palette.divider,
-              }
+              },
             }}
           >
             <ListItemIcon>

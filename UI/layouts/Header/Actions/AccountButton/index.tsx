@@ -46,11 +46,7 @@ const AccountButton: FC = () => {
     )
   }
   if (!didname) {
-    return (
-      <Button variant="outlined" >
-        Logging in
-      </Button>
-    )
+    return <Button variant="outlined">Logging in</Button>
   }
   return (
     <Fragment>

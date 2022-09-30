@@ -25,7 +25,12 @@ const Dialog: FC<DialogProps> = ({ visible, onClose, title, children }) => {
   return (
     <MuiDialog onClose={onClose} open={visible} fullWidth>
       <DialogCloseIconButton onClick={onClose} />
-      <Stack spacing={2} direction="row" sx={{ padding: theme.spacing(4), paddingTop: theme.spacing(6) }} justifyContent="center">
+      <Stack
+        spacing={2}
+        direction="row"
+        sx={{ padding: theme.spacing(4), paddingTop: theme.spacing(6) }}
+        justifyContent="center"
+      >
         <Typography variant="h5" sx={{ lineHeight: '40px', fontWeight: 'bold' }}>
           {title}
         </Typography>

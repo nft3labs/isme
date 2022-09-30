@@ -1,4 +1,4 @@
-import type { ProfileModel, WithMeta} from '@nft3sdk/client'
+import type { ProfileModel, WithMeta } from '@nft3sdk/client'
 
 import { getDefaultProfileAvatar } from './profileAvatar'
 
