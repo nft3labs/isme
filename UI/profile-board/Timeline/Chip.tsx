@@ -26,7 +26,7 @@ export const ChipNetwork: FC<ChipNetworkProps> = ({ network }) => {
   const item = NETWORK_MAP[network]
   if (!item) return null
 
-  const { name, icon, explorerUrl } = item
+  const { name, icon } = item
 
   return (
     <Chip
@@ -37,11 +37,11 @@ export const ChipNetwork: FC<ChipNetworkProps> = ({ network }) => {
         '.MuiChip-icon': {
           color: '#666666',
         },
-        cursor: 'pointer',
+        // cursor: 'pointer',
       }}
-      onClick={() => {
-        window.open(explorerUrl)
-      }}
+      // onClick={() => {
+      //   window.open(explorerUrl)
+      // }}
       icon={
         <Box display="flex" alignItems="center">
           <Image src={icon} alt={network} width="22px" height="22px" />

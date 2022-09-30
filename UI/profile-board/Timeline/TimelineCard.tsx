@@ -19,6 +19,7 @@ import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 
 import { ChipNetwork, ChipStack } from './Chip'
 import Actions from './Actions'
+import { NETWORK_MAP } from './netwrok'
 
 const ROOT = styled(Card)``
 const Content = styled(CardContent)``
@@ -46,16 +47,19 @@ const DisplayTxs: FC<TxRecord> = ({ network, symbol, amount, from, to }) => {
     )
   }, [network])
 
+  const item = NETWORK_MAP[network]
+  const explorerUrl = item ? item.explorerUrl : 'https://etherscan.io'
+  
   if (isSend) {
     return (
       <Fragment>
         <Paragraph>
           Sent{' '}
-          <Typography component="span" color="primary">
+          <Typography component="span" color="text.primary" fontWeight="bold">
             <DisplayNumber value={amount} />
           </Typography>{' '}
           {symbol} to{' '}
-          <Link href={'https://etherscan.io/address/' + to} target="_blank" underline="hover">
+          <Link href={`${explorerUrl}/address/` + to} target="_blank" underline="hover">
             {textCenterEllipsis(to)}
           </Link>
         </Paragraph>
@@ -67,11 +71,11 @@ const DisplayTxs: FC<TxRecord> = ({ network, symbol, amount, from, to }) => {
       <Fragment>
         <Paragraph>
           Received{' '}
-          <Typography component="span" color="primary">
+          <Typography component="span" color="text.primary" fontWeight="bold">
             <DisplayNumber value={amount} />
           </Typography>{' '}
           {symbol} from{' '}
-          <Link href={'https://etherscan.io/address/' + from} target="_blank" underline="hover">
+          <Link href={`${explorerUrl}/address/` + from} target="_blank" underline="hover">
             {textCenterEllipsis(from)}
           </Link>
         </Paragraph>

@@ -92,7 +92,7 @@ const ProfileBoard: FC = () => {
   }
 
   return (
-    <ROOT spacing={2}>
+    <ROOT spacing={2} marginTop={4}>
       <Grid container spacing={6}>
         <Grid item xs={12} sm={4}>
           <ProfileInfo />
