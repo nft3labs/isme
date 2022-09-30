@@ -8,7 +8,6 @@ import { NFT3Provider } from '@nft3sdk/did-manager'
 
 import 'lib/toastify/styles.css'
 import 'simplebar-react/dist/simplebar.min.css'
-import '@nft3sdk/did-manager/dist/styles/style.css'
 
 const endpoint = 'https://t0.onebitdev.com/nft3-gateway/'
 
