@@ -18,7 +18,14 @@ const NProgress: FC = () => {
   if (status === PROGRESS_STATUS.ready) return null
   return (
     <ROOT>
-      <LinearProgress variant="determinate" value={value} />
+      <LinearProgress
+        variant="determinate"
+        value={value}
+        sx={{
+          height: 2,
+          '.MuiLinearProgress-bar': { height: 2 },
+        }}
+      />
     </ROOT>
   )
 }
