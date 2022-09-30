@@ -16,6 +16,7 @@ import { useNFT3, useUser } from 'domains/data'
 import { H4 } from 'components/Typography'
 import * as sessionStorage from 'app/utils/cache/sessionStorage'
 import { useTheme } from '@mui/material/styles'
+import { safeGet } from 'app/utils/get'
 
 const AccountButton: FC = () => {
   const { format } = useNFT3()
@@ -33,6 +34,7 @@ const AccountButton: FC = () => {
   }
 
   const onLogout = () => {
+    handleClose()
     disconnect()
     sessionStorage.removeItem('sessionKey')
     logout()
@@ -97,7 +99,10 @@ const AccountButton: FC = () => {
         onClose={handleClose}
       >
         <MenuItem
-          onClick={() => router.push('/profile/' + didname.split('.isme')[0])}
+          onClick={() => {
+            router.push('/profile/' + safeGet(() => didname.split('.isme')[0]))
+            handleClose()
+          }}
           sx={{
             borderBottom: `solid 1px ${theme.palette.divider}`,
           }}
@@ -108,7 +113,10 @@ const AccountButton: FC = () => {
           <ListItemText>View profile</ListItemText>
         </MenuItem>
         <MenuItem
-          onClick={() => router.push('/edit-profile')}
+          onClick={() => {
+            router.push('/edit-profile')
+            handleClose()
+          }}
           sx={{
             borderBottom: `solid 1px ${theme.palette.divider}`,
           }}
