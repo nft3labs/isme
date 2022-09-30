@@ -1,4 +1,5 @@
 import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { useNFT3Profile, useNFT3Social } from 'domains/data'
 
@@ -34,7 +35,15 @@ const TwitterButton: FC<TwitterButtonProps> = ({ open, component: Component }) =
         window.open('https://twitter.com/' + twitterAccount)
       }}
     >
-      {twitterAccount}
+      <Box
+        sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {twitterAccount}
+      </Box>
     </Button>
   )
 }
