@@ -13,12 +13,14 @@ import { format as formatData } from 'date-fns'
 import { safeGet } from 'app/utils/get'
 import type { TimelineRecord, TxRecord, POAPRecord } from '@nft3sdk/client'
 import TokenIcon from '@mui/icons-material/Token'
+import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded'
 import { DisplayNumber } from 'components/Number'
+import { ChipNetwork, ChipStack } from './Chip'
 
 const ROOT = styled(Card)``
 const Content = styled(CardContent)``
 
-const DisplayTxs: FC<TxRecord> = ({ symbol, amount, from, to }) => {
+const DisplayTxs: FC<TxRecord> = ({ network, symbol, amount, from, to }) => {
   const { displayAddress } = useNFT3Wallet()
   return (
     <Fragment>
@@ -36,20 +38,21 @@ const DisplayTxs: FC<TxRecord> = ({ symbol, amount, from, to }) => {
           {displayAddress(to)}
         </Link>
       </Paragraph>
-      <Stack spacing={2} direction="row">
+      <ChipStack>
         <Chip
           sx={{
             backgroundColor: '#AAEEA3',
             color: '#52BC47',
             fontWeight: 'bold',
-            '& .MuiChip-icon': {
+            '.MuiChip-icon': {
               color: '#52BC47',
             },
           }}
           icon={<TokenIcon />}
           label="DeFi"
         />
-      </Stack>
+        <ChipNetwork network={network} />
+      </ChipStack>
     </Fragment>
   )
 }
@@ -66,6 +69,21 @@ const DisplayPoaps: FC<POAPRecord> = (props) => {
           height: 180,
         }}
       />
+      <ChipStack>
+        <Chip
+          sx={{
+            backgroundColor: '#A3EBFB',
+            color: '#2081E2',
+            fontWeight: 'bold',
+            '& .MuiChip-icon': {
+              color: '#2081E2',
+            },
+          }}
+          icon={<GroupsRoundedIcon />}
+          label="Social"
+        />
+        <ChipNetwork network={props.network} />
+      </ChipStack>
     </Fragment>
   )
 }
