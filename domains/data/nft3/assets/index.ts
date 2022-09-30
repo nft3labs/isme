@@ -13,6 +13,8 @@ interface POAPRecord {
 }
 
 const useAssetsService = () => {
+  const [openseaLoading, setOpenseaLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const { did: identifier, didinfo } = useNFT3Profile()
   const [nfts, setNfts] = useState<OpenseaAssetsRecord[]>([])
   const [tokens, setTokens] = useState<TokenRecord[]>([])
@@ -33,37 +35,47 @@ const useAssetsService = () => {
       // setTxs([])
       return
     }
-    const data = await queryer.query({
-      tokens: {
-        did: identifier,
-      },
-      poaps: {
-        did: identifier,
-      },
-      // txs: {
-      //   did: identifier,
-      // },
-      ens: {
-        did: identifier,
-      },
-      timeline: {
-        did: identifier,
-      },
-    })
-    setTokens(data.tokens || [])
-    // setTxs(data.txs || [])
-    setEns(data.ens || [])
-    setTimeline(data.timeline || [])
-    setPoaps(data.poaps || [])
+    setLoading(true)
+
+    try {
+      const data = await queryer.query({
+        tokens: {
+          did: identifier,
+        },
+        poaps: {
+          did: identifier,
+        },
+        // txs: {
+        //   did: identifier,
+        // },
+        ens: {
+          did: identifier,
+        },
+        timeline: {
+          did: identifier,
+        },
+      })
+      setTokens(data.tokens || [])
+      // setTxs(data.txs || [])
+      setEns(data.ens || [])
+      setTimeline(data.timeline || [])
+      setPoaps(data.poaps || [])
+    } catch (e) {}
+
+    setLoading(false)
   }, [identifier, queryer])
 
   const openseaAssets = useCallback(
     async (owner: string) => {
-      const result = await queryer.openseaAssets({
-        owner,
-        limit: 50,
-      })
-      setNfts(result.assets)
+      setOpenseaLoading(true)
+      try {
+        const result = await queryer.openseaAssets({
+          owner,
+          limit: 50,
+        })
+        setNfts(result.assets)
+      } catch (e) {}
+      setOpenseaLoading(false)
     },
     [queryer]
   )
@@ -85,6 +97,9 @@ const useAssetsService = () => {
     ens,
     timeline,
     poaps,
+
+    loading,
+    openseaLoading,
   }
 }
 const { Provider: AssetsProvider, createUseContext } = createContext(useAssetsService)

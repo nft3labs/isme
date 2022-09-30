@@ -8,8 +8,12 @@ const ROOT = styled(Stack)``
 
 type FollowProps = {
   followers: FollowMember[]
+  name: string
 }
-const Follow: FC<FollowProps> = ({ followers }) => {
+const Follow: FC<FollowProps> = ({ followers, name }) => {
+  if (!followers.length) {
+    return <div>{`No ${name} yet.`}</div>
+  }
   return (
     <ROOT spacing={2}>
       {followers.map((member, index) => {

@@ -7,7 +7,10 @@ import TimelineCard from './TimelineCard'
 const ROOT = styled(Stack)``
 
 const Timeline: FC = () => {
-  const { timeline } = useNFT3Assets()
+  const { timeline, loading } = useNFT3Assets()
+  if (loading) {
+    return <div>loading</div>
+  }
   return (
     <ROOT spacing={2}>
       {timeline.map((info, index) => {

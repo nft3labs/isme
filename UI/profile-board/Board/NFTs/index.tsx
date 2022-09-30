@@ -6,7 +6,7 @@ import NFTCard from 'components/nft/NFTCard'
 import { safeGet } from 'app/utils/get'
 
 const NFTs: FC = () => {
-  const { nfts } = useNFT3Assets()
+  const { nfts, openseaLoading } = useNFT3Assets()
   const cards = useMemo(() => {
     if (!nfts) return []
     return nfts.map((d) => {
@@ -20,6 +20,14 @@ const NFTs: FC = () => {
       }
     })
   }, [nfts])
+
+  if (openseaLoading) {
+    return <div>loading</div>
+  }
+
+  if (!cards.length) {
+    return <div>No NFTs yet.</div>
+  }
 
   return (
     <Box>

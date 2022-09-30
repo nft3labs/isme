@@ -50,6 +50,7 @@ const ProfileBoard: FC = () => {
           component: Follow,
           props: {
             followers: safeGet(() => follow.following) || [],
+            name: 'following'
           },
         },
       },
@@ -62,6 +63,7 @@ const ProfileBoard: FC = () => {
           component: Follow,
           props: {
             followers: safeGet(() => follow.followers) || [],
+            name: 'followers'
           },
         },
       },

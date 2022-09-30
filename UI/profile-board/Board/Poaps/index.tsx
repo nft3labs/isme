@@ -5,7 +5,7 @@ import Avatar from '@mui/material/Avatar'
 import { useNFT3Assets } from 'domains/data'
 
 const Poaps: FC = () => {
-  const { poaps } = useNFT3Assets()
+  const { poaps, loading } = useNFT3Assets()
   const cards = useMemo(() => {
     if (!poaps) return []
     return poaps
@@ -22,6 +22,14 @@ const Poaps: FC = () => {
         }
       })
   }, [poaps])
+
+  if (loading) {
+    return <div>loading</div>
+  }
+
+  if (!cards.length) {
+    return <div>No POAPs yet.</div>
+  }
 
   return (
     <Box>
