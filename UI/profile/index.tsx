@@ -43,9 +43,8 @@ const Profile: FC = () => {
     <ROOT onSubmit={formik.handleSubmit}>
       <Card
         sx={{
-          padding: { xs: theme.spacing(2), sm: theme.spacing(4)},
-          '.MuiCardContent-root': {
-          },
+          padding: { xs: theme.spacing(2), sm: theme.spacing(4) },
+          '.MuiCardContent-root': {},
           '.MuiCardActions-root': {
             // padding: '0 50px 50px 50px',
             justifyContent: 'flex-end',
@@ -73,7 +72,7 @@ const Profile: FC = () => {
                           boxShadow: theme.shadows[3],
                           '&:hover': {
                             backgroundColor: theme.palette.grey[200],
-                          }
+                          },
                         }}
                         variant="text"
                         aria-label="upload picture"
@@ -102,7 +101,7 @@ const Profile: FC = () => {
                 </FlexRowAlign>
                 <Stack spacing={1} textAlign="center">
                   <H2>{`${profile.name}.isme`}</H2>
-                  <Paragraph sx={{ color: 'text.secondary' }}>
+                  <Paragraph sx={{ color: 'text.secondary', whiteSpace: 'nowrap' }}>
                     Joined {formatData(formik.values.createdAt * 1000 || 0, 'MMM yyyy')}
                   </Paragraph>
                 </Stack>
@@ -148,7 +147,12 @@ const Profile: FC = () => {
           </Stack>
         </CardContent>
         <CardActions>
-          <SubmitBotton sx={{ width: { xs: 1, sm: 'auto'} }} size="large" variant="outlined" isSubmitting={formik.isSubmitting}>
+          <SubmitBotton
+            sx={{ width: { xs: 1, sm: 'auto' } }}
+            size="large"
+            variant="outlined"
+            isSubmitting={formik.isSubmitting}
+          >
             Save
           </SubmitBotton>
         </CardActions>

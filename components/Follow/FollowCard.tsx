@@ -16,6 +16,7 @@ import { useDebounceMemo } from 'app/hooks/useDebounceMemo'
 import { getDefaultProfileAvatar } from 'domains/data/nft3/profile/adapter/profileAvatar'
 import { DisplayNumber } from 'components/Number'
 import { useRouter } from 'next/router'
+import Unfollow from './Unfollow'
 
 const ROOT = styled(Card)``
 
@@ -74,9 +75,7 @@ const FollowCard: FC<FollowMember> = (props) => {
   const followContent = useMemo(() => {
     if (did === identifier) return null
     return followed ? (
-      <Button variant="outlined" color="error" size="small" onClick={() => userUnfollow()}>
-        Unfollow
-      </Button>
+      <Unfollow onClick={() => userUnfollow()} />
     ) : (
       <Button
         size="small"
@@ -112,7 +111,11 @@ const FollowCard: FC<FollowMember> = (props) => {
             onClick={goToProfileBoard}
           />
           <Stack spacing={1}>
-            <H4 sx={{ cursor: 'pointer', '&:hover': { color: theme.palette.primary.main } }} onClick={goToProfileBoard} fontWeight="medium">
+            <H4
+              sx={{ cursor: 'pointer', '&:hover': { color: theme.palette.primary.main } }}
+              onClick={goToProfileBoard}
+              fontWeight="medium"
+            >
               {name}.isme
             </H4>
             <Paragraph sx={{ color: 'text.secondary' }}>

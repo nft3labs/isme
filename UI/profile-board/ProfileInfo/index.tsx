@@ -21,6 +21,7 @@ import looksrareIcon from './images/looksrare.svg'
 import openseaIcon from './images/opensea.svg'
 import FlexBetween from 'components/flexbox/FlexBetween'
 import { DisplayNumber } from 'components/Number'
+import Unfollow from 'components/Follow/Unfollow'
 
 const ROOT = styled(Card)``
 
@@ -48,9 +49,7 @@ const ProfileInfo: FC = () => {
           Follow
         </Button>
       ) : (
-        <Button variant="outlined" color="error" fullWidth size="large" onClick={() => unfollow()}>
-          Unfollow
-        </Button>
+        <Unfollow onClick={() => unfollow()} fullWidth size="large" />
       ),
     [didname, follow, followed, selectDialog, unfollow]
   )
@@ -72,7 +71,7 @@ const ProfileInfo: FC = () => {
             <H2>{`${profile.name}.isme`}</H2>
             <Stack spacing={0} direction="row" alignItems="center">
               <Wallets />
-              <Paragraph sx={{ color: 'text.secondary' }}>
+              <Paragraph sx={{ color: 'text.secondary', whiteSpace: 'nowrap' }}>
                 Joined {formatData(profile.createdAt * 1000 || 0, 'MMM yyyy')}
               </Paragraph>
             </Stack>
@@ -85,7 +84,7 @@ const ProfileInfo: FC = () => {
                 display: '-webkit-box',
                 WebkitLineClamp: '2',
                 WebkitBoxOrient: 'vertical',
-                textAlign: 'center'
+                textAlign: 'center',
               }}
             >
               {profile.bio}
