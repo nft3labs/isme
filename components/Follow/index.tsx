@@ -16,7 +16,7 @@ const Follow: FC<FollowProps> = ({ followers, name }) => {
   if (!followers.length) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height={200}>
-        <Typography color='text.disabled'>{`No ${name} yet.`}</Typography>
+        <Typography color="text.disabled">{`No ${name} yet.`}</Typography>
       </Box>
     )
   }

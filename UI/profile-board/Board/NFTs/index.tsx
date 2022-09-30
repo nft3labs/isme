@@ -28,12 +28,13 @@ const NFTs: FC = () => {
       <Box display="flex" justifyContent="center" alignItems="center" height={100}>
         <CircularProgress />
       </Box>
-    )  }
+    )
+  }
 
   if (!cards.length) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height={100}>
-        <Typography color='text.disabled'>No NFTs yet.</Typography>
+        <Typography color="text.disabled">No NFTs yet.</Typography>
       </Box>
     )
   }

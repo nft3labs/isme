@@ -22,7 +22,7 @@ const Table: FC = () => {
   if (!table.data.length) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height={100}>
-        <Typography color='text.disabled'>No tokens yet.</Typography>
+        <Typography color="text.disabled">No tokens yet.</Typography>
       </Box>
     )
   }

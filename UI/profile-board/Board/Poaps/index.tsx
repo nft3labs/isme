@@ -36,7 +36,7 @@ const Poaps: FC = () => {
   if (!cards.length) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height={100}>
-        <Typography color='text.disabled'>No POAPs yet.</Typography>
+        <Typography color="text.disabled">No POAPs yet.</Typography>
       </Box>
     )
   }

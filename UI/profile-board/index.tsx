@@ -84,7 +84,9 @@ const ProfileBoard: FC = () => {
   } else if (!didinfo) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height={400}>
-        <Typography color='text.disabled' variant="h6">This user doesn't exist.</Typography>
+        <Typography color="text.disabled" variant="h6">
+          This user doesn't exist.
+        </Typography>
       </Box>
     )
   }
