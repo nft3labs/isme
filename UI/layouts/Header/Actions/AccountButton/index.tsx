@@ -12,15 +12,14 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useRouter } from 'next/router'
-import { useNFT3, useNFT3Profile, useUser } from 'domains/data'
+import { useNFT3, useUser } from 'domains/data'
 import { H4 } from 'components/Typography'
 import * as sessionStorage from 'app/utils/cache/sessionStorage'
 import { useTheme } from '@mui/material/styles'
 
 const AccountButton: FC = () => {
   const { format } = useNFT3()
-  const { didname, account, logout, selectDialog, disconnect } = useUser()
-  const { profile } = useNFT3Profile()
+  const { didname, account, logout, selectDialog, disconnect, profile } = useUser()
   const router = useRouter()
   const theme = useTheme()
 

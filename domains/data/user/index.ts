@@ -4,11 +4,15 @@ import { useMount } from 'app/hooks/useMount'
 import { createContext } from 'app/utils/createContext'
 import * as localStorage from 'app/utils/cache/localStorage'
 import * as sessionStorage from 'app/utils/cache/sessionStorage'
+import type { ProfileModel } from '@nft3sdk/client'
+import { useCallback, useEffect, useState } from 'react'
+import { getProfile } from '../nft3/profile/adapter'
 
 const useUserService = () => {
   const selectDialog = useDialog()
   const registerDialog = useDialog()
   const { account, didname, ready, login, selectWallet, logout, register, client, identifier, disconnect } = useNFT3()
+  const [profile, setProfileInternal] = useState<ProfileModel & { createdAt: number }>({} as any)
 
   useMount(() => {
     const sessionKey = sessionStorage.getItem('sessionKey')
@@ -16,6 +20,21 @@ const useUserService = () => {
     const wallet = localStorage.getItem('wallet')
     if (wallet) selectWallet(wallet)
   })
+
+  const updateProfile = useCallback(() => {
+    if (!identifier) return
+    return client.profile.info(identifier).then((profile) => {
+      if (!profile) return
+      setProfileInternal(getProfile(profile) as any)
+    })
+  }, [client.profile, identifier])
+
+  useEffect(() => {
+    if (!identifier) return
+    const promises = []
+    promises.push(updateProfile())
+    Promise.all(promises)
+  }, [identifier, client, updateProfile])
 
   return {
     selectDialog,
@@ -32,6 +51,7 @@ const useUserService = () => {
 
     client,
     identifier,
+    profile,
   }
 }
 const { Provider: UserProvider, createUseContext } = createContext(useUserService)

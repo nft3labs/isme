@@ -42,7 +42,7 @@ const useWalletService = () => {
 
   useEffect(() => {
     setValue(isUser ? account : safeGet(() => accounts[0].account) || '')
-  }, [account, accounts, isUser])
+  }, [account, accounts, didname, isUser])
 
   const displayAddress = useCallback(
     (address: string) => {
