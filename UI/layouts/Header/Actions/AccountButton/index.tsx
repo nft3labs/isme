@@ -41,14 +41,14 @@ const AccountButton: FC = () => {
 
   if (!account) {
     return (
-      <Button variant="gradient" size="large" onClick={() => selectDialog.open()}>
+      <Button variant="gradient" onClick={() => selectDialog.open()}>
         Login
       </Button>
     )
   }
   if (!didname) {
     return (
-      <Button variant="outlined" size="large">
+      <Button variant="outlined" >
         Logging in
       </Button>
     )

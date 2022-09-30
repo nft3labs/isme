@@ -175,7 +175,7 @@ export const getTheme = (options: ThemeOptions) => {
           {
             props: { variant: 'gradient', size: 'large' },
             style: {
-              padding: '8px 22px',
+              padding: '12px 24px',
               fontSize: theme.typography.pxToRem(15),
             },
           },
@@ -273,6 +273,34 @@ export const getTheme = (options: ThemeOptions) => {
           root: {
             padding: 0,
           },
+        },
+      },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            borderRadius: 20,
+          },
+        },
+      },
+      MuiStepIcon: {
+        styleOverrides: {
+          root: {
+            color: theme.palette.divider,
+            '&.Mui-active': {
+              color: theme.palette.primary.main,
+              text: {
+                fill: 'white',
+                fontWeight: 'bold',
+              }
+            }
+          }
+        },
+      },
+      MuiStepConnector: {
+        styleOverrides: {
+          line: {
+            borderColor: theme.palette.divider,
+          }
         },
       },
     },

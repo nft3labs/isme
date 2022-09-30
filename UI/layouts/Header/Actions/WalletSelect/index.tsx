@@ -12,6 +12,8 @@ import Dialog from 'components/Dialog'
 
 import IconMetamask from './MetaMask'
 import IconPhantom from './Phantom'
+import { useTheme } from '@mui/material/styles'
+
 interface IWalletItem {
   wallet: WalletType
   icon: any
@@ -38,6 +40,7 @@ const wallets: IWalletItem[] = [
 ]
 
 const WalletSelect: FC = () => {
+  const theme = useTheme()
   const { selectDialog, selectWallet, login, registerDialog, logout, disconnect } = useUser()
   const onClick = useCallback(
     (wallet: WalletType) => {
@@ -65,7 +68,7 @@ const WalletSelect: FC = () => {
 
   return (
     <Dialog visible={selectDialog.visible} onClose={selectDialog.close} title="Connect Wallet">
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
         {wallets.map((item, i) => (
           <ListItem
             key={i}
@@ -74,11 +77,22 @@ const WalletSelect: FC = () => {
                 onClick(item.wallet)
               } else window.open(item.link)
             }}
+            sx={{ 
+              border: 'solid 1px', 
+              borderColor: theme.palette.divider,
+              borderRadius: 3,
+              padding: theme.spacing(3),
+              marginBottom: theme.spacing(1),
+              cursor: 'pointer',
+              '&:hover': {
+                backgroundColor: theme.palette.divider,
+              }
+            }}
           >
-            <ListItemText primary={item.check() ? item.wallet : `Install ${item.wallet}`} />
             <ListItemIcon>
               <item.icon width="24" height="24" />
             </ListItemIcon>
+            <ListItemText primary={item.check() ? item.wallet : `Install ${item.wallet}`} />
           </ListItem>
         ))}
       </List>

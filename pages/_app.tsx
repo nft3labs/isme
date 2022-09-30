@@ -17,6 +17,7 @@ function MainApp(props: MyAppProps): JSX.Element {
       <StoreProvider store={store}>
         <DomainsProvider>
           <Head>
+            <title>NFT3 Pass | Your Decentralized Identity for Web 3.0</title>
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
             <link rel="icon" href="/favicon.ico" />
             <meta name="description" content="NFT3 Pass is your decentralized identity (DID) for Web 3.0" />

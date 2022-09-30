@@ -1,4 +1,4 @@
-import { styled } from '@mui/material'
+import { styled, useTheme } from '@mui/material'
 import type { IconButtonProps } from '@mui/material'
 import MuiDialog from '@mui/material/Dialog'
 import Stack from '@mui/material/Stack'
@@ -21,15 +21,16 @@ const DialogCloseIconButton: FC<IconButtonProps> = styled(CloseIconButton)(({ th
 }))
 
 const Dialog: FC<DialogProps> = ({ visible, onClose, title, children }) => {
+  const theme = useTheme()
   return (
-    <MuiDialog onClose={onClose} open={visible}>
+    <MuiDialog onClose={onClose} open={visible} fullWidth>
       <DialogCloseIconButton onClick={onClose} />
-      <Stack spacing={2} direction="row" sx={{ padding: '16px 24px' }}>
-        <Typography variant="h6" sx={{ lineHeight: '40px' }}>
+      <Stack spacing={2} direction="row" sx={{ padding: theme.spacing(4), paddingTop: theme.spacing(6) }} justifyContent="center">
+        <Typography variant="h5" sx={{ lineHeight: '40px', fontWeight: 'bold' }}>
           {title}
         </Typography>
       </Stack>
-      <DialogContent>{children}</DialogContent>
+      <DialogContent sx={{ padding: theme.spacing(4), paddingBottom: theme.spacing(6) }}>{children}</DialogContent>
     </MuiDialog>
   )
 }
