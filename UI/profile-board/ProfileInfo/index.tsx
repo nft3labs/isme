@@ -10,18 +10,19 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import { Paragraph, H2, H3 } from 'components/Typography'
-import TwitterButton from 'components/btn/TwitterButton'
-import { useNFT3Follow, useNFT3Profile, useNFT3, useUser, useNFT3Social, useNFT3Wallet } from 'domains/data'
+import Twitter from 'components/Twitter'
+import FlexBetween from 'components/flexbox/FlexBetween'
+import { DisplayNumber } from 'components/Number'
+import Unfollow from 'components/Follow/Unfollow'
+import { useNFT3Follow, useNFT3Profile, useNFT3, useUser, useNFT3Wallet } from 'domains/data'
 
+import TwitterContent from './Twitter/TwitterContent'
 import Wallets from './Wallets'
 import IconButton from './IconButton'
 import circleLinkIcon from './images/circle-link.svg'
 import etherscanIcon from './images/etherscan.svg'
 import looksrareIcon from './images/looksrare.svg'
 import openseaIcon from './images/opensea.svg'
-import FlexBetween from 'components/flexbox/FlexBetween'
-import { DisplayNumber } from 'components/Number'
-import Unfollow from 'components/Follow/Unfollow'
 
 const ROOT = styled(Card)``
 
@@ -31,7 +32,6 @@ const ProfileInfo: FC = () => {
   const { account } = useNFT3Wallet()
   const { ready, profile, isUser } = useNFT3Profile()
   const NFT3Follow = useNFT3Follow()
-  const { twitter } = useNFT3Social()
   const { format } = useNFT3()
   const { followed, count, follow, unfollow } = NFT3Follow
   const followContent = useMemo(
@@ -91,7 +91,7 @@ const ProfileInfo: FC = () => {
             </Paragraph>
           </Stack>
           <Stack spacing={0} direction="row" alignItems="center" justifyContent="center">
-            <TwitterButton account={twitter.account?.account} />
+            <Twitter buttonComponent={TwitterContent} />
             <IconButton url={profile.url} alt="url" icon={circleLinkIcon} />
             <IconButton url={`https://etherscan.io/address/${account}`} alt="etherscan" icon={etherscanIcon} />
             <IconButton url={`https://opensea.io/${account}`} alt="opensea" icon={openseaIcon} />

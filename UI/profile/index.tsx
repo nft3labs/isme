@@ -16,10 +16,11 @@ import { format as formatData } from 'date-fns'
 import { useNFT3, useNFT3Profile, useUser } from 'domains/data'
 import { Paragraph, H2, H5 } from 'components/Typography'
 import FlexRowAlign from 'components/flexbox/FlexRowAlign'
-
-import Twitter from './Twitter'
-import Wallets from './Wallets'
 import SubmitBotton from 'components/form/SubmitBotton'
+import Twitter from 'components/Twitter'
+
+import TwitterContent from './Twitter/TwitterContent'
+import Wallets from './Wallets'
 import { useForm } from './useForm'
 
 const ROOT = styled('form')`
@@ -114,7 +115,7 @@ const Profile: FC = () => {
             </Stack>
             <Stack spacing={2}>
               <H5>Twitter</H5>
-              <Twitter />
+              <Twitter buttonComponent={TwitterContent} />
             </Stack>
             <Stack spacing={2}>
               <H5>Bio</H5>
