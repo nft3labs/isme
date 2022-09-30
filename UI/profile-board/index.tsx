@@ -7,7 +7,7 @@ import ViewTimelineRoundedIcon from '@mui/icons-material/ViewTimelineRounded'
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 
-import { useNFT3Follow } from 'domains/data'
+import { useNFT3Follow, useNFT3Profile } from 'domains/data'
 import { safeGet } from 'app/utils/get'
 import Follow from 'components/Follow'
 
@@ -20,6 +20,7 @@ import type { TabsProps } from './Tabs'
 const ROOT = styled(Stack)``
 
 const ProfileBoard: FC = () => {
+  const { ready, didinfo } = useNFT3Profile()
   const follow = useNFT3Follow()
   const tabs = useMemo(() => {
     const returnValue: TabsProps['tabs'] = [
@@ -50,7 +51,7 @@ const ProfileBoard: FC = () => {
           component: Follow,
           props: {
             followers: safeGet(() => follow.following) || [],
-            name: 'following'
+            name: 'following',
           },
         },
       },
@@ -63,13 +64,19 @@ const ProfileBoard: FC = () => {
           component: Follow,
           props: {
             followers: safeGet(() => follow.followers) || [],
-            name: 'followers'
+            name: 'followers',
           },
         },
       },
     ]
     return returnValue
   }, [follow.followers, follow.following])
+
+  if (!ready) {
+    return <div>loading</div>
+  } else if (!didinfo) {
+    return <div>This user doesn't exist.</div>
+  }
 
   return (
     <ROOT spacing={2}>
