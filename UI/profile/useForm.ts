@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import type { ProfileModel } from '@nft3sdk/client'
+import type { ProfileModel, WithMeta } from '@nft3sdk/client'
 
 import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { useNFT3, useNFT3Profile } from 'domains/data'
@@ -14,7 +14,7 @@ const validationSchema = yup.object({
   url: yup.string().trim().url().max(150, 'Please enter a valid url'),
 })
 
-const INITIAL_VALUES: Partial<ProfileModel & { createdAt: number }> = {
+const INITIAL_VALUES: Partial<WithMeta<ProfileModel>> = {
   name: '',
   avatar: '',
   bio: '',

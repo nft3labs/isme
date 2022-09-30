@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { ProfileModel, DIDInfo } from '@nft3sdk/client'
+import type { ProfileModel, DIDInfo, WithMeta } from '@nft3sdk/client'
 import { createContext } from 'app/utils/createContext'
 
 import { useUser } from 'domains/data'
@@ -16,7 +16,7 @@ const useProfileService = () => {
   }, [didname, identifier, client.did])
 
   const [didinfo, setDidinfo] = useState<DIDInfo>()
-  const [profile, setProfileInternal] = useState<ProfileModel & { createdAt: number }>({} as any)
+  const [profile, setProfileInternal] = useState<WithMeta<ProfileModel>>({} as any)
 
   const updateProfile = useCallback(() => {
     return client.profile.info(did).then((profile) => {
