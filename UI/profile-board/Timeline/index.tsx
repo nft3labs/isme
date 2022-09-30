@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 import { useNFT3Assets } from 'domains/data'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -21,6 +22,15 @@ const Timeline: FC = () => {
       </Box>
     )
   }
+
+  if (!data.length) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={100}>
+        <Typography color="text.disabled">No Timeline yet.</Typography>
+      </Box>
+    )
+  }
+
   return (
     <ROOT spacing={2}>
       {data.map((info, index) => {

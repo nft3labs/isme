@@ -11,7 +11,7 @@ import { Paragraph, H4, Tiny } from 'components/Typography'
 import { useNFT3Profile, useNFT3, useNFT3Wallet } from 'domains/data'
 import { format as formatData } from 'date-fns'
 import { safeGet } from 'app/utils/get'
-import type { TimelineRecord, TxRecord } from '@nft3sdk/client'
+import type { TimelineRecord, TxRecord, POAPRecord } from '@nft3sdk/client'
 import TokenIcon from '@mui/icons-material/Token'
 import { DisplayNumber } from 'components/Number'
 
@@ -53,6 +53,22 @@ const DisplayTxs: FC<TxRecord> = ({ symbol, amount, from, to }) => {
     </Fragment>
   )
 }
+const DisplayPoaps: FC<POAPRecord> = (props) => {
+  const { name, description, image_url: image } = safeGet(() => props.event) || {}
+  return (
+    <Fragment>
+      <Paragraph>{description}</Paragraph>
+      <Avatar
+        alt={name}
+        src={image}
+        sx={{
+          width: 180,
+          height: 180,
+        }}
+      />
+    </Fragment>
+  )
+}
 
 const TimelineCard: FC<TimelineRecord> = ({ timestamp, item, type }) => {
   const { format } = useNFT3()
@@ -68,6 +84,7 @@ const TimelineCard: FC<TimelineRecord> = ({ timestamp, item, type }) => {
               <Tiny>{safeGet(() => formatData(parseInt(timestamp) * 1000, 'MMM d, yyyy')) || '-'}</Tiny>
             </Stack>
             {type === 'txs' && <DisplayTxs {...(item as any)} />}
+            {type === 'poaps' && <DisplayPoaps {...(item as any)} />}
           </Stack>
         </Stack>
       </Content>

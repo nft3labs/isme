@@ -1,17 +1,9 @@
 import { createContext } from 'app/utils/createContext'
 import { useNFT3Profile } from 'domains/data'
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import type { TokenRecord, OpenseaAssetsRecord, ENSRecord, TimelineRecord } from '@nft3sdk/client'
+import type { TokenRecord, OpenseaAssetsRecord, ENSRecord, TimelineRecord, POAPRecord } from '@nft3sdk/client'
 import { NFT3Queryer } from '@nft3sdk/client'
 import { useTimeline } from './timeline'
-
-interface POAPRecord {
-  tokenId: string
-  owner: string
-  network: string
-  created: string
-  event: any
-}
 
 const useAssetsService = () => {
   const [openseaLoading, setOpenseaLoading] = useState(false)
