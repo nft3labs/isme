@@ -4,6 +4,8 @@ import Grid from '@mui/material/Grid'
 import { useNFT3Assets } from 'domains/data'
 import NFTCard from 'components/nft/NFTCard'
 import { safeGet } from 'app/utils/get'
+import Typography from '@mui/material/Typography'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const NFTs: FC = () => {
   const { nfts, openseaLoading } = useNFT3Assets()
@@ -22,11 +24,18 @@ const NFTs: FC = () => {
   }, [nfts])
 
   if (openseaLoading) {
-    return <div>loading</div>
-  }
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={100}>
+        <CircularProgress />
+      </Box>
+    )  }
 
   if (!cards.length) {
-    return <div>No NFTs yet.</div>
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={100}>
+        <Typography color='text.disabled'>No NFTs yet.</Typography>
+      </Box>
+    )
   }
 
   return (

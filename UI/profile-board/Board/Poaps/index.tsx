@@ -3,6 +3,8 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Avatar from '@mui/material/Avatar'
 import { useNFT3Assets } from 'domains/data'
+import Typography from '@mui/material/Typography'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const Poaps: FC = () => {
   const { poaps, loading } = useNFT3Assets()
@@ -24,11 +26,19 @@ const Poaps: FC = () => {
   }, [poaps])
 
   if (loading) {
-    return <div>loading</div>
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={100}>
+        <CircularProgress />
+      </Box>
+    )
   }
 
   if (!cards.length) {
-    return <div>No POAPs yet.</div>
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={100}>
+        <Typography color='text.disabled'>No POAPs yet.</Typography>
+      </Box>
+    )
   }
 
   return (

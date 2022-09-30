@@ -6,6 +6,9 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded'
 import ViewTimelineRoundedIcon from '@mui/icons-material/ViewTimelineRounded'
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 
 import { useNFT3Follow, useNFT3Profile } from 'domains/data'
 import { safeGet } from 'app/utils/get'
@@ -73,9 +76,17 @@ const ProfileBoard: FC = () => {
   }, [follow.followers, follow.following])
 
   if (!ready) {
-    return <div>loading</div>
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={400}>
+        <CircularProgress />
+      </Box>
+    )
   } else if (!didinfo) {
-    return <div>This user doesn't exist.</div>
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={400}>
+        <Typography color='text.disabled' variant="h6">This user doesn't exist.</Typography>
+      </Box>
+    )
   }
 
   return (

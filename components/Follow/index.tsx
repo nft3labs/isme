@@ -1,6 +1,8 @@
 import { styled } from '@mui/material/styles'
 import Stack from '@mui/material/Stack'
 import type { FollowMember } from './types'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 
 import FollowCard from './FollowCard'
 
@@ -12,7 +14,11 @@ type FollowProps = {
 }
 const Follow: FC<FollowProps> = ({ followers, name }) => {
   if (!followers.length) {
-    return <div>{`No ${name} yet.`}</div>
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={200}>
+        <Typography color='text.disabled'>{`No ${name} yet.`}</Typography>
+      </Box>
+    )
   }
   return (
     <ROOT spacing={2}>
