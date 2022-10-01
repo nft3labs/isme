@@ -49,7 +49,7 @@ const DisplayTxs: FC<TxRecord> = ({ network, symbol, amount, from, to }) => {
 
   const item = NETWORK_MAP[network]
   const explorerUrl = item ? item.explorerUrl : 'https://etherscan.io'
-  
+
   if (isSend) {
     return (
       <Fragment>

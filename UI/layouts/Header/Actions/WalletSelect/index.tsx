@@ -90,7 +90,7 @@ const WalletSelect: FC = () => {
             }}
           >
             <ListItemText
-              primary={item.check() ? item.wallet : `Install ${item.wallet}`} 
+              primary={item.check() ? item.wallet : `Install ${item.wallet}`}
               sx={{ '& .MuiListItemText-primary': { fontWeight: 'medium' } }}
             />
             <ListItemIcon sx={{ minWidth: 24 }}>
