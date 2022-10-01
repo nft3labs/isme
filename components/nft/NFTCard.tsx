@@ -23,26 +23,26 @@ const NFTCard: FC<NFTCardProps> = ({ name, description, image }) => {
       <CardContent>
         <Tooltip title={name} placement="top">
           <Typography
-            variant='caption'
+            variant="caption"
             fontWeight={600}
             sx={{
               overflow: 'hidden',
-              textOverflow: 'ellipsis',  
+              textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               display: 'block',
             }}
           >
             {name}
-          </Typography>      
+          </Typography>
         </Tooltip>
         <Tooltip title={description} placement="top">
           <Typography
-            variant='caption'
+            variant="caption"
             fontWeight={400}
             color="text.secondary"
             sx={{
               overflow: 'hidden',
-              textOverflow: 'ellipsis',  
+              textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               display: 'block',
             }}
