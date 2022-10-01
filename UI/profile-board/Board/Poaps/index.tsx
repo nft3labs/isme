@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar'
 import { useNFT3Assets } from 'domains/data'
 import Typography from '@mui/material/Typography'
 import CircularProgress from '@mui/material/CircularProgress'
+import Tooltip from '@mui/material/Tooltip'
 
 const Poaps: FC = () => {
   const { poaps, loading } = useNFT3Assets()
@@ -45,15 +46,17 @@ const Poaps: FC = () => {
     <Box>
       <Grid container spacing={2}>
         {cards.map((poap) => (
-          <Grid item md={2} sm={3} xs={4} key={poap.id}>
-            <Avatar
-              alt={poap.name}
-              src={poap.image}
-              sx={{
-                width: 120,
-                height: 120,
-              }}
-            />
+          <Grid item xs={6} sm={4} md={3} lg={2} key={poap.id}>
+            <Tooltip title={poap.name} placement="top">
+              <Avatar
+                alt={poap.name}
+                src={poap.image}
+                sx={{
+                  width: 1,
+                  height: 1,
+                }}
+              />
+            </Tooltip>
           </Grid>
         ))}
       </Grid>
