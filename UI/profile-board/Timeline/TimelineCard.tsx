@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from 'react'
+import { Fragment, useCallback, useMemo } from 'react'
 import Avatar from '@mui/material/Avatar'
 import { styled } from '@mui/material/styles'
 import Card from '@mui/material/Card'
@@ -47,8 +47,10 @@ const DisplayTxs: FC<TxRecord> = ({ network, symbol, amount, from, to }) => {
     )
   }, [network])
 
-  const item = NETWORK_MAP[network]
-  const explorerUrl = item ? item.explorerUrl : 'https://etherscan.io'
+  const explorerUrl = useMemo(
+    () => safeGet(() => NETWORK_MAP[network].explorerUrl || 'https://etherscan.io'),
+    [network]
+  )
 
   if (isSend) {
     return (
