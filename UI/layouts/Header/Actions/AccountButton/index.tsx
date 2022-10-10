@@ -2,7 +2,6 @@ import type { FC } from 'react'
 import { useState, Fragment } from 'react'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
-import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Stack from '@mui/material/Stack'
 import ListItemText from '@mui/material/ListItemText'
@@ -17,6 +16,7 @@ import { H4 } from 'components/Typography'
 import * as sessionStorage from 'app/utils/cache/sessionStorage'
 import { useTheme } from '@mui/material/styles'
 import { safeGet } from 'app/utils/get'
+import { useAnchorMenu } from 'app/hooks/useAnchor'
 
 const AccountButton: FC = () => {
   const { format } = useNFT3()
@@ -24,17 +24,10 @@ const AccountButton: FC = () => {
   const router = useRouter()
   const theme = useTheme()
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
+  const { Menu, open, close } = useAnchorMenu()
 
   const onLogout = () => {
-    handleClose()
+    close()
     disconnect()
     sessionStorage.removeItem('sessionKey')
     logout()
@@ -64,7 +57,7 @@ const AccountButton: FC = () => {
             borderColor: theme.palette.primary.main,
           },
         }}
-        onClick={handleClick}
+        onClick={open}
       >
         <Stack spacing={2} direction="row" justifyContent="center">
           <Avatar
@@ -94,14 +87,11 @@ const AccountButton: FC = () => {
             padding: '12px 20px',
           },
         }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
       >
         <MenuItem
           onClick={() => {
             router.push('/profile/' + safeGet(() => didname.split('.isme')[0]))
-            handleClose()
+            close()
           }}
           sx={{
             borderBottom: `solid 1px ${theme.palette.divider}`,
@@ -115,7 +105,7 @@ const AccountButton: FC = () => {
         <MenuItem
           onClick={() => {
             router.push('/edit-profile')
-            handleClose()
+            close()
           }}
           sx={{
             borderBottom: `solid 1px ${theme.palette.divider}`,

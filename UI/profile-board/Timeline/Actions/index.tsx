@@ -1,12 +1,13 @@
 import type { FC } from 'react'
-import { useState, Fragment } from 'react'
+import { Fragment } from 'react'
 import IconButton from '@mui/material/IconButton'
-import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemText from '@mui/material/ListItemText'
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded'
 import type { TimelineRecord } from '@nft3sdk/client'
+
 import { safeGet } from 'app/utils/get'
+import { useAnchorMenu } from 'app/hooks/useAnchor'
 
 import { NETWORK_MAP } from '../netwrok'
 
@@ -16,31 +17,24 @@ type ActionsProps = Pick<TimelineRecord['item'], 'network'> & {
 
 const Actions: FC<ActionsProps> = ({ network, transaction }) => {
   const item = NETWORK_MAP[network]
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
+  const { Menu, open, close } = useAnchorMenu()
   if (!item || !transaction) return null
 
   const { explorerUrl } = item
 
   return (
     <Fragment>
-      <IconButton onClick={handleClick}>
+      <IconButton onClick={open}>
         <MoreVertRoundedIcon />
       </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu>
         <MenuItem
           sx={{
             padding: '12px 20px',
           }}
           onClick={() => {
             window.open(safeGet(() => `${explorerUrl}/search?f=0&q=${transaction}`))
-            handleClose()
+            close()
           }}
         >
           <ListItemText>View transaction</ListItemText>
