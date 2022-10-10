@@ -45,7 +45,7 @@ export const useForm = (initialValues = INITIAL_VALUES) => {
 
   const onUpload = useCallback(
     (file: File) => {
-      if (/\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.name) !== true) {
+      if (/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i.test(file.name) !== true) {
         return Promise.reject({ message: 'Invalid image type' })
       } else if (file.size > 1024 * 1024 * 2) {
         return Promise.reject({ message: 'Image size limit 2MB' })
