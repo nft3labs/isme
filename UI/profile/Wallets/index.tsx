@@ -51,7 +51,12 @@ const Wallets: FC = () => {
         )
       })}
       <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
-        <Button variant="outlined" disabled={loading || added} onClick={onAdd} startIcon={<AddRoundedIcon />}>
+        <Button
+          variant="outlined"
+          disabled={loading || added || !account}
+          onClick={onAdd}
+          startIcon={<AddRoundedIcon />}
+        >
           Add current wallet
         </Button>
         <Button variant="outlined" disabled={loading || accounts.length <= 1 || !added} onClick={onRemove}>

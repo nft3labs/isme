@@ -33,7 +33,7 @@ const AccountButton: FC = () => {
     logout()
   }
 
-  if (!account) {
+  if (!account && !didname) {
     return (
       <Button variant="gradient" onClick={() => selectDialog.open()}>
         Login
