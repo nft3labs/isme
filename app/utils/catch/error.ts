@@ -3,7 +3,7 @@ import { safeGet } from '../get'
 export const catchError = (e: any, title?: string) => {
   e = safeGet(() => e.error) || e
   const errors: any[] = safeGet(() => e.body.detail) || [e.body]
-  let message = safeGet(() => errors[0].msg)
+  let message = safeGet(() => errors[0].msg) || safeGet(() => e.message) || (typeof e === 'string' ? e : '')
   message = title ? `${title}, ${message}` : message
 
   return {
