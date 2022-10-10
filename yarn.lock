@@ -760,10 +760,10 @@
   resolved "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-12.2.5.tgz#20fed129b04a0d3f632c6d0de135345bb623b1e4"
   integrity sha512-7h5/ahY7NeaO2xygqVrSG/Y8Vs4cdjxIjowTZ5W6CKoTKn7tmnuxlUc2h74x06FKmbhAd9agOjr/AOKyxYYm9Q==
 
-"@nft3sdk/client@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/@nft3sdk/client/-/client-0.1.5.tgz#9fbbbfdf39fffd29ae0be540971f69e938d528c1"
-  integrity sha512-u8bgPmdTxHdN175/UN+2Agx0oINs5h9YUpDeeLSCU80+rldmdH5JBUbi8zqEnLv/qKLrBJF39Ek1fNavtbf3fg==
+"@nft3sdk/client@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/@nft3sdk/client/-/client-0.1.6.tgz#d9c97cfde18e4a6a3152a90fea9c501f73eea918"
+  integrity sha512-eLr97R0C3pfH4XnLHCnWhd/8931taN3PBSqXLYZI27F1ioJG+giS6QkVgYn7ytDlBbb41b0gR94iCKJiVp77Ww==
   dependencies:
     "@ethersproject/abstract-signer" "^5.6.2"
     "@ethersproject/basex" "^5.7.0"
@@ -778,13 +778,13 @@
     axios "^0.27.2"
     tweetnacl "^1.0.3"
 
-"@nft3sdk/did-manager@^0.1.4":
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/@nft3sdk/did-manager/-/did-manager-0.1.5.tgz#22e44b22002c3e1c1708553a03aee2a27ca17bf5"
-  integrity sha512-3mTOtrJWXyNe7a+OK4NYuYKtovUQtBlI9ZYqTWPEasBZ5/tB+/c8nV27bTi8wwvOX1p7EXrE5n1vqH1/oFTG1w==
+"@nft3sdk/did-manager@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/@nft3sdk/did-manager/-/did-manager-0.1.6.tgz#9b7be9d279aaf7cef5170186a7d67eef43408c0c"
+  integrity sha512-8dwQOztwZjNeUjAZe9K1sG+8jbq0TqFimOgQ77v0WifjbYj4Bj0QH4Duy2O/f5G87Jbu0irwxX9bkTlmHPrQuw==
   dependencies:
     "@ethersproject/providers" "^5.6.8"
-    "@nft3sdk/client" "0.1.5"
+    "@nft3sdk/client" "0.1.6"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -2670,6 +2670,16 @@ react-transition-group@^4.4.2:
   version "4.4.2"
   resolved "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
   integrity sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
+
+react-transition-group@^4.4.5:
+  version "4.4.5"
+  resolved "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
+  integrity sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==
   dependencies:
     "@babel/runtime" "^7.5.5"
     dom-helpers "^5.0.1"

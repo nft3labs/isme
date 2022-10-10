@@ -1,22 +1,27 @@
+import type { ForwardRefRenderFunction } from 'react'
+import { useRef, forwardRef } from 'react'
 import Paper from '@mui/material/Paper'
 import type { InputBaseProps } from '@mui/material/InputBase'
 import InputBase from '@mui/material/InputBase'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'
-import { useRef } from 'react'
-import { inputSetValue } from 'app/utils/dom/input'
-import { safeGet } from 'app/utils/get'
-import { useRouter } from 'next/router'
+import CircularProgress from '@mui/material/CircularProgress'
 import { useTheme } from '@mui/material/styles'
 
-const SearchInput: FC<InputBaseProps> = (props) => {
-  const router = useRouter()
+import { inputSetValue } from 'app/utils/dom/input'
+import { safeGet } from 'app/utils/get'
+
+type SearchInputProps = InputBaseProps & {
+  loading: boolean
+}
+const SearchInput: ForwardRefRenderFunction<HTMLFormElement, SearchInputProps> = (props, ref) => {
   const inputRef = useRef<HTMLInputElement>()
   const theme = useTheme()
   return (
     <Paper
       component="form"
+      ref={ref}
       elevation={3}
       sx={{
         p: '2px 4px',
@@ -34,23 +39,18 @@ const SearchInput: FC<InputBaseProps> = (props) => {
         sx={{ p: '10px' }}
         aria-label="search"
         onClick={() => {
-          if (props.value) {
-            router.push('/profile/' + props.value)
-          } else {
-            const input = safeGet(() => inputRef.current)
-            if (input) input.focus()
-          }
+          const input = safeGet(() => inputRef.current)
+          if (input) input.focus()
         }}
       >
-        <SearchIcon />
+        {props.loading ? <CircularProgress size={24} /> : <SearchIcon />}
       </IconButton>
       <InputBase
         inputRef={inputRef}
         sx={{ ml: 1, flex: 1 }}
         {...props}
         onKeyDown={(e) => {
-          if (e.code === 'Enter' && props.value) {
-            router.push('/profile/' + props.value)
+          if (e.code === 'Enter') {
             e.preventDefault()
           }
         }}
@@ -72,4 +72,4 @@ const SearchInput: FC<InputBaseProps> = (props) => {
   )
 }
 
-export default SearchInput
+export default forwardRef(SearchInput)
