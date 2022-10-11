@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+import { NFT3Queryer } from '@nft3sdk/client'
 import { createContext } from 'app/utils/createContext'
 
 import useIpfs from './hooks/useIpfs'
@@ -11,9 +13,14 @@ import WalletProvider from './wallet'
 const useNFT3Service = () => {
   const { format, upload } = useIpfs()
 
+  const queryer = useMemo(() => {
+    return new NFT3Queryer('https://t0.onebitdev.com/nft3-queryer/')
+  }, [])
+
   return {
     format,
     upload,
+    queryer,
   }
 }
 const { Provider: NFT3Provider, createUseContext } = createContext(useNFT3Service)

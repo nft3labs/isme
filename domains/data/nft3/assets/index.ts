@@ -1,11 +1,11 @@
 import { createContext } from 'app/utils/createContext'
-import { useNFT3Profile } from 'domains/data'
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useNFT3, useNFT3Profile } from 'domains/data'
+import { useState, useCallback, useEffect } from 'react'
 import type { TokenRecord, OpenseaAssetsRecord, ENSRecord, TimelineRecord, POAPRecord } from '@nft3sdk/client'
-import { NFT3Queryer } from '@nft3sdk/client'
 import { useTimeline } from './timeline'
 
 const useAssetsService = () => {
+  const { queryer } = useNFT3()
   const [openseaLoading, setOpenseaLoading] = useState(false)
   const [loading, setLoading] = useState(false)
   const { did: identifier, didinfo } = useNFT3Profile()
@@ -15,10 +15,6 @@ const useAssetsService = () => {
   const [ens, setEns] = useState<ENSRecord[]>([])
   const [timelineData, setTimelineData] = useState<TimelineRecord[]>([])
   const [poaps, setPoaps] = useState<POAPRecord[]>([])
-
-  const queryer = useMemo(() => {
-    return new NFT3Queryer('https://t0.onebitdev.com/nft3-queryer/')
-  }, [])
 
   const updateAssets = useCallback(async () => {
     if (!identifier) {

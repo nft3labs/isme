@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ProfileModel, DIDInfo, WithMeta } from '@nft3sdk/client'
 import { createContext } from 'app/utils/createContext'
+import { merge } from 'lodash'
 
 import { useUser } from 'domains/data'
 import { getProfile } from './adapter'
@@ -33,6 +34,8 @@ const useProfileService = () => {
 
   const setProfile = useCallback(
     async (data: Partial<ProfileModel>) => {
+      const info = await client.profile.info()
+      data = merge(info, data)
       const result = await client.profile.update(data as any)
       updateProfile()
       return result

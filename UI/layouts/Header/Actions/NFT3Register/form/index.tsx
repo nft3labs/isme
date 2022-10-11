@@ -1,5 +1,7 @@
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
+import FormControl from '@mui/material/FormControl'
+import FormHelperText from '@mui/material/FormHelperText'
 import InputAdornment from '@mui/material/InputAdornment'
 import Image from 'next/image'
 
@@ -11,7 +13,7 @@ import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 import { useForm } from './useForm'
 
 const Form = (): JSX.Element => {
-  const { formik, account } = useForm()
+  const { formik, account, ens } = useForm()
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -21,9 +23,11 @@ const Form = (): JSX.Element => {
           <Stack spacing={1} direction="row">
             <Image src={ETHImg} alt="ETH" />
             <Paragraph lineHeight="24px">{textCenterEllipsis(account)}</Paragraph>
-            <Tiny color="text.secondary" lineHeight="24px">
-              (Current)
-            </Tiny>
+            {ens && (
+              <Tiny color="text.secondary" lineHeight="24px">
+                ({ens.ensName})
+              </Tiny>
+            )}
           </Stack>
         </Stack>
         <Stack spacing={2}>
@@ -44,6 +48,34 @@ const Form = (): JSX.Element => {
             onChange={formik.handleChange}
             error={formik.touched.didname && Boolean(formik.errors.didname)}
             helperText={formik.touched.didname && formik.errors.didname}
+          />
+        </Stack>
+        <Stack spacing={2}>
+          <H5>Bio</H5>
+          <FormControl variant="standard">
+            <TextField
+              name="bio"
+              placeholder="Tell us about yourself"
+              value={formik.values.bio}
+              onChange={formik.handleChange}
+              rows={3}
+              multiline
+            />
+            <FormHelperText error>{formik.touched.bio && formik.errors.bio}</FormHelperText>
+          </FormControl>
+        </Stack>
+        <Stack spacing={2}>
+          <H5>Url</H5>
+
+          <TextField
+            variant="outlined"
+            name="url"
+            fullWidth
+            placeholder="Add a link"
+            value={formik.values.url}
+            onChange={formik.handleChange}
+            error={formik.touched.url && Boolean(formik.errors.url)}
+            helperText={formik.touched.url && formik.errors.url}
           />
         </Stack>
         <SubmitBotton size="large" variant="gradient" isSubmitting={formik.isSubmitting}>
