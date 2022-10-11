@@ -15,7 +15,7 @@ import { safeGet } from 'app/utils/get'
 type SearchInputProps = InputBaseProps & {
   loading: boolean
 }
-const SearchInput: ForwardRefRenderFunction<HTMLFormElement, SearchInputProps> = (props, ref) => {
+const SearchInput: ForwardRefRenderFunction<HTMLFormElement, SearchInputProps> = ({ loading, ...props }, ref) => {
   const inputRef = useRef<HTMLInputElement>()
   const theme = useTheme()
   return (
@@ -43,7 +43,7 @@ const SearchInput: ForwardRefRenderFunction<HTMLFormElement, SearchInputProps> =
           if (input) input.focus()
         }}
       >
-        {props.loading ? <CircularProgress size={24} /> : <SearchIcon />}
+        {loading ? <CircularProgress size={24} /> : <SearchIcon />}
       </IconButton>
       <InputBase
         inputRef={inputRef}
