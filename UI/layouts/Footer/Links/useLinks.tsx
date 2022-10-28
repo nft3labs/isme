@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 
 import GitHubIcon from '@mui/icons-material/GitHub'
-// import MenuBookIcon from '@mui/icons-material/MenuBook'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import EmailIcon from '@mui/icons-material/Email'
@@ -31,7 +31,7 @@ const MediumIcon = styled('div')`
 const links = [
   { label: 'Telegram', linkTo: 'https://t.me/nft3com', icon: <TelegramIcon /> },
   { label: 'Twitter', linkTo: 'https://twitter.com/nft3com', icon: <TwitterIcon /> },
-  // { label: 'Docs', linkTo: 'https://docs.nft3pass.io', icon: <MenuBookIcon /> },
+  { label: 'Docs', linkTo: 'https://sdk.nft3.com/docs/nft3-pass/intro', icon: <MenuBookIcon /> },
   {
     label: 'Medium',
     linkTo: 'https://medium.com/nft3',

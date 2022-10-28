@@ -98,7 +98,7 @@ const Home: FC = () => {
           <Stack spacing={4}>
             <Stack spacing={2}>
               <H1>Your Decentralized Identity for Web 3.0</H1>
-              <H3 sx={{ color: 'text.secondary' }}>Connect everything in the first unified social idendity network</H3>
+              <H3 sx={{ color: 'text.secondary' }}>Connect everything in the first unified social identity network</H3>
             </Stack>
             {/* <Stack spacing={4} direction="row">
               <Stack spacing={2}>
