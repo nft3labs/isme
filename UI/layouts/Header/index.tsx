@@ -12,6 +12,7 @@ const Actions = dynamic(() => import('./Actions'), { ssr: false })
 
 const ROOT = styled('header')`
   position: relative;
+  /* background-color: #58F1C5; */
 `
 const BODY = styled(Box)`
   height: 85px;
