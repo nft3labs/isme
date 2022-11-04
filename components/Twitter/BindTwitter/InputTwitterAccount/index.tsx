@@ -3,6 +3,7 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import { useNFT3Social } from 'domains/data'
 import StepActions from '../StepActions'
+import InputAdornment from '@mui/material/InputAdornment';
 
 type InputTwitterAccountProps = StepProps & {
   account: string
@@ -20,6 +21,9 @@ const InputTwitterAccount: FC<InputTwitterAccountProps> = (props) => {
         value={account}
         onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
           setAccount(event.target.value)
+        }}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">https://twitter.com/</InputAdornment>,
         }}
       />
       <StepActions
