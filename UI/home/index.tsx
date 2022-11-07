@@ -7,90 +7,15 @@ import Image from 'next/image'
 import BackgroundImage from './images/001-background.png'
 import { H1, H2, H3 } from 'components/Typography'
 import FollowGrid from 'components/Follow/FollowGrid'
-import type { FollowMember } from 'components/Follow/types'
-import { DEFAULT_AVATARS, getFilePath } from 'app/constant'
 import { useUser } from 'domains/data'
-// import { DisplayNumber } from 'components/Number'
+import { useFeaturedPeoples } from './useFeaturedPeoples'
 
-const FEATURED_PEOPLES: FollowMember[] = [
-  {
-    identifier: 'did:nft3:nakamoto',
-    name: 'nakamoto',
-    avatar: getFilePath(DEFAULT_AVATARS[0]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Eric',
-    name: 'Eric',
-    avatar: getFilePath(DEFAULT_AVATARS[1]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Nathan',
-    name: 'Nathan',
-    avatar: getFilePath(DEFAULT_AVATARS[2]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Harper',
-    name: 'Harper',
-    avatar: getFilePath(DEFAULT_AVATARS[3]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Costa',
-    name: 'Costa',
-    avatar: getFilePath(DEFAULT_AVATARS[4]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Jacapo',
-    name: 'Jacapo',
-    avatar: getFilePath(DEFAULT_AVATARS[5]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Zoe',
-    name: 'Zoe',
-    avatar: getFilePath(DEFAULT_AVATARS[6]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Fox',
-    name: 'Fox',
-    avatar: getFilePath(DEFAULT_AVATARS[7]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Anya',
-    name: 'Anya',
-    avatar: getFilePath(DEFAULT_AVATARS[8]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Sterling',
-    name: 'Sterling',
-    avatar: getFilePath(DEFAULT_AVATARS[0]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:John',
-    name: 'John',
-    avatar: getFilePath(DEFAULT_AVATARS[1]),
-    bio: '',
-  },
-  {
-    identifier: 'did:nft3:Jones',
-    name: 'Jones',
-    avatar: getFilePath(DEFAULT_AVATARS[2]),
-    bio: '',
-  },
-]
 const ROOT = styled(Stack)``
 const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
 
 const Home: FC = () => {
   const { account, selectDialog } = useUser()
+  const { followers } = useFeaturedPeoples()
   return (
     <ROOT spacing={{ xs: 8, sm: 2 }}>
       <Grid container justifyContent="center" alignItems="center" flexDirection={{ xs: 'column-reverse', sm: 'row' }}>
@@ -140,7 +65,7 @@ const Home: FC = () => {
       </Grid>
       <Stack spacing={4}>
         <H2 textAlign="center">Featured People</H2>
-        <FollowGridDynamic followers={FEATURED_PEOPLES} />
+        <FollowGridDynamic followers={followers} />
       </Stack>
     </ROOT>
   )

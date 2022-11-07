@@ -760,10 +760,10 @@
   resolved "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-12.2.5.tgz#20fed129b04a0d3f632c6d0de135345bb623b1e4"
   integrity sha512-7h5/ahY7NeaO2xygqVrSG/Y8Vs4cdjxIjowTZ5W6CKoTKn7tmnuxlUc2h74x06FKmbhAd9agOjr/AOKyxYYm9Q==
 
-"@nft3sdk/client@0.1.6":
-  version "0.1.6"
-  resolved "https://registry.npmjs.org/@nft3sdk/client/-/client-0.1.6.tgz#d9c97cfde18e4a6a3152a90fea9c501f73eea918"
-  integrity sha512-eLr97R0C3pfH4XnLHCnWhd/8931taN3PBSqXLYZI27F1ioJG+giS6QkVgYn7ytDlBbb41b0gR94iCKJiVp77Ww==
+"@nft3sdk/client@0.1.8":
+  version "0.1.8"
+  resolved "https://registry.npmjs.org/@nft3sdk/client/-/client-0.1.8.tgz#38a1bf39c5882675ece31cd36b0e473e845dd6d5"
+  integrity sha512-KOXPmHGzpjucqX4Ta99c89WEnOFgYaI+YaS6HXbp252Z5wfyJMOAHa5rgP70PEfjRLBCsJJNoKqDJU/jlFdLKg==
   dependencies:
     "@ethersproject/abstract-signer" "^5.6.2"
     "@ethersproject/basex" "^5.7.0"
@@ -778,13 +778,13 @@
     axios "^0.27.2"
     tweetnacl "^1.0.3"
 
-"@nft3sdk/did-manager@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.npmjs.org/@nft3sdk/did-manager/-/did-manager-0.1.6.tgz#9b7be9d279aaf7cef5170186a7d67eef43408c0c"
-  integrity sha512-8dwQOztwZjNeUjAZe9K1sG+8jbq0TqFimOgQ77v0WifjbYj4Bj0QH4Duy2O/f5G87Jbu0irwxX9bkTlmHPrQuw==
+"@nft3sdk/did-manager@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.npmjs.org/@nft3sdk/did-manager/-/did-manager-0.1.8.tgz#97477abb6eeeef683a81e0511a9851c07e188054"
+  integrity sha512-DlmMr9VqoFngvsGGFufX5MYLLlGKQZGXet/pGvopEdsM6ZfOvUbgkqQPzDF0Cd+GTJX/S5oqiq81yw7HVKs8kg==
   dependencies:
     "@ethersproject/providers" "^5.6.8"
-    "@nft3sdk/client" "0.1.6"
+    "@nft3sdk/client" "0.1.8"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
