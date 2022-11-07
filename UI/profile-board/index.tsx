@@ -10,8 +10,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 
-import { useNFT3Follow, useNFT3Profile } from 'domains/data'
-import { safeGet } from 'app/utils/get'
+import { useNFT3Profile } from 'domains/data'
 import Follow from 'components/Follow'
 
 import ProfileInfo from './ProfileInfo'
@@ -24,7 +23,6 @@ const ROOT = styled(Stack)``
 
 const ProfileBoard: FC = () => {
   const { ready, didinfo } = useNFT3Profile()
-  const follow = useNFT3Follow()
   const tabs = useMemo(() => {
     const returnValue: TabsProps['tabs'] = [
       {
@@ -53,7 +51,6 @@ const ProfileBoard: FC = () => {
         children: {
           component: Follow,
           props: {
-            followers: safeGet(() => follow.following) || [],
             name: 'following',
           },
         },
@@ -66,14 +63,13 @@ const ProfileBoard: FC = () => {
         children: {
           component: Follow,
           props: {
-            followers: safeGet(() => follow.followers) || [],
             name: 'followers',
           },
         },
       },
     ]
     return returnValue
-  }, [follow.followers, follow.following])
+  }, [])
 
   if (!ready) {
     return (

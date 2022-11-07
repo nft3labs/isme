@@ -8,7 +8,21 @@ const useFollowService = () => {
   const { identifier } = useUser()
   const { did } = useNFT3Profile()
   const [followed, setFollowed] = useState(false)
-  const { count, following, followers, follow, unfollow, check, updateFollower } = useFollow(did)
+  const {
+    count,
+    following,
+    followers,
+    follow,
+    unfollow,
+    check,
+    updateFollower,
+    loadMoreFollowingData,
+    loadMoreFollowersData,
+    isFollowingEnd,
+    isFollowersEnd,
+    followingLoading,
+    followersLoading,
+  } = useFollow(did)
 
   const checkUserFollow = useCallback(() => {
     if (!did) return
@@ -40,6 +54,12 @@ const useFollowService = () => {
     follow: userFollow,
     unfollow: userUnfollow,
     checkUserFollow,
+    loadMoreFollowingData,
+    loadMoreFollowersData,
+    isFollowingEnd,
+    isFollowersEnd,
+    followingLoading,
+    followersLoading,
   }
 }
 const { Provider: FollowProvider, createUseContext } = createContext(useFollowService)
