@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 import dynamic from 'next/dynamic'
 import Stack from '@mui/material/Stack'
-import { H1, H2, H3 } from 'components/Typography'
+import { H1, H3 } from 'components/Typography'
 import FollowGrid from 'components/Follow/FollowGrid'
 import { useNFT3FeaturedPeoples } from 'domains/data'
 import Button from '@mui/material/Button'
@@ -16,13 +16,12 @@ const Explore: FC = () => {
   const loadMoreData = () => {}
 
   return (
-    <ROOT spacing={{ xs: 8, sm: 2 }}>
-      <Stack spacing={2}>
-        <H1>Your Decentralized Identity for Web 3.0</H1>
-        <H3 sx={{ color: 'text.secondary' }}>Connect everything in the first unified social identity network</H3>
+    <ROOT spacing={{ xs: 4, sm: 6 }}>
+      <Stack spacing={2} marginTop={{ xs:2, sm: 8 }}>
+        <H1>Find people in Web 3.0 world.</H1>
+        <H3 sx={{ color: 'text.secondary' }}>Connect with key opinion leaders in NFT3 network.</H3>
       </Stack>
       <Stack spacing={4}>
-        <H2 textAlign="center">Featured People</H2>
         <Stack spacing={2}>
           <FollowGridDynamic followers={featuredPeoples} />
           {isEnd ? (
