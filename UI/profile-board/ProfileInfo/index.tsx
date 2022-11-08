@@ -109,7 +109,7 @@ const ProfileInfo: FC = () => {
               <H3 fontWeight={700}>
                 <DisplayNumber value={count.followers} />
               </H3>
-              <Paragraph sx={{ color: 'text.secondary' }}>Follows</Paragraph>
+              <Paragraph sx={{ color: 'text.secondary' }}>Followers</Paragraph>
             </Stack>
           </FlexBetween>
         </Stack>

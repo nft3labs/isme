@@ -122,7 +122,18 @@ const FollowCard: FC<FollowMember> = (props) => {
               <DisplayNumber value={count.followers} />
               <span> Followers</span>
             </Paragraph>
-            <Paragraph sx={{ color: 'grey.400' }}>{bio}</Paragraph>
+            <Paragraph
+              sx={{
+                color: 'grey.400',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+              }}
+            >
+              {bio}
+            </Paragraph>
           </Stack>
         </Stack>
         <CardActions>{followContent}</CardActions>

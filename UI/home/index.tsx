@@ -7,15 +7,20 @@ import Image from 'next/image'
 import BackgroundImage from './images/001-background.png'
 import { H1, H2, H3 } from 'components/Typography'
 import FollowGrid from 'components/Follow/FollowGrid'
-import { useUser } from 'domains/data'
-import { useFeaturedPeoples } from './useFeaturedPeoples'
+import { useNFT3FeaturedPeoples, useUser } from 'domains/data'
+import { useMemo } from 'react'
 
 const ROOT = styled(Stack)``
 const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
 
 const Home: FC = () => {
   const { account, selectDialog } = useUser()
-  const { followers } = useFeaturedPeoples()
+  const { featuredPeoples } = useNFT3FeaturedPeoples()
+  const followers = useMemo(() => {
+    if (!featuredPeoples) return []
+    return featuredPeoples.slice(0, 12)
+  }, [featuredPeoples])
+
   return (
     <ROOT spacing={{ xs: 8, sm: 2 }}>
       <Grid container justifyContent="center" alignItems="center" flexDirection={{ xs: 'column-reverse', sm: 'row' }}>
