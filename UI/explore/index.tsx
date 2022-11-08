@@ -10,30 +10,25 @@ const ROOT = styled(Stack)``
 const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
 
 const Explore: FC = () => {
-  const { featuredPeoples } = useNFT3FeaturedPeoples()
-  const isEnd = false
-  const loading = false
-  const loadMoreData = () => {}
+  const { featuredPeoples, isEnd, loading, loadMoreData } = useNFT3FeaturedPeoples()
 
   return (
     <ROOT spacing={{ xs: 4, sm: 6 }}>
-      <Stack spacing={2} marginTop={{ xs:2, sm: 8 }}>
+      <Stack spacing={2} marginTop={{ xs: 2, sm: 8 }}>
         <H1>Find people in Web 3.0 world.</H1>
         <H3 sx={{ color: 'text.secondary' }}>Connect with key opinion leaders in NFT3 network.</H3>
       </Stack>
-      <Stack spacing={4}>
-        <Stack spacing={2}>
-          <FollowGridDynamic followers={featuredPeoples} />
-          {isEnd ? (
-            <Button size="small" disabled>
-              No more data
-            </Button>
-          ) : (
-            <Button size="small" disabled={loading} onClick={loadMoreData}>
-              Load More
-            </Button>
-          )}
-        </Stack>
+      <Stack spacing={2}>
+        <FollowGridDynamic followers={featuredPeoples} />
+        {isEnd ? (
+          <Button size="small" disabled>
+            No more data
+          </Button>
+        ) : (
+          <Button size="small" disabled={loading} onClick={loadMoreData}>
+            Load More
+          </Button>
+        )}
       </Stack>
     </ROOT>
   )
