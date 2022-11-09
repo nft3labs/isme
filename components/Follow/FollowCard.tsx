@@ -18,7 +18,9 @@ import { DisplayNumber } from 'components/Number'
 import { useRouter } from 'next/router'
 import Unfollow from './Unfollow'
 
-const ROOT = styled(Card)``
+const ROOT = styled(Card)`
+  min-height: 155px;
+`
 
 const Content = styled(CardContent)`
   display: flex;
@@ -110,11 +112,18 @@ const FollowCard: FC<FollowMember> = (props) => {
             src={format(avatar)}
             onClick={goToProfileBoard}
           />
-          <Stack spacing={1}>
+          <Stack
+            spacing={1}
+            sx={{
+              flex: 1,
+              width: 0,
+            }}
+          >
             <H4
               sx={{ cursor: 'pointer', '&:hover': { color: theme.palette.primary.main } }}
               onClick={goToProfileBoard}
               fontWeight="medium"
+              ellipsis
             >
               {name}.isme
             </H4>
