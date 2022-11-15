@@ -23,11 +23,11 @@ function MainApp(props: MyAppProps): JSX.Element {
             <meta name="description" content="NFT3 Pass is your decentralized identity (DID) for Web 3.0" />
 
             <meta property="og:type" content="website" />
-            <meta property="og:site_name" content="NFT3 Pass | Your Decentralized Identity for Web 3.0" />
-            <meta property="og:image" content="https://pass.nft3.com/logo.svg" />
-            <meta property="og:description" content="Connect everything in the first unified social identity network" />
-            <meta property="og:title" content="NFT3 Pass" />
-            <meta property="og:url" content="https://pass.nft3.com/" />
+            <meta key="og:site_name" property="og:site_name" content="NFT3 Pass | Your Decentralized Identity for Web 3.0" />
+            <meta key="og:image" property="og:image" content="https://pass.nft3.com/logo.svg" />
+            <meta key="og:description" property="og:description" content="Connect everything in the first unified social identity network" />
+            <meta key="og:title" property="og:title" content="NFT3 Pass" />
+            <meta key="og:url" property="og:url" content="https://pass.nft3.com/" />
 
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:title" content="NFT3 Pass | Your Decentralized Identity for Web 3.0" />
