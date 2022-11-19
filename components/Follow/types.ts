@@ -3,4 +3,5 @@ export type FollowMember = {
   name: string
   avatar: string
   bio: string
+  followers?: number
 }

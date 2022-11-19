@@ -35,6 +35,7 @@ const useFeaturedPeoplesService = () => {
                     name: item.profile.name,
                     avatar: item.profile.avatar || getFilePath(DEFAULT_AVATARS[index % DEFAULT_AVATARS.length]),
                     bio: item.profile.bio || '',
+                    followers: item.followers,
                   } as FollowMember
                 })
             )

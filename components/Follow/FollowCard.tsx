@@ -128,7 +128,7 @@ const FollowCard: FC<FollowMember> = (props) => {
               {name}.isme
             </H4>
             <Paragraph sx={{ color: 'text.secondary' }}>
-              <DisplayNumber value={count.followers} />
+              <DisplayNumber value={count.followers || props.followers} />
               <span> Followers</span>
             </Paragraph>
             <Paragraph
