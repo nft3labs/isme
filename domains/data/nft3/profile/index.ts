@@ -65,6 +65,7 @@ const useProfileService = () => {
 
     setDidname,
     setProfile,
+    setProfileInternal,
     updateProfile,
     updateDidInfo,
 

@@ -9,29 +9,14 @@ import { NFT3Provider } from '@nft3sdk/did-manager'
 import 'lib/toastify/styles.css'
 import 'simplebar-react/dist/simplebar.min.css'
 
-const endpoint = 'https://t0.onebitdev.com/nft3-gateway/'
+export const NFT3Endpoint = 'https://t0.onebitdev.com/nft3-gateway/'
 
 function MainApp(props: MyAppProps): JSX.Element {
   return (
-    <NFT3Provider endpoint={endpoint} silent>
+    <NFT3Provider endpoint={NFT3Endpoint} silent>
       <StoreProvider store={store}>
         <DomainsProvider>
           <Head>
-            <title>NFT3 Pass | Your Decentralized Identity for Web 3.0</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-            <link rel="icon" href="/favicon.ico" />
-            <meta name="description" content="NFT3 Pass is your decentralized identity (DID) for Web 3.0" />
-
-            <meta property="og:type" content="website" />
-            <meta key="og:site_name" property="og:site_name" content="NFT3 Pass | Your Decentralized Identity for Web 3.0" />
-            <meta key="og:image" property="og:image" content="https://pass.nft3.com/logo.svg" />
-            <meta key="og:description" property="og:description" content="Connect everything in the first unified social identity network" />
-            <meta key="og:title" property="og:title" content="NFT3 Pass" />
-            <meta key="og:url" property="og:url" content="https://pass.nft3.com/" />
-
-            <meta name="twitter:card" content="summary" />
-            <meta name="twitter:title" content="NFT3 Pass | Your Decentralized Identity for Web 3.0" />
-            <meta name="twitter:site" content="@nft3com" />
           </Head>
           <App {...props} />
         </DomainsProvider>

@@ -7,8 +7,7 @@ const BaseUrl = 'https://t0.onebitdev.com/ipfs'
 export default function useIpfs() {
   const format = useCallback((link: string) => {
     if (!link) return
-    const url = new URL(link)
-    const key = url.pathname.replace(/^\/\//, '')
+    const key = link.replace(/^ipfs:\/\//, '')
     return `${BaseUrl}/${key}`
   }, [])
 
