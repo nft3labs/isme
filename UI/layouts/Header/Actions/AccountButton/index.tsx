@@ -99,7 +99,7 @@ const AccountButton: FC = () => {
       >
         <MenuItem
           onClick={() => {
-            router.push('/profile/' + safeGet(() => didname.split('.isme')[0]))
+            router.push('/' + safeGet(() => didname.split('.isme')[0]))
             close()
           }}
           sx={{
@@ -113,7 +113,7 @@ const AccountButton: FC = () => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            router.push('/edit-profile')
+            router.push('/app/edit-profile')
             close()
           }}
           sx={{

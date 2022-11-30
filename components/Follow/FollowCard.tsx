@@ -93,7 +93,7 @@ const FollowCard: FC<FollowMember> = (props) => {
   }, [did, followed, identifier, selectDialog, userFollow, userUnfollow])
 
   const goToProfileBoard = useCallback(() => {
-    router.push(`/profile/` + name)
+    router.push(`/` + name)
   }, [name, router])
 
   return (

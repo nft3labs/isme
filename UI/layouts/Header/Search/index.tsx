@@ -95,7 +95,7 @@ const Search = () => {
                     padding: '12px 20px',
                   }}
                   onClick={() => {
-                    router.push('/profile/' + option.didname)
+                    router.push('/' + option.didname)
                     close()
                   }}
                 >

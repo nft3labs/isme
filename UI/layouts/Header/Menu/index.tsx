@@ -26,7 +26,7 @@ const Menu: FC = () => {
           href="/explore"
           onClick={(e) => {
             e.preventDefault()
-            router.push('/explore')
+            router.push('/app/explore')
           }}
         >
           Explore

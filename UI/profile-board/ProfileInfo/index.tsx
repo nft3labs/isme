@@ -59,12 +59,18 @@ const ProfileInfo: FC = () => {
     <ROOT sx={{ paddingX: 2, paddingY: 4 }}>
       <Head>
         <title>{profile.name}.isme | NFT3 Pass</title>
-        <meta name="description" content={profile.bio || "NFT3 Pass is your decentralized identity (DID) for Web 3.0"} />
+        <meta
+          name="description"
+          content={profile.bio || 'NFT3 Pass is your decentralized identity (DID) for Web 3.0'}
+        />
         <meta key="og:site_name" property="og:site_name" content={`${profile.name}.isme | NFT3 Pass`} />
-        <meta key="og:image" property="og:image" content={ profile.avatar || "https://pass.nft3.com/logo.svg" } />
-        <meta key="og:description"  content={profile.bio || "Connect everything in the first unified social identity network"} />
+        <meta key="og:image" property="og:image" content={profile.avatar || 'https://pass.nft3.com/logo.svg'} />
+        <meta
+          key="og:description"
+          content={profile.bio || 'Connect everything in the first unified social identity network'}
+        />
         <meta key="og:title" property="og:title" content={`${profile.name}.isme | NFT3 Pass`} />
-        <meta key="og:url" property="og:url" content={`https://pass.nft3.com/profile/${profile.name}`} />
+        <meta key="og:url" property="og:url" content={`https://pass.nft3.com/${profile.name}`} />
 
         <meta key="twitter:title" name="twitter:title" content={`${profile.name}.isme | NFT3 Pass`} />
       </Head>
@@ -133,7 +139,7 @@ const ProfileInfo: FC = () => {
             size="large"
             fullWidth
             onClick={() => {
-              router.push('/edit-profile')
+              router.push('/app/edit-profile')
             }}
           >
             Edit Profile

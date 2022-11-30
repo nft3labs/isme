@@ -65,7 +65,7 @@ export const useForm = () => {
           registerDialog.close()
           login().then(({ result, needRegister }) => {
             if (result) {
-              router.push(`/profile/` + values.didname)
+              router.push(`/` + values.didname)
               setProfile(values)
             } else if (needRegister === true) {
             } else {
