@@ -42,7 +42,7 @@ const IndexPage: FC<{ id: string; profile: WithMeta<ProfileModel> }> = (props) =
   const headerProps: HeaderProps = {}
 
   if (profile) {
-    headerProps.title = `${id}.isme | NFT3 Pass`
+    headerProps.title = `${id}.isme | ISME`
     headerProps.description = profile.bio
     headerProps.ogDescription = headerProps.description
     headerProps.image = format(profile.avatar)

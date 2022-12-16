@@ -8,10 +8,10 @@ export type HeaderProps = {
   twitter?: string
 }
 const Header: FC<HeaderProps> = (props) => {
-  const title = props.title || 'NFT3 Pass | Your Decentralized Identity for Web 3.0'
-  const description = props.description || 'NFT3 Pass is your decentralized identity (DID) for Web 3.0'
+  const title = props.title || 'ISME | Your Decentralized Identity for Web 3.0'
+  const description = props.description || 'ISME is your decentralized identity (DID) for Web 3.0'
   const ogDescription = props.ogDescription || 'Connect everything in the first unified social identity network'
-  const image = props.image || 'https://pass.nft3.com/logo.svg'
+  const image = props.image || 'https://isme.is/logo.svg'
   const twitter = props.twitter || '@nft3com'
   return (
     <Head>
@@ -25,7 +25,7 @@ const Header: FC<HeaderProps> = (props) => {
       <meta key="og:image" property="og:image" content={image} />
       <meta key="og:description" property="og:description" content={ogDescription} />
       <meta key="og:title" property="og:title" content={title} />
-      <meta key="og:url" property="og:url" content="https://pass.nft3.com/" />
+      <meta key="og:url" property="og:url" content="https://isme.is/" />
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={title} />

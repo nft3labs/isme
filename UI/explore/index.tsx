@@ -16,7 +16,7 @@ const Explore: FC = () => {
     <ROOT spacing={{ xs: 4, sm: 6 }}>
       <Stack spacing={2} marginTop={{ xs: 2, sm: 8 }}>
         <H1>Find people in Web 3.0 world.</H1>
-        <H3 sx={{ color: 'text.secondary' }}>Connect with key opinion leaders in NFT3 network.</H3>
+        <H3 sx={{ color: 'text.secondary' }}>Connect with key opinion leaders in ISME network.</H3>
       </Stack>
       <Stack spacing={2}>
         <FollowGridDynamic followers={featuredPeoples} />

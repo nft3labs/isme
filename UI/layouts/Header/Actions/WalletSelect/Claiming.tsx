@@ -16,7 +16,7 @@ const Claiming: FC<{ dialog: DialogValues }> = ({ dialog }) => {
         <Box textAlign='center'>
           <Image src={ImgSrc} alt='Claim Your DID Account' />
         </Box>
-        <H3 color='text.secondary'>Congrats! You're elegible to claim NFT3 Decentralized Identity (DID).</H3>
+        <H3 color='text.secondary'>Congrats! You're elegible to claim ISME Decentralized Identity (DID).</H3>
         <Button
           variant='contained'
           size='large'

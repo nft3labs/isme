@@ -15,7 +15,7 @@ const Logo = (props: LogoProps) => {
   return (
     <Link href={'/'} passHref>
       <ROOT>
-        <Image src={props.imgSrc || LogoImg} alt="NFT3 Pass" height={50} width={108}/>
+        <Image src={props.imgSrc || LogoImg} alt="ISME" height={50} width={108}/>
       </ROOT>
     </Link>
   )
