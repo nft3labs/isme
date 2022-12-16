@@ -2,10 +2,10 @@ import type { ThemeOptions } from '@mui/material/styles'
 import { alpha } from '@mui/material/styles'
 import { getShadows } from './utils'
 
-const primaryMain = '#52C8AD'
-const secondaryMain = '#1362FF'
-const gradientColorMain = `linear-gradient(271.69deg, ${primaryMain}, ${secondaryMain})`
-const gradientColorButton = `linear-gradient(271.69deg, ${secondaryMain}, ${primaryMain}, ${secondaryMain})`
+const primaryMain = '#00EA75'
+const secondaryMain = '#00A3FF'
+const gradientColorMain = `linear-gradient(90deg, ${primaryMain}, ${secondaryMain})`
+const gradientColorButton = `linear-gradient(90deg, ${primaryMain}, ${primaryMain}, ${secondaryMain})`
 
 export const lightThemeOptions: ThemeOptions = {
   palette: {
