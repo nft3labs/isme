@@ -5,10 +5,11 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Image from 'next/image'
 import BackgroundImage from './images/001-background.png'
-import { H1, H2, H3 } from 'components/Typography'
+import { H1, H2, H3, Span } from 'components/Typography'
 import FollowGrid from 'components/Follow/FollowGrid'
-import { useNFT3FeaturedPeoples, useUser } from 'domains/data'
+import { useNFT3FeaturedPeoples, useNFT3Stats, useUser } from 'domains/data'
 import { useMemo } from 'react'
+import { DisplayNumber } from 'components/Number'
 
 const ROOT = styled(Stack)``
 const FollowGridDynamic = dynamic(async () => FollowGrid, { ssr: false })
@@ -20,6 +21,9 @@ const Home: FC = () => {
     if (!featuredPeoples) return []
     return featuredPeoples.slice(0, 12)
   }, [featuredPeoples])
+  const {
+    stats: { followings, dids },
+  } = useNFT3Stats()
 
   return (
     <ROOT spacing={{ xs: 8, sm: 2 }}>
@@ -30,18 +34,20 @@ const Home: FC = () => {
               <H1>Your Decentralized Identity for Web 3.0</H1>
               <H3 sx={{ color: 'text.secondary' }}>Connect everything in the first unified social identity network</H3>
             </Stack>
-            {/* <Stack spacing={4} direction="row">
+            <Stack spacing={4} direction="row">
               <Stack spacing={2}>
                 <H2>
-                  <DisplayNumber value={1234123} />
+                  <DisplayNumber value={dids} />
                 </H2>
                 <Span sx={{ color: 'grey.400' }}>Total Users</Span>
               </Stack>
               <Stack spacing={2}>
-                <H2>12M</H2>
+                <H2>
+                  <DisplayNumber value={followings} />
+                </H2>
                 <Span sx={{ color: 'grey.400' }}>Total Connections</Span>
               </Stack>
-            </Stack> */}
+            </Stack>
             <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
               {!account ? (
                 <Button

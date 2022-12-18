@@ -10,6 +10,7 @@ import ProfileProvider from './profile'
 import SocialProvider from './social'
 import WalletProvider from './wallet'
 import FeaturedPeoplesProvider from './featuredPeoples'
+import StatsProvider from './stats'
 
 const useNFT3Service = () => {
   const { format, upload } = useIpfs()
@@ -33,6 +34,7 @@ export { createProfileContext } from './profile'
 export { createSocialContext } from './social'
 export { createWalletContext } from './wallet'
 export { createFeaturedPeoplesContext } from './featuredPeoples'
+export { createStatsContext } from './stats'
 
 const Provider: FC = ({ children }) => {
   return (
@@ -42,7 +44,9 @@ const Provider: FC = ({ children }) => {
           <AssetsProvider>
             <WalletProvider>
               <FollowProvider>
-                <FeaturedPeoplesProvider>{children}</FeaturedPeoplesProvider>
+                <FeaturedPeoplesProvider>
+                  <StatsProvider>{children}</StatsProvider>
+                </FeaturedPeoplesProvider>
               </FollowProvider>
             </WalletProvider>
           </AssetsProvider>
