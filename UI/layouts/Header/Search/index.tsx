@@ -7,16 +7,18 @@ import MenuItem from '@mui/material/MenuItem'
 import ListItemText from '@mui/material/ListItemText'
 import { TransitionGroup } from 'react-transition-group'
 import Collapse from '@mui/material/Collapse'
+import debounce from '@mui/utils/debounce'
 import { useNFT3 } from '@nft3sdk/did-manager'
 
-import SearchInput from 'components/input-fields/SearchInput'
 import { useDialog } from 'app/hooks/useDialog'
-import debounce from '@mui/utils/debounce'
+import SearchInput from 'components/input-fields/SearchInput'
+import ClaimButton from 'components/btn/ClaimButton'
 
 interface DIDSearchRecord {
   didname: string
   identifier: string
   addresses: string[]
+  ctrlKeys: string[]
 }
 
 const ROOT = styled('div')`
@@ -88,21 +90,35 @@ const Search = () => {
       >
         <MenuList>
           <TransitionGroup>
-            {options.map((option) => (
-              <Collapse key={option.identifier}>
+            {options.length ? (
+              options.map((option) => (
+                <Collapse key={option.identifier}>
+                  <MenuItem
+                    sx={{
+                      padding: '12px 20px',
+                    }}
+                    onClick={() => {
+                      router.push('/' + option.didname)
+                      close()
+                    }}
+                  >
+                    <ListItemText>{option.didname}</ListItemText>
+                    {!option.ctrlKeys.length && <ClaimButton didname={option.didname} />}
+                  </MenuItem>
+                </Collapse>
+              ))
+            ) : (
+              <Collapse>
                 <MenuItem
                   sx={{
                     padding: '12px 20px',
                   }}
-                  onClick={() => {
-                    router.push('/' + option.didname)
-                    close()
-                  }}
                 >
-                  <ListItemText>{option.didname}</ListItemText>
+                  <ListItemText>No results. This did is available.</ListItemText>
+                  <ClaimButton didname={value} title="Create" />
                 </MenuItem>
               </Collapse>
-            ))}
+            )}
           </TransitionGroup>
         </MenuList>
       </Paper>

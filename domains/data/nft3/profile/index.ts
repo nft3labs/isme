@@ -5,10 +5,11 @@ import { merge } from 'lodash'
 
 import { useUser } from 'domains/data'
 import { getProfile } from './adapter'
+import { safeGet } from 'app/utils/get'
 
 const useProfileService = () => {
   const [ready, setReady] = useState(false)
-  const { client, identifier } = useUser()
+  const { client, identifier, didname: userDidname } = useUser()
   const [didname, setDidname] = useState('')
   const did = useMemo(() => {
     if (!didname) return
@@ -70,6 +71,7 @@ const useProfileService = () => {
     updateDidInfo,
 
     isUser,
+    needClaim: safeGet(() => !userDidname && !didinfo.ctrl_keys.length),
   }
 }
 const { Provider: ProfileProvider, createUseContext } = createContext(useProfileService)

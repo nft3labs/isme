@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import Head from 'next/head'
 import { format as formatData } from 'date-fns'
 import Avatar from '@mui/material/Avatar'
 import { styled } from '@mui/material/styles'
@@ -14,6 +15,7 @@ import Twitter from 'components/Twitter'
 import FlexBetween from 'components/flexbox/FlexBetween'
 import { DisplayNumber } from 'components/Number'
 import Unfollow from 'components/Follow/Unfollow'
+import ClaimButton from 'components/btn/ClaimButton'
 import { useNFT3Follow, useNFT3Profile, useNFT3, useUser, useNFT3Wallet } from 'domains/data'
 
 import TwitterContent from './Twitter/TwitterContent'
@@ -23,7 +25,6 @@ import circleLinkIcon from './images/circle-link.svg'
 import etherscanIcon from './images/etherscan.svg'
 import looksrareIcon from './images/looksrare.svg'
 import openseaIcon from './images/opensea.svg'
-import Head from 'next/head'
 
 const ROOT = styled(Card)``
 
@@ -31,7 +32,7 @@ const ProfileInfo: FC = () => {
   const router = useRouter()
   const { didname, selectDialog } = useUser()
   const { account } = useNFT3Wallet()
-  const { ready, profile, isUser } = useNFT3Profile()
+  const { ready, profile, isUser, needClaim } = useNFT3Profile()
   const NFT3Follow = useNFT3Follow()
   const { format } = useNFT3()
   const { followed, count, follow, unfollow } = NFT3Follow
@@ -59,10 +60,7 @@ const ProfileInfo: FC = () => {
     <ROOT sx={{ paddingX: 2, paddingY: 4 }}>
       <Head>
         <title>{profile.name}.isme | ISME</title>
-        <meta
-          name="description"
-          content={profile.bio || 'ISME is your decentralized identity (DID) for Web 3.0'}
-        />
+        <meta name="description" content={profile.bio || 'ISME is your decentralized identity (DID) for Web 3.0'} />
         <meta key="og:site_name" property="og:site_name" content={`${profile.name}.isme | ISME`} />
         <meta key="og:image" property="og:image" content={profile.avatar || 'https://isme.is/logo.svg'} />
         <meta
@@ -144,6 +142,14 @@ const ProfileInfo: FC = () => {
           >
             Edit Profile
           </Button>
+        ) : needClaim ? (
+          <ClaimButton
+            didname={didname}
+            buttonProps={{
+              size: 'large',
+              fullWidth: true,
+            }}
+          />
         ) : (
           followContent
         )}

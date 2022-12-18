@@ -117,6 +117,13 @@ export const useForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ens])
 
+  useEffect(() => {
+    if (!registerDialog.visible) return
+    const didname = sessionStorage.getItem('didname')
+    if (didname) formik.setFieldValue('didname', didname)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registerDialog.visible])
+
   return {
     formik,
     account,
