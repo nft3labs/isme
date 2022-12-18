@@ -42,9 +42,24 @@ const nextConfig = {
   },
   async rewrites() {
     return {
-      fallback: [
-      ],
+      fallback: [],
     }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'header',
+            key: 'host',
+            value: 'pass.nft3.com',
+          },
+        ],
+        permanent: true,
+        destination: 'https://isme.is/:path*',
+      },
+    ]
   },
 }
 
