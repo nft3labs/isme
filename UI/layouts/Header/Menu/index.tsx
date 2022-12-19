@@ -31,7 +31,7 @@ const Menu: FC = () => {
         >
           Explore
         </MenuLink>
-        <MenuLink href="https://sdk.nft3.com/docs/nft3-pass/intro" target="_blank">
+        <MenuLink href="https://sdk.nft3.com/docs/isme/intro" target="_blank">
           Docs
         </MenuLink>
       </Content>

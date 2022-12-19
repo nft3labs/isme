@@ -31,7 +31,7 @@ const MediumIcon = styled('div')`
 const links = [
   { label: 'Telegram', linkTo: 'https://t.me/nft3com', icon: <TelegramIcon /> },
   { label: 'Twitter', linkTo: 'https://twitter.com/nft3com', icon: <TwitterIcon /> },
-  { label: 'Docs', linkTo: 'https://sdk.nft3.com/docs/nft3-pass/intro', icon: <MenuBookIcon /> },
+  { label: 'Docs', linkTo: 'https://sdk.nft3.com/docs/isme/intro', icon: <MenuBookIcon /> },
   {
     label: 'Medium',
     linkTo: 'https://medium.com/nft3',
@@ -41,7 +41,7 @@ const links = [
       </MediumIcon>
     ),
   },
-  { label: 'Github', linkTo: 'https://github.com/nft3labs/nft3-pass', icon: <GitHubIcon /> },
+  { label: 'Github', linkTo: 'https://github.com/nft3labs/isme', icon: <GitHubIcon /> },
   { label: 'Email', linkTo: 'mailto:info@nft3.com', icon: <EmailIcon /> },
 ]
 
