@@ -1,6 +1,10 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useControllers } from 'domains'
+import { safeGet } from 'app/utils/get'
+import { setItem } from 'app/utils/cache/localStorage'
+
+export const INVITER_KEY = 'INVITER_KEY'
 
 export const useRouteChange = () => {
   const router = useRouter()
@@ -27,4 +31,16 @@ export const useRouteChange = () => {
       router.events.off('routeChangeError', handleRouteChangeDone)
     }
   }, [pageProcess, router])
+
+  useEffect(() => {
+    const inviter = safeGet(() => {
+      if (router.query.inviter instanceof Array) {
+        const list = router.query.inviter
+        return list[list.length - 1]
+      }
+      return router.query.inviter
+    })
+
+    if (inviter) setItem(INVITER_KEY, inviter)
+  }, [router.query])
 }

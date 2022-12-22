@@ -125,6 +125,20 @@ const AccountButton: FC = () => {
           </ListItemIcon>
           <ListItemText>Edit profile</ListItemText>
         </MenuItem>
+        <MenuItem
+          onClick={() => {
+            router.push('/app/referral-program')
+            close()
+          }}
+          sx={{
+            borderBottom: `solid 1px ${theme.palette.divider}`,
+          }}
+        >
+          <ListItemIcon>
+            <EditRoundedIcon />
+          </ListItemIcon>
+          <ListItemText>Referral Program</ListItemText>
+        </MenuItem>
         <MenuItem onClick={onLogout}>
           <ListItemIcon>
             <LogoutRoundedIcon />

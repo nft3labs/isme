@@ -31,6 +31,8 @@ import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { useNFT3, useNFT3Profile, useUser } from 'domains/data'
 import { useRouter } from 'next/router'
 import { safeGet } from 'app/utils/get'
+import { getItem } from 'app/utils/cache/localStorage'
+import { INVITER_KEY } from 'app/router'
 
 const validationSchema = yup.object({
   didname: yup
@@ -51,7 +53,7 @@ const initialValues = {
 
 export const useForm = () => {
   const router = useRouter()
-  const { register, account, login, registerDialog, logout, disconnect } = useUser()
+  const { register, account, login, registerDialog, logout, disconnect, client } = useUser()
   const { queryer } = useNFT3()
   const { setProfile } = useNFT3Profile()
   const [ens, setEns] = useState<ENSTextRecord>()
@@ -65,7 +67,9 @@ export const useForm = () => {
           registerDialog.close()
           login().then(({ result, needRegister }) => {
             if (result) {
-              router.push(`/` + values.didname)
+              const inviter = getItem(INVITER_KEY)
+              if (inviter) safeGet(() => client.referrer.add(`did:nft3:${inviter}`))
+              router.push(`/app/referral-program`)
               setProfile(values)
             } else if (needRegister === true) {
             } else {

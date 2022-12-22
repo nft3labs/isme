@@ -8,6 +8,7 @@ import NFT3Provider, {
   createWalletContext,
   createFeaturedPeoplesContext,
   createStatsContext,
+  createReferrerStatsContext,
 } from './nft3'
 
 const Provider: FC = ({ children }) => {
@@ -29,3 +30,4 @@ export const useNFT3Social = createSocialContext()
 export const useNFT3Wallet = createWalletContext()
 export const useNFT3FeaturedPeoples = createFeaturedPeoplesContext()
 export const useNFT3Stats = createStatsContext()
+export const useNFT3ReferrerStats = createReferrerStatsContext()

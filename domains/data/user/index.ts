@@ -5,7 +5,7 @@ import { createContext } from 'app/utils/createContext'
 import * as localStorage from 'app/utils/cache/localStorage'
 import * as sessionStorage from 'app/utils/cache/sessionStorage'
 import type { WithMeta, ProfileModel } from '@nft3sdk/client'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getProfile } from '../nft3/profile/adapter'
 
 const useUserService = () => {
@@ -13,6 +13,11 @@ const useUserService = () => {
   const registerDialog = useDialog()
   const { account, didname, ready, login, selectWallet, logout, register, client, identifier, disconnect } = useNFT3()
   const [profile, setProfileInternal] = useState<WithMeta<ProfileModel>>({} as any)
+  const did = useMemo(() => {
+    if (!didname) return
+    if (didname.startsWith('did:')) return didname
+    return client.did.convertName(didname)
+  }, [didname, client.did])
 
   useMount(() => {
     const sessionKey = sessionStorage.getItem('sessionKey')
@@ -42,6 +47,7 @@ const useUserService = () => {
 
     account,
     didname,
+    did,
     ready,
     login,
     selectWallet,
