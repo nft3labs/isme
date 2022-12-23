@@ -13,7 +13,8 @@ import TwitterIcon from '@mui/icons-material/Twitter'
 import { toast } from 'lib/toastify'
 import { useNFT3Profile, useUser } from 'domains/data'
 import { writeText } from 'app/utils/dom/clipboard'
-import { H3, Paragraph } from 'components/Typography'
+import { H2, H4, Paragraph } from 'components/Typography'
+import Link from 'next/link'
 
 import ReferralCard from './ReferralCard'
 import Invitees from './Invitees'
@@ -41,26 +42,33 @@ const ReferralProgram: FC = () => {
       <CardContent>
         <Stack spacing={4}>
           <Stack spacing={2} textAlign="center">
-            <H3>Refer Friends and Earn Rewards</H3>
-            <Paragraph>
-              Invite your friends to register for a .isme did via the referral link of your account, and get rewarded
-              with NFTs. Referral program rules ↗
+            <H2>Refer Friends and Earn Rewards</H2>
+            <Paragraph color='text.secondary'>
+              Invite your friends to register for an ISME DID via the referral link of your account, and get rewarded
+              with $ISME.
+              {' '}
+              <Link href='#' target='_blank'>
+                Referral program rules.
+              </Link>
             </Paragraph>
           </Stack>
 
           <ReferralCard />
 
           <Stack spacing={2}>
-            <H3>Referral link</H3>
-            <Stack spacing={2} direction="row">
+            <H4>Referral link</H4>
+            <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
               <OutlinedInput
-                id="outlined-adornment-password"
+                fullWidth
+                id="referral-link"
                 type="text"
                 value={referralLink}
                 disabled
                 endAdornment={
                   <InputAdornment position="end">
                     <Button
+                      variant='text'
+                      sx={{ color: 'text.disabled', ':hover': { backgroundColor: 'transparent', color: 'text.secondary' } }}
                       onClick={(e) => {
                         e.stopPropagation()
                         setCopied(true)
@@ -72,12 +80,12 @@ const ReferralProgram: FC = () => {
                     >
                       {copied ? (
                         <Stack spacing={1} direction="row">
-                          <InventoryRoundedIcon fontSize="small" sx={{ color: 'text.primary' }} />
+                          <InventoryRoundedIcon fontSize="small" sx={{ color: 'text.disabled' }} />
                           <span>Copied</span>
                         </Stack>
                       ) : (
                         <Stack spacing={1} direction="row">
-                          <ContentCopyRoundedIcon fontSize="small" sx={{ color: 'text.primary' }} />
+                          <ContentCopyRoundedIcon fontSize="small" sx={{ color: 'text.disabled' }} />
                           <span>Copy</span>
                         </Stack>
                       )}
@@ -99,6 +107,10 @@ Your true digital self starts right here and now ⬇️`
                     `https://twitter.com/share?text=${encodeURIComponent(text)}&url=${referralLink}`,
                     `_blank`
                   )
+                }}
+                sx={{
+                  borderRadius: '100px',
+                  width: { xs: '100%', sm: '150px' },
                 }}
               >
                 Share

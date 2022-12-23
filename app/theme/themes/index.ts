@@ -139,6 +139,10 @@ export const getTheme = (options: ThemeOptions) => {
               ':hover': {
                 background: 'rgb(26, 140, 216)',
               },
+              '&.Mui-disabled': {
+                color: '#fff',
+                background: 'rgba(26, 140, 216, 0.5)',
+              }
             },
           },
           {

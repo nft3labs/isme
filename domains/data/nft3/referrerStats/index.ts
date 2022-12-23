@@ -10,7 +10,7 @@ type NFT3ReferrerStats = {
 
 const useReferrerStatsService = () => {
   const { queryer } = useNFT3()
-  const { didname } = useUser()
+  const { didname, identifier } = useUser()
 
   const [loading, setLoading] = useState(false)
   const [referrerStats, setReferrerStats] = useState<NFT3ReferrerStats>({} as any)
@@ -22,7 +22,7 @@ const useReferrerStatsService = () => {
       return queryer
         .query({
           nft3ReferrerStats: {
-            did: didname,
+            did: identifier
           },
         })
         .then((data) => {

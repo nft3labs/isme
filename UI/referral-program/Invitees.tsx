@@ -1,15 +1,13 @@
 import { styled } from '@mui/material/styles'
-import Image from 'next/image'
 
-import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 
-import { H3, Paragraph } from 'components/Typography'
+import { H4, H5, Span } from 'components/Typography'
 import { useUser } from 'domains/data'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { format as formatData } from 'date-fns'
+import { useRouter } from 'next/router'
 
 const ROOT = styled(Stack)``
 const REQUEST_LIMIT = 10
@@ -29,6 +27,7 @@ const Invitees: FC = () => {
   const [invitees, setInvitees] = useState<ReferrerModel[]>([])
   const [isEnd, setIsEnd] = useState(false)
   const loading = useMemo(() => internalLoading || isEnd, [internalLoading, isEnd])
+  const router = useRouter()
 
   const request = useCallback(
     (offset: number) => {
@@ -76,10 +75,33 @@ const Invitees: FC = () => {
     request(0)
   }, [request])
 
+  const formatDid = (did: string) => {
+    if (!did) return undefined
+    const arr = did.split(':')
+    return arr[arr.length - 1] + '.isme'
+  }
+
+  const goToProfileBoard = (name: string) => router.push(`/` + name)
+
   return (
     <ROOT spacing={2}>
-      <H3>Invitees</H3>
-      {JSON.stringify(invitees)}
+      <H4>Invitees</H4>
+      {/* {JSON.stringify(invitees)} */}
+      {invitees.map(({ __owner, createdAt }) => (
+        <Stack key={__owner} direction='row' justifyContent='space-between' padding={2} alignItems='center'>
+          <Stack spacing={0.5}>
+            <H5
+              fontWeight='medium'
+              sx={{ cursor: 'pointer', '&:hover': { color: 'primary.main' } }}
+              onClick={() => goToProfileBoard(formatDid(__owner))}
+            >
+              {formatDid(__owner)}
+            </H5>
+            {/* <Span color='text.disabled'>Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span> */}
+          </Stack>
+          <Span color='text.disabled'>Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span>
+        </Stack>
+      ))}
       {isEnd ? (
         <Button size="small" disabled>
           No more data

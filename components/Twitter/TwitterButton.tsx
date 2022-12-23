@@ -27,6 +27,7 @@ const TwitterButton: FC<TwitterButtonProps> = ({ open, component: Component }) =
       variant="twitter"
       size="small"
       sx={{
+        width: { xs: 1, sm: 'auto' },
         borderRadius: '100px',
         margin: '0 5px',
       }}

@@ -17,6 +17,7 @@ import * as sessionStorage from 'app/utils/cache/sessionStorage'
 import { useTheme } from '@mui/material/styles'
 import { safeGet } from 'app/utils/get'
 import { useAnchorMenu } from 'app/hooks/useAnchor'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
 
 const AccountButton: FC = () => {
   const { format } = useNFT3()
@@ -135,9 +136,9 @@ const AccountButton: FC = () => {
           }}
         >
           <ListItemIcon>
-            <EditRoundedIcon />
+            <GroupAddIcon />
           </ListItemIcon>
-          <ListItemText>Referral Program</ListItemText>
+          <ListItemText>Referral</ListItemText>
         </MenuItem>
         <MenuItem onClick={onLogout}>
           <ListItemIcon>
