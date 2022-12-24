@@ -1,20 +1,15 @@
 import { useMemo } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
 
-import { useMount } from 'app/hooks/useMount'
-import { getItem } from 'app/utils/cache/localStorage'
 import { createContext } from 'app/utils/createContext'
 
-import { useAppDispatch, useAppSelector } from 'store/hooks'
-import { selectData, THEME_MODE_KEY, setMode } from './store'
+import { useAppSelector } from 'store/hooks'
+import { selectData } from './store'
 
 import { createThemeOptions, getTheme, themes } from './themes'
 
 export const useThemeService = () => {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const storeData = useAppSelector(selectData)
-  const dispatch = useAppDispatch()
 
   const theme = useMemo(() => {
     const { mode, theme } = storeData
@@ -33,14 +28,6 @@ export const useThemeService = () => {
     }
     return returnValue
   }, [storeData])
-
-  useMount(() => {
-    const defaultMode = prefersDarkMode ? 'dark' : 'light'
-    const memoryMode = getItem(THEME_MODE_KEY)
-    if (memoryMode != storeData.mode) {
-      dispatch(setMode(memoryMode || defaultMode))
-    }
-  })
 
   return {
     theme,
