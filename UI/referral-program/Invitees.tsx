@@ -20,7 +20,7 @@ type ReferrerModel = {
 }
 
 const Invitees: FC = () => {
-  const { did, client } = useUser()
+  const { identifier, client } = useUser()
 
   const [internalLoading, setLoading] = useState(false)
   const [offset, setOffset] = useState(0)
@@ -31,7 +31,7 @@ const Invitees: FC = () => {
 
   const request = useCallback(
     (offset: number) => {
-      if (!did) {
+      if (!identifier) {
         setIsEnd(false)
         setInvitees([])
         return
@@ -39,7 +39,7 @@ const Invitees: FC = () => {
       if (loading) return
       setLoading(true)
       return client.referrer
-        .list(did, offset, REQUEST_LIMIT)
+        .list(identifier, offset, REQUEST_LIMIT)
         .then((invitees) => invitees || [])
         .then((value) => {
           setInvitees((invitees) => [...invitees, ...value])
@@ -51,7 +51,7 @@ const Invitees: FC = () => {
           setLoading(false)
         })
     },
-    [client.referrer, did, loading]
+    [client.referrer, identifier, loading]
   )
 
   const loadMoreData = useCallback(() => {
@@ -69,10 +69,12 @@ const Invitees: FC = () => {
 
   useEffect(() => {
     reset()
-  }, [did, reset])
+  }, [identifier, reset])
 
   useEffect(() => {
     request(0)
+    reset()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request])
 
   const formatDid = (did: string) => {
@@ -88,10 +90,10 @@ const Invitees: FC = () => {
       <H4>Invitees</H4>
       {/* {JSON.stringify(invitees)} */}
       {invitees.map(({ __owner, createdAt }) => (
-        <Stack key={__owner} direction='row' justifyContent='space-between' padding={2} alignItems='center'>
+        <Stack key={__owner} direction="row" justifyContent="space-between" padding={2} alignItems="center">
           <Stack spacing={0.5}>
             <H5
-              fontWeight='medium'
+              fontWeight="medium"
               sx={{ cursor: 'pointer', '&:hover': { color: 'primary.main' } }}
               onClick={() => goToProfileBoard(formatDid(__owner))}
             >
@@ -99,7 +101,7 @@ const Invitees: FC = () => {
             </H5>
             {/* <Span color='text.disabled'>Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span> */}
           </Stack>
-          <Span color='text.disabled'>Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span>
+          <Span color="text.disabled">Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span>
         </Stack>
       ))}
       {isEnd ? (

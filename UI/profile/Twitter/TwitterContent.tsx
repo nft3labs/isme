@@ -15,7 +15,12 @@ const TwitterContent: FC<TwitterContentProps> = ({ onClick }) => {
     <ROOT sx={{ width: '100%' }} spacing={2}>
       <Paragraph sx={{ color: 'text.secondary' }}>Twitter not yet linked</Paragraph>
       <Box>
-        <Button variant="twitter" onClick={onClick} sx={{ width: { xs: 1, sm: 'auto' }, borderRadius: 100 }} startIcon={<TwitterIcon />}>
+        <Button
+          variant="twitter"
+          onClick={onClick}
+          sx={{ width: { xs: 1, sm: 'auto' }, borderRadius: 100 }}
+          startIcon={<TwitterIcon />}
+        >
           Verify
         </Button>
       </Box>

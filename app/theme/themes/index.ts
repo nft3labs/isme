@@ -142,7 +142,7 @@ export const getTheme = (options: ThemeOptions) => {
               '&.Mui-disabled': {
                 color: '#fff',
                 background: 'rgba(26, 140, 216, 0.5)',
-              }
+              },
             },
           },
           {

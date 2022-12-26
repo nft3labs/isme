@@ -22,7 +22,7 @@ const useReferrerStatsService = () => {
       return queryer
         .query({
           nft3ReferrerStats: {
-            did: identifier
+            did: identifier,
           },
         })
         .then((data) => {

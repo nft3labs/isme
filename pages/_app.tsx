@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { Provider as StoreProvider } from 'react-redux'
 import type { MyAppProps } from 'app'
 import App from 'app'
@@ -16,8 +15,6 @@ function MainApp(props: MyAppProps): JSX.Element {
     <NFT3Provider endpoint={NFT3Endpoint} silent>
       <StoreProvider store={store}>
         <DomainsProvider>
-          <Head>
-          </Head>
           <App {...props} />
         </DomainsProvider>
       </StoreProvider>

@@ -6,7 +6,7 @@ import Container from '@mui/material/Container'
 const Page = (): JSX.Element => {
   return (
     <Fragment>
-      <Header title='ISME | Referral Program'/>
+      <Header title="ISME | Referral Program" />
       <Container sx={{ width: { sm: 1, md: 0.7 }, padding: 0 }}>
         <UI />
       </Container>
