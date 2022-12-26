@@ -69,13 +69,9 @@ const Invitees: FC = () => {
 
   useEffect(() => {
     reset()
-  }, [identifier, reset])
-
-  useEffect(() => {
     request(0)
-    reset()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [request])
+  }, [identifier])
 
   const formatDid = (did: string) => {
     if (!did) return undefined
