@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Stack from '@mui/material/Stack'
 import { useTheme } from '@mui/material/styles'
 import OutlinedInput from '@mui/material/OutlinedInput'
@@ -11,7 +11,7 @@ import InventoryRoundedIcon from '@mui/icons-material/InventoryRounded'
 import TwitterIcon from '@mui/icons-material/Twitter'
 
 import { toast } from 'lib/toastify'
-import { useNFT3Profile, useUser } from 'domains/data'
+import { useUser } from 'domains/data'
 import { writeText } from 'app/utils/dom/clipboard'
 import { H2, H4, Paragraph } from 'components/Typography'
 import Link from 'next/link'
@@ -22,13 +22,7 @@ import Invitees from './Invitees'
 const ReferralProgram: FC = () => {
   const theme = useTheme()
   const { didname } = useUser()
-  const { setDidname } = useNFT3Profile()
   const [copied, setCopied] = useState(false)
-
-  useEffect(() => {
-    if (!didname) return
-    setDidname(didname)
-  }, [didname, setDidname])
 
   const referralLink = 'https://isme.is?inviter=' + (didname?.replace(/\.isme$/, '') || '')
 
@@ -43,11 +37,10 @@ const ReferralProgram: FC = () => {
         <Stack spacing={4}>
           <Stack spacing={2} textAlign="center">
             <H2>Refer Friends and Earn Rewards</H2>
-            <Paragraph color='text.secondary'>
+            <Paragraph color="text.secondary">
               Invite your friends to register for an ISME DID via the referral link of your account, and get rewarded
-              with $ISME.
-              {' '}
-              <Link href='#' target='_blank'>
+              with $ISME.{' '}
+              <Link href="#" target="_blank">
                 Referral program rules.
               </Link>
             </Paragraph>
@@ -67,8 +60,11 @@ const ReferralProgram: FC = () => {
                 endAdornment={
                   <InputAdornment position="end">
                     <Button
-                      variant='text'
-                      sx={{ color: 'text.disabled', ':hover': { backgroundColor: 'transparent', color: 'text.secondary' } }}
+                      variant="text"
+                      sx={{
+                        color: 'text.disabled',
+                        ':hover': { backgroundColor: 'transparent', color: 'text.secondary' },
+                      }}
                       onClick={(e) => {
                         e.stopPropagation()
                         setCopied(true)
