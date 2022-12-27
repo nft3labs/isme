@@ -23,7 +23,7 @@ const InputTwitterAccount: FC<InputTwitterAccountProps> = (props) => {
   return (
     <Stack spacing={2}>
       <TextField
-        label="Twitter Account"
+        label="Twitter Username"
         value={account}
         onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
           const twitteAccount = event.target.value
@@ -37,6 +37,7 @@ const InputTwitterAccount: FC<InputTwitterAccountProps> = (props) => {
         InputProps={{
           startAdornment: <InputAdornment position="start">https://twitter.com/</InputAdornment>,
         }}
+        placeholder='username'
       />
       <StepActions
         {...{

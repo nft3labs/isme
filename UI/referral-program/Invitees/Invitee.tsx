@@ -3,15 +3,17 @@ import { format as formatData } from 'date-fns'
 import { useRouter } from 'next/router'
 import { H5, Span } from 'components/Typography'
 import Stack from '@mui/material/Stack'
-import { useNFT3Social, useUser } from 'domains/data'
+import { useNFT3Social, useUser, useNFT3 } from 'domains/data'
 import { useMount } from 'app/hooks/useMount'
 import { useCallback, useState } from 'react'
 import type { ProfileModel, DIDInfo, WithMeta } from '@nft3sdk/client'
 import { getProfile } from 'domains/data/nft3/profile/adapter'
+import Avatar from '@mui/material/Avatar'
 
-const Inviter: FC<{ inviter: ReferrerModel }> = ({ inviter: { createdAt, __owner } }) => {
+const Invitee: FC<{ inviter: ReferrerModel }> = ({ inviter: { createdAt, __owner } }) => {
   const router = useRouter()
   const { verifier } = useNFT3Social()
+  const { format } = useNFT3()
 
   const formatDid = (did: string) => {
     if (!did) return undefined
@@ -66,21 +68,34 @@ const Inviter: FC<{ inviter: ReferrerModel }> = ({ inviter: { createdAt, __owner
 
   return (
     <Stack direction="row" justifyContent="space-between" padding={2} alignItems="center">
-      <Stack spacing={0.5}>
-        <H5
-          fontWeight="medium"
-          sx={{ cursor: 'pointer', '&:hover': { color: 'primary.main' } }}
+      <Stack
+        spacing={2}
+        direction="row"
+        alignItems='center'
+        sx={{
+          flex: 1,
+        }}
+      >
+        <Avatar
+          alt={profile.name}
+          sx={{ width: 48, height: 48, cursor: 'pointer' }}
+          src={format(profile.avatar)}
           onClick={() => goToProfileBoard(formatDid(__owner))}
-        >
-          {formatDid(__owner)}
-        </H5>
-        <Span color="text.disabled">{JSON.stringify(profile)}</Span>
-        <Span color="text.disabled">{JSON.stringify(didinfo)}</Span>
-        <Span color="text.disabled">{JSON.stringify(twitter)}</Span>
+        />
+        <Stack spacing={1}>
+          <H5
+            fontWeight="medium"
+            sx={{ cursor: 'pointer', '&:hover': { color: 'primary.main' } }}
+            onClick={() => goToProfileBoard(formatDid(__owner))}
+          >
+            {formatDid(__owner)}
+          </H5>
+          <Span color="text.disabled">Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span>
+        </Stack>
       </Stack>
-      <Span color="text.disabled">Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span>
+      {twitter ? <Span color="success.main">Twitter verified</Span> : <Span color="text.disabled">Twitter unverified</Span>}
     </Stack>
   )
 }
 
-export default Inviter
+export default Invitee

@@ -7,7 +7,7 @@ import { H4 } from 'components/Typography'
 import { useUser } from 'domains/data'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import Inviter from './Inviter'
+import Invitee from './Invitee'
 
 const ROOT = styled(Stack)``
 const REQUEST_LIMIT = 10
@@ -77,7 +77,7 @@ const Invitees: FC = () => {
       <H4>Invitees</H4>
       {/* {JSON.stringify(invitees)} */}
       {invitees.map((inviter) => (
-        <Inviter inviter={inviter} key={inviter.__owner} />
+        <Invitee inviter={inviter} key={inviter.__owner} />
       ))}
       {isEnd ? (
         <Button size="small" disabled>
