@@ -3,16 +3,16 @@ import { styled } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 
-import { H4, H5, Span } from 'components/Typography'
+import { H4 } from 'components/Typography'
 import { useUser } from 'domains/data'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { format as formatData } from 'date-fns'
-import { useRouter } from 'next/router'
+
+import Inviter from './Inviter'
 
 const ROOT = styled(Stack)``
 const REQUEST_LIMIT = 10
 
-type ReferrerModel = {
+export type ReferrerModel = {
   referrer_did: string
   __owner: string
   createdAt: number
@@ -27,7 +27,6 @@ const Invitees: FC = () => {
   const [invitees, setInvitees] = useState<ReferrerModel[]>([])
   const [isEnd, setIsEnd] = useState(false)
   const loading = useMemo(() => internalLoading || isEnd, [internalLoading, isEnd])
-  const router = useRouter()
 
   const request = useCallback(
     (offset: number) => {
@@ -73,32 +72,12 @@ const Invitees: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [identifier])
 
-  const formatDid = (did: string) => {
-    if (!did) return undefined
-    const arr = did.split(':')
-    return arr[arr.length - 1] + '.isme'
-  }
-
-  const goToProfileBoard = (name: string) => router.push(`/` + name)
-
   return (
     <ROOT spacing={2}>
       <H4>Invitees</H4>
       {/* {JSON.stringify(invitees)} */}
-      {invitees.map(({ __owner, createdAt }) => (
-        <Stack key={__owner} direction="row" justifyContent="space-between" padding={2} alignItems="center">
-          <Stack spacing={0.5}>
-            <H5
-              fontWeight="medium"
-              sx={{ cursor: 'pointer', '&:hover': { color: 'primary.main' } }}
-              onClick={() => goToProfileBoard(formatDid(__owner))}
-            >
-              {formatDid(__owner)}
-            </H5>
-            {/* <Span color='text.disabled'>Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span> */}
-          </Stack>
-          <Span color="text.disabled">Joined {formatData(createdAt * 1000 || 0, 'dd MMM yyyy hh:mm')}</Span>
-        </Stack>
+      {invitees.map((inviter) => (
+        <Inviter inviter={inviter} key={inviter.__owner} />
       ))}
       {isEnd ? (
         <Button size="small" disabled>

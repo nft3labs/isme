@@ -42,6 +42,7 @@ const useSocialService = () => {
   }, [update])
 
   return {
+    verifier,
     twitter,
     update,
   }
