@@ -60,7 +60,7 @@ const ProfileInfo: FC = () => {
     <ROOT sx={{ paddingX: 2, paddingY: 4 }}>
       <Head>
         <title>{profile.name}.isme | ISME</title>
-        <meta name="description" content={profile.bio || 'ISME is your decentralized identity (DID) for Web 3.0'} />
+        <meta name="description" content={profile.bio || 'ISME is your decentralized identity (DID) for Web3'} />
         <meta key="og:site_name" property="og:site_name" content={`${profile.name}.isme | ISME`} />
         <meta key="og:image" property="og:image" content={profile.avatar || 'https://isme.is/logo.svg'} />
         <meta

@@ -8,8 +8,8 @@ export type HeaderProps = {
   twitter?: string
 }
 const Header: FC<HeaderProps> = (props) => {
-  const title = props.title || 'ISME | Your Decentralized Identity for Web 3.0'
-  const description = props.description || 'ISME is your decentralized identity (DID) for Web 3.0'
+  const title = props.title || 'ISME | Your Decentralized Identity for Web3'
+  const description = props.description || 'ISME is your decentralized identity (DID) for Web3'
   const ogDescription = props.ogDescription || 'Connect everything in the first unified social identity network'
   const image = props.image || 'https://isme.is/isme-logo.jpg'
   const twitter = props.twitter || '@nft3com'
