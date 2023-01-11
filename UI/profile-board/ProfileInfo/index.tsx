@@ -62,7 +62,7 @@ const ProfileInfo: FC = () => {
         <title>{profile.name}.isme | ISME</title>
         <meta name="description" content={profile.bio || 'ISME is your decentralized identity (DID) for Web3'} />
         <meta key="og:site_name" property="og:site_name" content={`${profile.name}.isme | ISME`} />
-        <meta key="og:image" property="og:image" content={profile.avatar || 'https://isme.is/logo.svg'} />
+        <meta key="og:image" property="og:image" content={profile.avatar || 'https://isme.is/logo-isme.jpg'} />
         <meta
           key="og:description"
           content={profile.bio || 'Connect everything in the first unified social identity network'}
