@@ -40,7 +40,7 @@ const ReferralProgram: FC = () => {
             <Paragraph color="text.secondary">
               Invite your friends to register for an ISME DID via the referral link of your account, and get rewarded
               with $ISME.{' '}
-              <Link href="#" target="_blank">
+              <Link href="https://medium.com/nft3/announcing-the-isme-referral-program-3c55c4d6ae2b" target="_blank">
                 Referral program rules.
               </Link>
             </Paragraph>
