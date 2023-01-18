@@ -65,7 +65,7 @@ const Home: FC = () => {
                 </Button>
               )}
 
-              {/* <Button> Search Address</Button> */}
+              <Button variant="outlined" href='/app/referral-program'>Invite Friends</Button>
             </Stack>
           </Stack>
         </Grid>
