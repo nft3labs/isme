@@ -17,9 +17,13 @@ const useUserService = () => {
 
   useMount(() => {
     const sessionKey = sessionStorage.getItem('sessionKey')
-    if (!sessionKey) return
+    if (!sessionKey) return selectDialog.open()
     const wallet = localStorage.getItem('wallet')
-    if (wallet) selectWallet(wallet)
+    if (wallet) {
+      selectWallet(wallet).then((value) => {
+        if (!value) selectDialog.open()
+      })
+    }
   })
 
   const updateProfile = useCallback(() => {
