@@ -20,6 +20,7 @@ import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 import { safeGet } from 'app/utils/get'
+import { useSocial } from 'domains/data/nft3/social/hooks/useSocial'
 
 const ROOT = styled(Card)(({ theme }) => {
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
@@ -37,7 +38,7 @@ const Badge = styled(Stack)(() => ({
 }))
 
 const ReferralCard: FC = () => {
-  const { didname, didinfo } = useUser()
+  const { didname, didinfo, identifier } = useUser()
   const {
     referrerStats: { invitees, verified_invitess, reward, claimable_reward },
   } = useNFT3ReferrerStats()
@@ -54,6 +55,11 @@ const ReferralCard: FC = () => {
       ) || [],
     [didinfo?.addresses]
   )
+  const {
+    twitter: {
+      account: { account: twitterAccount },
+    },
+  } = useSocial(identifier)
   return (
     <ROOT>
       <CardContent>
@@ -74,7 +80,13 @@ const ReferralCard: FC = () => {
                 )
               })}
             <Box>
-              <Twitter buttonComponent={TwitterContent} />
+              <Twitter
+                buttonComponent={TwitterContent}
+                useData={() => ({
+                  isUser: !!didname,
+                  twitterAccount,
+                })}
+              />
             </Box>
           </Stack>
 

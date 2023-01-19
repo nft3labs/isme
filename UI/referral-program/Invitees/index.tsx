@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack'
 import { H4 } from 'components/Typography'
 import { useUser } from 'domains/data'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { uniqBy } from 'lodash'
 
 import Invitee from './Invitee'
 
@@ -72,11 +73,13 @@ const Invitees: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [identifier])
 
+  const data = useMemo(() => uniqBy(invitees || [], (inviter) => inviter.__owner), [invitees])
+
   return (
     <ROOT spacing={2}>
       <H4>Invitees</H4>
       {/* {JSON.stringify(invitees)} */}
-      {invitees.map((inviter) => (
+      {data.map((inviter) => (
         <Invitee inviter={inviter} key={inviter.__owner} />
       ))}
       {isEnd ? (

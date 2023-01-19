@@ -1,21 +1,18 @@
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { useNFT3Profile, useNFT3Social } from 'domains/data'
 
 type TwitterButtonProps = {
+  useData: () => {
+    isUser: boolean
+    twitterAccount: string
+  }
   open: () => void
   component: any
 }
 
-const TwitterButton: FC<TwitterButtonProps> = ({ open, component: Component }) => {
-  const { isUser } = useNFT3Profile()
-  const {
-    twitter: {
-      account: { account: twitterAccount },
-    },
-  } = useNFT3Social()
-
+const TwitterButton: FC<TwitterButtonProps> = ({ useData, open, component: Component }) => {
+  const { isUser, twitterAccount } = useData()
   if (!twitterAccount) {
     if (isUser) {
       return <Component onClick={() => open()} />
