@@ -18,7 +18,6 @@ import { useTheme } from '@mui/material/styles'
 import { safeGet } from 'app/utils/get'
 import { useAnchorMenu } from 'app/hooks/useAnchor'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import { useMount } from 'app/hooks/useMount'
 
 const AccountButton: FC = () => {
   const { format } = useNFT3()
@@ -34,14 +33,6 @@ const AccountButton: FC = () => {
     sessionStorage.removeItem('sessionKey')
     logout()
   }
-
-  useMount(() => {
-    setTimeout(() => {
-      if (!account && !didname) {
-        selectDialog.open()
-      }
-    }, 1000)
-  })
 
   if (!account && !didname) {
     return (
