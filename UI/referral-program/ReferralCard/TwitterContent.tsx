@@ -13,7 +13,7 @@ const TwitterContent: FC<TwitterContentProps> = ({ onClick }) => {
   return (
     <ROOT spacing={2}>
       <Box>
-        <Button variant="twitter" onClick={onClick} sx={{ borderRadius: 100 }} startIcon={<TwitterIcon />}>
+        <Button variant="twitter" onClick={onClick} sx={{ borderRadius: 100, border: 'solid 2px white' }} startIcon={<TwitterIcon />}>
           Verify Twitter
         </Button>
       </Box>
