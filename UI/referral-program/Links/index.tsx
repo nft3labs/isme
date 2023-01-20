@@ -7,8 +7,8 @@ import Stack from '@mui/material/Stack'
 import { H3 } from 'components/Typography'
 
 const ROOT = styled('div')`
-  position: absolute;
-  left: 102%;
+  position: fixed;
+  right: 2rem;
   top: 11rem;
   width: 200px;
   height: 140px;
