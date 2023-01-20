@@ -49,6 +49,10 @@ const ReferralProgram: FC = () => {
                   Referral program rules.
                 </Link>
               </Paragraph>
+              <H4>Check if you are eligible for your claimable</H4>
+              <Box>
+                <Button variant='contained' href='https://gleam.io/vDR5a/nft3-eligibility-checker' target='_blank'>Check Eligibility</Button>
+              </Box>
             </Stack>
 
             <ReferralCard />
