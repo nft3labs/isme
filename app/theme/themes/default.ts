@@ -26,7 +26,7 @@ export const lightThemeOptions: ThemeOptions = {
       main: primaryMain,
       // light: '#ffd6a8',
       // dark: '#f0b068',
-      // contrastText: '#171717',
+      contrastText: '#fff',
       100: alpha(primaryMain, 0.08),
       200: alpha(primaryMain, 0.2),
       300: alpha(primaryMain, 0.3),

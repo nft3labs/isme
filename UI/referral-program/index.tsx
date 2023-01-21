@@ -15,7 +15,7 @@ import { toast } from 'lib/toastify'
 import { useUser } from 'domains/data'
 import { writeText } from 'app/utils/dom/clipboard'
 import { H2, H4, Paragraph } from 'components/Typography'
-import Link from 'next/link'
+import Link from '@mui/material/Link'
 
 import ReferralCard from './ReferralCard'
 import Invitees from './Invitees'
@@ -49,7 +49,7 @@ const ReferralProgram: FC = () => {
                   Referral program rules.
                 </Link>
               </Paragraph>
-              <H4>Check if you are eligible for your claimable</H4>
+              <H4>Check if you are eligible for your claimable $ISME</H4>
               <Box>
                 <Button variant='contained' href='https://gleam.io/vDR5a/nft3-eligibility-checker' target='_blank'>Check Eligibility</Button>
               </Box>

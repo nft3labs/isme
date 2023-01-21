@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles'
 import Container from '@mui/material/Container'
 import Header from './Header'
 import Footer from './Footer'
+import NeonBar from './NeonBar'
 
 import GlobalStyles from 'styles/GlobalStyles'
 
@@ -14,6 +15,7 @@ const ActiveLayout: FC<PropsWithChildren<unknown>> = ({ children }) => {
   return (
     <>
       <GlobalStyles />
+      <NeonBar />
       <Header />
       <Content>{children}</Content>
       <Footer />
