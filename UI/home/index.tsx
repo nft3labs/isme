@@ -22,7 +22,7 @@ const Home: FC = () => {
     return featuredPeoples.slice(0, 12)
   }, [featuredPeoples])
   const {
-    stats: { followings, dids },
+    stats: { connections, dids, socials, communitys },
   } = useNFT3Stats()
 
   return (
@@ -72,19 +72,19 @@ const Home: FC = () => {
               </Grid>
               <Grid item xs={6} sm={3}>
                 <H2>
-                  <DisplayNumber value={followings} />
+                  <DisplayNumber value={socials} />
                 </H2>
                 <Span sx={{ color: 'grey.600' }}>Total DID Verified</Span>
               </Grid>
               <Grid item xs={6} sm={3}>
                 <H2>
-                  <DisplayNumber value={followings} />
+                  <DisplayNumber value={connections} />
                 </H2>
                 <Span sx={{ color: 'grey.600' }}>Total Connections</Span>
               </Grid>
               <Grid item xs={6} sm={3}>
                 <H2>
-                  <DisplayNumber value={95603} />
+                  <DisplayNumber value={communitys} />
                 </H2>
                 <Span sx={{ color: 'grey.600' }}>Total Community</Span>
               </Grid>

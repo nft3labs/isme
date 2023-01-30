@@ -45,7 +45,7 @@ const Footer: FC = () => {
           <Links />
         </Stack>
         <CopyRight variant="caption" color="grey.400">
-          © 2022, ISME. All Rights Reserved
+          © {new Date().getFullYear()}, ISME. All Rights Reserved
         </CopyRight>
       </Content>
     </ROOT>

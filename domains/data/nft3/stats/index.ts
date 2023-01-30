@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
+import type { NFT3Stats } from '@nft3sdk/client'
 import { createContext } from 'app/utils/createContext'
 import { useNFT3 } from 'domains/data'
-type NFT3Stats = {
-  dids: number
-  followings: number
-  socials: number
-  unclaims: number
-}
 
 const useStatsService = () => {
   const { queryer } = useNFT3()
