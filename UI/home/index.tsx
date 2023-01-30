@@ -27,26 +27,12 @@ const Home: FC = () => {
 
   return (
     <ROOT spacing={{ xs: 8, sm: 2 }}>
-      <Grid container justifyContent="center" alignItems="center" flexDirection={{ xs: 'column-reverse', sm: 'row' }}>
-        <Grid item xs={12} sm={5}>
-          <Stack spacing={4}>
+      <Grid container justifyContent="center" alignItems="center" flexDirection={{ xs: 'column-reverse', sm: 'row' }} spacing={4}>
+        <Grid item xs={12} sm={6.5}>
+          <Stack spacing={6}>
             <Stack spacing={2}>
               <H1>Your Decentralized Identity for Web3</H1>
               <H3 sx={{ color: 'text.secondary' }}>Connect everything in the first unified social identity network</H3>
-            </Stack>
-            <Stack spacing={4} direction="row">
-              <Stack spacing={2}>
-                <H2>
-                  <DisplayNumber value={dids} />
-                </H2>
-                <Span sx={{ color: 'grey.400' }}>Total Users</Span>
-              </Stack>
-              <Stack spacing={2}>
-                <H2>
-                  <DisplayNumber value={followings} />
-                </H2>
-                <Span sx={{ color: 'grey.400' }}>Total Connections</Span>
-              </Stack>
             </Stack>
             <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
               {!account ? (
@@ -67,10 +53,45 @@ const Home: FC = () => {
 
               <Button variant="outlined" href='/app/referral-program'>Invite Friends</Button>
             </Stack>
+            <Grid
+              container
+              paddingY={3}
+              paddingX={2}
+              rowGap={2}
+              sx={{ 
+                border: 'solid 1px', 
+                borderColor: 'divider',
+                borderRadius: 5,
+              }}
+            >
+              <Grid item xs={6} sm={3}>
+                <H2>
+                  <DisplayNumber value={dids} />
+                </H2>
+                <Span sx={{ color: 'grey.600' }}>Total DID Claimed</Span>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <H2>
+                  <DisplayNumber value={followings} />
+                </H2>
+                <Span sx={{ color: 'grey.600' }}>Total DID Verified</Span>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <H2>
+                  <DisplayNumber value={followings} />
+                </H2>
+                <Span sx={{ color: 'grey.600' }}>Total Connections</Span>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <H2>
+                  <DisplayNumber value={95603} />
+                </H2>
+                <Span sx={{ color: 'grey.600' }}>Total Community</Span>
+              </Grid>
+            </Grid>
           </Stack>
         </Grid>
-        <Grid item xs={1}></Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={5.5}>
           <Image src={BackgroundImage} alt="background.png" />
         </Grid>
       </Grid>
