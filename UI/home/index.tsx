@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Image from 'next/image'
 import BackgroundImage from './images/001-background.png'
-import { H1, H2, H3, Span } from 'components/Typography'
+import { H1, H2, H3, Tiny } from 'components/Typography'
 import FollowGrid from 'components/Follow/FollowGrid'
 import { useNFT3FeaturedPeoples, useNFT3Stats, useUser } from 'domains/data'
 import { useMemo } from 'react'
@@ -68,25 +68,25 @@ const Home: FC = () => {
                 <H2>
                   <DisplayNumber value={dids} />
                 </H2>
-                <Span sx={{ color: 'grey.600' }}>Total DID Claimed</Span>
+                <Tiny sx={{ color: 'grey.600' }}>DID Claimed</Tiny>
               </Grid>
               <Grid item xs={6} sm={3}>
                 <H2>
                   <DisplayNumber value={socials} />
                 </H2>
-                <Span sx={{ color: 'grey.600' }}>Total DID Verified</Span>
+                <Tiny sx={{ color: 'grey.600' }}>DID Verified</Tiny>
               </Grid>
               <Grid item xs={6} sm={3}>
                 <H2>
                   <DisplayNumber value={connections} />
                 </H2>
-                <Span sx={{ color: 'grey.600' }}>Total Connections</Span>
+                <Tiny sx={{ color: 'grey.600' }}>Connections</Tiny>
               </Grid>
               <Grid item xs={6} sm={3}>
                 <H2>
                   <DisplayNumber value={communitys} />
                 </H2>
-                <Span sx={{ color: 'grey.600' }}>Total Community</Span>
+                <Tiny sx={{ color: 'grey.600' }}>In Communities</Tiny>
               </Grid>
             </Grid>
           </Stack>
