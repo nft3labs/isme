@@ -31,7 +31,7 @@ const ROOT = styled(Card)``
 const ProfileInfo: FC = () => {
   const router = useRouter()
   const { didname, selectDialog } = useUser()
-  const { account } = useNFT3Wallet()
+  const { account, current } = useNFT3Wallet()
   const { ready, profile, isUser, needClaim } = useNFT3Profile()
   const NFT3Follow = useNFT3Follow()
   const { format } = useNFT3()
@@ -109,7 +109,12 @@ const ProfileInfo: FC = () => {
           <Stack spacing={0} direction="row" alignItems="center" justifyContent="center">
             <Twitter buttonComponent={TwitterContent} />
             <IconButton url={profile.url} alt="url" icon={circleLinkIcon} />
-            <IconButton url={`https://etherscan.io/address/${account}`} alt="etherscan" icon={etherscanIcon} />
+            {current?.network === 'ethereum' && (
+              <IconButton url={current.explorer} alt="etherscan" icon={etherscanIcon} />
+            )}
+            {current?.network === 'solana' && (
+              <IconButton url={current.explorer} alt="etherscan" icon={current.icon} />
+            )}
             <IconButton url={`https://opensea.io/${account}`} alt="opensea" icon={openseaIcon} />
             <IconButton url={`https://looksrare.org/accounts/${account}`} alt="looksrare" icon={looksrareIcon} />
           </Stack>
