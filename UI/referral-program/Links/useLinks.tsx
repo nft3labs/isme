@@ -10,7 +10,7 @@ const DiscordIcon = () => {
 }
 
 const links = [
-  { label: 'Twitter', linkTo: 'https://twitter.com/nft3com', icon: <TwitterIcon /> },
+  { label: 'Twitter', linkTo: 'https://twitter.com/_ISMEIS', icon: <TwitterIcon /> },
   { label: 'Telegram', linkTo: 'https://t.me/nft3com', icon: <TelegramIcon /> },
   {
     label: 'Discord',

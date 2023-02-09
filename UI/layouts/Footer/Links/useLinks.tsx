@@ -43,7 +43,7 @@ const links = [
     linkTo: 'https://discord.com/invite/HgHuuS9wzx',
     icon: <DiscordIcon />,
   },
-  { label: 'Twitter', linkTo: 'https://twitter.com/nft3com', icon: <TwitterIcon /> },
+  { label: 'Twitter', linkTo: 'https://twitter.com/_ISMEIS', icon: <TwitterIcon /> },
   { label: 'Docs', linkTo: 'https://sdk.nft3.com/docs/isme/intro', icon: <MenuBookIcon /> },
   {
     label: 'Medium',
