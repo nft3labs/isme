@@ -10,13 +10,13 @@ import CardActions from '@mui/material/CardActions'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
-import { Paragraph, H2, H3 } from 'components/Typography'
+import { H2, H3, Paragraph } from 'components/Typography'
 import Twitter from 'components/Twitter'
 import FlexBetween from 'components/flexbox/FlexBetween'
 import { DisplayNumber } from 'components/Number'
 import Unfollow from 'components/Follow/Unfollow'
 import ClaimButton from 'components/btn/ClaimButton'
-import { useNFT3Follow, useNFT3Profile, useNFT3, useUser, useNFT3Wallet } from 'domains/data'
+import { useNFT3, useNFT3Follow, useNFT3Profile, useNFT3Wallet, useUser } from 'domains/data'
 
 import TwitterContent from './Twitter/TwitterContent'
 import Wallets from './Wallets'
@@ -25,6 +25,8 @@ import circleLinkIcon from './images/circle-link.svg'
 import etherscanIcon from './images/etherscan.svg'
 import looksrareIcon from './images/looksrare.svg'
 import openseaIcon from './images/opensea.svg'
+import messageIcon from './images/message.svg'
+import { ImageButton } from '../../../components/btn/IconButton'
 
 const ROOT = styled(Card)``
 
@@ -37,22 +39,27 @@ const ProfileInfo: FC = () => {
   const { format } = useNFT3()
   const { followed, count, follow, unfollow } = NFT3Follow
   const followContent = useMemo(
-    () =>
-      !followed ? (
-        <Button
-          fullWidth
-          variant="gradient"
-          size="large"
-          onClick={() => {
-            if (!didname) return selectDialog.open()
-            follow()
-          }}
-        >
-          Follow
-        </Button>
-      ) : (
-        <Unfollow onClick={() => unfollow()} fullWidth size="large" />
-      ),
+    () => (
+      <>
+        {!followed ? (
+          <Button
+            fullWidth
+            variant="gradient"
+            size="large"
+            onClick={() => {
+              if (!didname) return selectDialog.open()
+              follow()
+            }}
+          >
+            Follow
+          </Button>
+        ) : (
+          <Unfollow onClick={() => unfollow()} fullWidth size="large" />
+        )}
+
+        <ImageButton src={messageIcon} title="Send Message" />
+      </>
+    ),
     [didname, follow, followed, selectDialog, unfollow]
   )
   if (!ready || !profile) return null
@@ -112,9 +119,7 @@ const ProfileInfo: FC = () => {
             {current?.network === 'ethereum' && (
               <IconButton url={current.explorer} alt="etherscan" icon={etherscanIcon} />
             )}
-            {current?.network === 'solana' && (
-              <IconButton url={current.explorer} alt="etherscan" icon={current.icon} />
-            )}
+            {current?.network === 'solana' && <IconButton url={current.explorer} alt="etherscan" icon={current.icon} />}
             <IconButton url={`https://opensea.io/${account}`} alt="opensea" icon={openseaIcon} />
             <IconButton url={`https://looksrare.org/accounts/${account}`} alt="looksrare" icon={looksrareIcon} />
           </Stack>
