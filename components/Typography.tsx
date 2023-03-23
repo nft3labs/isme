@@ -1,7 +1,7 @@
 import type { BoxProps } from '@mui/material'
 import { Box, styled } from '@mui/material'
 import clsx from 'clsx'
-import React from 'react'
+import React, { type ReactNode } from 'react'
 
 const StyledBox = styled(Box)<{ ellipsis?: boolean }>(({ ellipsis }) => ({
   ...(ellipsis && {
@@ -186,3 +186,19 @@ export const Tiny: React.FC<BoxProps & Props> = (props) => {
     </StyledBox>
   )
 }
+
+export const NlToBr: React.FC<{
+  text: string
+}> = ({ text }) => (
+  <>
+    {text.split('\n').reduce((prev, curr, i) => {
+      if (prev.length) {
+        prev.push(<br key={i} />)
+      }
+
+      prev.push(curr)
+
+      return prev
+    }, [] as ReactNode[])}
+  </>
+)

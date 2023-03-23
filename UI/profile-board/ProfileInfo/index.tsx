@@ -57,7 +57,7 @@ const ProfileInfo: FC = () => {
           <Unfollow onClick={() => unfollow()} fullWidth size="large" />
         )}
 
-        <ImageButton src={messageIcon} title="Send Message" />
+        <ImageButton src={messageIcon} title="Send Message" href={`/app/chats/${profile.name}`} />
       </>
     ),
     [didname, follow, followed, selectDialog, unfollow]
