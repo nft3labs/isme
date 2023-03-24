@@ -31,7 +31,7 @@ type ImageButtonProps = {
   onClick?: () => void
 }
 
-export const ImageButton: FC<ImageButtonProps> = ({ src, alt, title, href, onClick }) => {
+export const ImageButton: FC<ImageButtonProps & IconButtonProps> = ({ src, alt, title, href, onClick, ...others }) => {
   const router = useRouter()
 
   return (
@@ -45,6 +45,7 @@ export const ImageButton: FC<ImageButtonProps> = ({ src, alt, title, href, onCli
         }
       }}
       size="small"
+      {...others}
     >
       <Image src={src} alt={alt} />
     </IconButton>

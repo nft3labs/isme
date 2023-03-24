@@ -6,6 +6,7 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded'
 import ViewTimelineRoundedIcon from '@mui/icons-material/ViewTimelineRounded'
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
+import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -16,8 +17,9 @@ import Follow from 'components/Follow'
 import ProfileInfo from './ProfileInfo'
 import Board from './Board'
 import Timeline from './Timeline'
-import Tabs from './Tabs'
 import type { TabsProps } from './Tabs'
+import Tabs from './Tabs'
+import Feed from './Feed'
 
 const ROOT = styled(Stack)``
 
@@ -65,6 +67,15 @@ const ProfileBoard: FC = () => {
           props: {
             name: 'followers',
           },
+        },
+      },
+      {
+        title: {
+          label: 'Feed',
+          icon: <RssFeedRoundedIcon />,
+        },
+        children: {
+          component: Feed,
         },
       },
     ]

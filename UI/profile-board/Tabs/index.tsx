@@ -75,7 +75,7 @@ const Tabs: FC<TabsProps> = ({ tabs }) => {
               background: theme.palette.gradientColors.main,
             },
           }}
-          variant="scrollable"
+          variant="fullWidth"
           allowScrollButtonsMobile
           value={value}
           onChange={handleChange}
