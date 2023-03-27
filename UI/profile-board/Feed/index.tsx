@@ -17,7 +17,7 @@ import TextField from '@mui/material/TextField'
 import imageAttachmentSvg from '../../../public/image-attachment.svg'
 
 interface PostData {
-  title: string
+  title?: string
   content?: string
   image?: string
   date: number
@@ -44,6 +44,21 @@ const posts: PostData[] = [
     content:
       'Lorem ipsum dolor sit amet consectetur.<br/><br/>Id eget fermentum consectetur praesent ante vel. Lorem ipsum dolor sit amet consectetur. Id eget fermentum consectetur praesent ante vel.',
 
+    date: Date.now(),
+  },
+  {
+    content:
+      'Post with no title! Lorem ipsum dolor sit amet consectetur.<br/><br/>Id eget fermentum consectetur praesent ante vel. Lorem ipsum dolor sit amet consectetur. Id eget fermentum consectetur praesent ante vel.',
+    date: Date.now(),
+  },
+  {
+    content:
+      'Post with no title, but with an image! Lorem ipsum dolor sit amet consectetur.<br/><br/>Id eget fermentum consectetur praesent ante vel. Lorem ipsum dolor sit amet consectetur. Id eget fermentum consectetur praesent ante vel.',
+    image: 'https://picsum.photos/seed/e/1200/800',
+    date: Date.now(),
+  },
+  {
+    image: 'https://picsum.photos/seed/f/1200/800',
     date: Date.now(),
   },
   {
@@ -110,20 +125,22 @@ const FeedItem: FC<FeedItemProps> = ({ post }) => {
       )}
 
       <CardContent sx={{ padding: 3 }}>
-        <H2>{post.title}</H2>
+        {!!post.title && <H2 marginBottom={2}>{post.title}</H2>}
 
-        <Box
-          ref={contentRef}
-          sx={{
-            color: 'text.secondary',
-            marginTop: 1,
-            maxHeight: foldState === FeedItemFoldState.EXPANDED ? undefined : FEED_ITEM_CONTENT_MAX_HEIGHT,
-            overflow: 'hidden',
-          }}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        {!!post.content && (
+          <Box
+            ref={contentRef}
+            sx={{
+              marginBottom: 3,
+              color: 'text.secondary',
+              maxHeight: foldState === FeedItemFoldState.EXPANDED ? undefined : FEED_ITEM_CONTENT_MAX_HEIGHT,
+              overflow: 'hidden',
+            }}
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        )}
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between" marginTop={3}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={1.5}>
             <Avatar alt={profile.name} src={format(profile.avatar)} sx={{ width: 40, height: 40 }} />
 
