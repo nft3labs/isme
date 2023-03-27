@@ -10,8 +10,11 @@ import Avatar from '@mui/material/Avatar'
 import expandSvg from './expand.svg'
 import { ImageButton } from '../../../components/btn/IconButton'
 import { useNFT3, useNFT3Profile } from '../../../domains/data'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Button from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
+import TextField from '@mui/material/TextField'
+import imageAttachmentSvg from '../../../public/image-attachment.svg'
 
 interface PostData {
   title: string
@@ -146,35 +149,81 @@ const FeedItem: FC<FeedItemProps> = ({ post }) => {
 
 //
 
+const Form = styled(Box)`
+  ${({ theme }) => ({
+    marginBottom: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(4),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  })}
+`
+
 const Feed: FC = () => {
+  const { isUser } = useNFT3Profile()
+
   const hasMoreData = true
   const isLoading = false
 
-  if (!posts.length) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" height={200}>
-        <Typography color="text.disabled">No posts yet.</Typography>
-      </Box>
-    )
-  }
+  const fileInput = useMemo(() => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.onchange = () => {
+      console.log(input.files[0])
+    }
+    return input
+  }, [])
 
   return (
     <Stack spacing={2}>
-      {posts.map((post, i) => (
-        <FeedItem key={i} post={post} />
-      ))}
+      {isUser && (
+        <Form>
+          <Card sx={{ padding: 2 }}>
+            <Stack direction="row" alignItems="end" spacing={2}>
+              <TextField
+                multiline
+                variant="standard"
+                minRows={3}
+                maxRows={20}
+                placeholder="Make a new post"
+                sx={{ flexGrow: 1 }}
+              />
 
-      <Box justifyContent="center" display="flex">
-        {hasMoreData ? (
-          <Button size="small" disabled={isLoading}>
-            Load More
-          </Button>
-        ) : (
-          <Button size="small" disabled>
-            No more data
-          </Button>
-        )}
-      </Box>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <ImageButton src={imageAttachmentSvg} title="Attach Cover Image" onClick={() => fileInput.click()} />
+
+                <Button variant="gradient" size="large" sx={{ flexShrink: 0 }}>
+                  Post
+                </Button>
+              </Stack>
+            </Stack>
+          </Card>
+        </Form>
+      )}
+
+      {posts.length ? (
+        <>
+          {posts.map((post, i) => (
+            <FeedItem key={i} post={post} />
+          ))}
+
+          <Box justifyContent="center" display="flex">
+            {hasMoreData ? (
+              <Button size="small" disabled={isLoading}>
+                Load More
+              </Button>
+            ) : (
+              <Button size="small" disabled>
+                No more data
+              </Button>
+            )}
+          </Box>
+        </>
+      ) : (
+        <Box display="flex" justifyContent="center" alignItems="center" height={200}>
+          <Typography color="text.disabled">No posts yet.</Typography>
+        </Box>
+      )}
     </Stack>
   )
 }
