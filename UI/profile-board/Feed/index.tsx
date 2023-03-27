@@ -175,11 +175,8 @@ const Form = styled(Box)`
   })}
 `
 
-const Feed: FC = () => {
-  const { isUser } = useNFT3Profile()
-
-  const hasMoreData = true
-  const isLoading = false
+const NewPostForm: FC = () => {
+  const [isTitleVisible, setTitleVisible] = useState(false)
 
   const fileInput = useMemo(() => {
     const input = document.createElement('input')
@@ -192,31 +189,58 @@ const Feed: FC = () => {
   }, [])
 
   return (
-    <Stack spacing={2}>
-      {isUser && (
-        <Form>
-          <Card sx={{ padding: 2 }}>
-            <Stack direction="row" alignItems="end" spacing={2}>
+    <Form>
+      <Card sx={{ padding: 2 }}>
+        <Stack direction="row" alignItems={isTitleVisible ? 'end' : 'center'} spacing={2}>
+          <Stack spacing={2} sx={{ flexGrow: 1 }}>
+            <TextField
+              variant="outlined"
+              placeholder={isTitleVisible ? 'Title' : 'Make a new post'}
+              onFocus={() => setTitleVisible(true)}
+            />
+
+            {isTitleVisible && (
               <TextField
                 multiline
-                variant="standard"
+                variant="outlined"
                 minRows={3}
                 maxRows={20}
-                placeholder="Make a new post"
-                sx={{ flexGrow: 1 }}
+                placeholder="Description"
               />
+            )}
+          </Stack>
 
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <ImageButton src={imageAttachmentSvg} title="Attach Cover Image" onClick={() => fileInput.click()} />
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <ImageButton
+              src={imageAttachmentSvg}
+              title="Attach Cover Image"
+              onClick={() => {
+                setTitleVisible(true)
+                fileInput.click()
+              }}
+            />
 
-                <Button variant="gradient" size="large" sx={{ flexShrink: 0 }}>
-                  Post
-                </Button>
-              </Stack>
-            </Stack>
-          </Card>
-        </Form>
-      )}
+            <Button variant="gradient" size="large" sx={{ flexShrink: 0 }}>
+              Post
+            </Button>
+          </Stack>
+        </Stack>
+      </Card>
+    </Form>
+  )
+}
+
+//
+
+const Feed: FC = () => {
+  const { isUser } = useNFT3Profile()
+
+  const hasMoreData = true
+  const isLoading = false
+
+  return (
+    <Stack spacing={2}>
+      {isUser && <NewPostForm />}
 
       {posts.length ? (
         <>
