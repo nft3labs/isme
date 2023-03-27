@@ -3,9 +3,12 @@ import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import Link from '@mui/material/Link'
 import { useRouter } from 'next/router'
+import { ImageButton } from '../../../../components/btn/IconButton'
+import chatsSvg from './chats.svg'
 
 const ROOT = styled('div')``
 const Content = styled(Stack)`
+  align-items: center;
   justify-content: right;
 `
 
@@ -34,6 +37,7 @@ const Menu: FC = () => {
         <MenuLink href="https://sdk.nft3.com/docs/isme/intro" target="_blank">
           Docs
         </MenuLink>
+        <ImageButton src={chatsSvg} title="Chats" href="/app/chats" />
       </Content>
     </ROOT>
   )
