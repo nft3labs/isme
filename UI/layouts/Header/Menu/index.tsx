@@ -26,7 +26,7 @@ const Menu: FC = () => {
     <ROOT>
       <Content direction="row" spacing={{ xs: 2, sm: 4 }}>
         <MenuLink
-          href="/explore"
+          href="/app/explore"
           onClick={(e) => {
             e.preventDefault()
             router.push('/app/explore')
