@@ -15,6 +15,8 @@ import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import imageAttachmentSvg from '../../../public/image-attachment.svg'
+import { useDebounceMemo } from '../../../app/hooks/useDebounceMemo'
+import { toast } from '../../../lib/toastify'
 
 interface PostData {
   title?: string
@@ -85,15 +87,15 @@ enum FeedItemFoldState {
   EXPANDED,
 }
 
-type FeedItemProps = { post: PostData }
+type FeedItemProps = { expanded?: boolean; post: PostData }
 
-const FeedItem: FC<FeedItemProps> = ({ post }) => {
+const FeedItem: FC<FeedItemProps> = ({ expanded, post }) => {
   const { profile } = useNFT3Profile()
   const { format } = useNFT3()
 
   const contentRef = useRef<HTMLElement>()
   const imageRef = useRef<HTMLImageElement>()
-  const [foldState, setFoldState] = useState(FeedItemFoldState.UNKNOWN)
+  const [foldState, setFoldState] = useState(expanded ? FeedItemFoldState.EXPANDED : FeedItemFoldState.UNKNOWN)
 
   useEffect(() => {
     if (foldState !== FeedItemFoldState.UNKNOWN) return
@@ -178,15 +180,57 @@ const Form = styled(Box)`
 const NewPostForm: FC = () => {
   const [isTitleVisible, setTitleVisible] = useState(false)
 
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [imageData, setImageData] = useState('')
+
   const fileInput = useMemo(() => {
     const input = document.createElement('input')
     input.type = 'file'
     input.accept = 'image/*'
     input.onchange = () => {
-      console.log(input.files[0])
+      const file = input.files[0]
+      if (file) {
+        const image = document.createElement('img')
+        const reader = new FileReader()
+
+        const onerror = () => {
+          toast.error("Couldn't load the image")
+        }
+
+        reader.onloadend = () => {
+          image.src = reader.result.toString()
+        }
+
+        image.onload = () => {
+          setImageData(image.src)
+        }
+
+        reader.onerror = onerror
+        image.onerror = onerror
+
+        reader.readAsDataURL(file)
+      }
     }
     return input
   }, [])
+
+  const preview = useDebounceMemo<PostData | undefined>(
+    () => {
+      const postData: PostData = {
+        title: title.trim(),
+        content: content.trim(),
+        image: imageData,
+        date: Date.now(),
+      }
+
+      if (postData.title || postData.content || postData.image) {
+        return postData
+      }
+    },
+    [title, content, imageData],
+    1000
+  )
 
   return (
     <Form>
@@ -196,6 +240,8 @@ const NewPostForm: FC = () => {
             <TextField
               variant="outlined"
               placeholder={isTitleVisible ? 'Title' : 'Make a new post'}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               onFocus={() => setTitleVisible(true)}
             />
 
@@ -206,6 +252,8 @@ const NewPostForm: FC = () => {
                 minRows={3}
                 maxRows={20}
                 placeholder="Description"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
               />
             )}
           </Stack>
@@ -226,6 +274,14 @@ const NewPostForm: FC = () => {
           </Stack>
         </Stack>
       </Card>
+
+      {preview && (
+        <Stack paddingTop={4} spacing={2}>
+          <H2>Preview</H2>
+
+          <FeedItem expanded post={preview} />
+        </Stack>
+      )}
     </Form>
   )
 }
