@@ -10,11 +10,14 @@ import NFT3Provider, {
   createStatsContext,
   createReferrerStatsContext,
 } from './nft3'
+import YlideProvider from './ylide'
 
 const Provider: FC = ({ children }) => {
   return (
     <UserProvider>
-      <NFT3Provider>{children}</NFT3Provider>
+      <YlideProvider>
+        <NFT3Provider>{children}</NFT3Provider>
+      </YlideProvider>
     </UserProvider>
   )
 }
