@@ -9,6 +9,7 @@ import type {
   YlideKey,
   YlideKeyPair,
 } from '@ylide/sdk'
+import { YlidePublicKeyVersion } from '@ylide/sdk'
 import { BrowserLocalStorage, Ylide, YlideKeyStore, YlideKeyStoreEvent } from '@ylide/sdk'
 import { toast } from 'lib/toastify'
 import { createContext } from 'app/utils/createContext'
@@ -216,18 +217,30 @@ const useYlideService = () => {
       wallet.on('accountUpdate', async (newWalletAccount) => {
         if (newWalletAccount !== lastWalletAccount) {
           lastWalletAccount = newWalletAccount
-          const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(newWalletAccount)
-          setWalletAccount(newWalletAccount)
-          setRemoteKeys(remoteKeys)
-          setRemoteKey(remoteKey)
+          if (newWalletAccount) {
+            const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(newWalletAccount)
+            setWalletAccount(newWalletAccount)
+            setRemoteKeys(remoteKeys)
+            setRemoteKey(remoteKey)
+          } else {
+            setWalletAccount(null)
+            setRemoteKeys({})
+            setRemoteKey(null)
+          }
         }
       })
       await wallet.init()
       lastWalletAccount = wallet.currentWalletAccount
-      const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(wallet.currentWalletAccount)
-      setWalletAccount(wallet.currentWalletAccount)
-      setRemoteKeys(remoteKeys)
-      setRemoteKey(remoteKey)
+      if (wallet.currentWalletAccount) {
+        const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(wallet.currentWalletAccount)
+        setWalletAccount(wallet.currentWalletAccount)
+        setRemoteKeys(remoteKeys)
+        setRemoteKey(remoteKey)
+      } else {
+        setWalletAccount(null)
+        setRemoteKeys({})
+        setRemoteKey(null)
+      }
     })()
   }, [wallet])
 
@@ -267,9 +280,9 @@ const useYlideService = () => {
   }, [keys, remoteKey, walletAccount])
 
   const saveLocalKey = useCallback(
-    async (key: YlideKeyPair) => {
+    async (key: YlideKeyPair, keyVersion: YlidePublicKeyVersion) => {
       console.log('save local key')
-      await keystore.storeKey(key, 'evm', 'generic')
+      await keystore.storeKey(key, keyVersion, 'evm', 'generic')
       await keystore.save()
     },
     [keystore]
@@ -290,27 +303,27 @@ const useYlideService = () => {
   const createLocalKey = useCallback(
     async (password: string, forceNew?: boolean) => {
       let tempLocalKey: YlideKeyPair
-      let keyVersion
+      let keyVersion: YlidePublicKeyVersion
       try {
         if (forceNew) {
           tempLocalKey = await wallet.constructLocalKeyV2(walletAccount, password)
-          keyVersion = 2
-        } else if (remoteKey?.keyVersion === 1) {
+          keyVersion = YlidePublicKeyVersion.KEY_V2
+        } else if (remoteKey?.keyVersion === YlidePublicKeyVersion.INSECURE_KEY_V1) {
           // strange... I'm not sure Qamon keys work here
           tempLocalKey = await wallet.constructLocalKeyV1(walletAccount, password) //wallet.constructLocalKeyV1(walletAccount, password);
-          keyVersion = 1
-        } else if (remoteKey?.keyVersion === 2) {
+          keyVersion = YlidePublicKeyVersion.INSECURE_KEY_V1
+        } else if (remoteKey?.keyVersion === YlidePublicKeyVersion.KEY_V2) {
           // if user already using password - we should use it too
           tempLocalKey = await wallet.constructLocalKeyV2(walletAccount, password)
-          keyVersion = 2
-        } else if (remoteKey?.keyVersion === 3) {
+          keyVersion = YlidePublicKeyVersion.KEY_V2
+        } else if (remoteKey?.keyVersion === YlidePublicKeyVersion.KEY_V3) {
           // if user is not using password - we should not use it too
           tempLocalKey = await wallet.constructLocalKeyV3(walletAccount)
-          keyVersion = 3
+          keyVersion = YlidePublicKeyVersion.KEY_V3
         } else {
           // user have no key at all - use passwordless version
           tempLocalKey = await wallet.constructLocalKeyV3(walletAccount)
-          keyVersion = 3
+          keyVersion = YlidePublicKeyVersion.KEY_V3
         }
         return { key: tempLocalKey, keyVersion }
       } catch (err) {
@@ -370,7 +383,7 @@ const useYlideService = () => {
             return
           }
           const { key, keyVersion } = result
-          await saveLocalKey(key)
+          await saveLocalKey(key, keyVersion)
           await publishLocalKey('gnosis', key, walletAccount, keyVersion)
           toast.success('Ylide is authorized')
         } else if (authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
@@ -383,7 +396,7 @@ const useYlideService = () => {
               return
             }
             const { key, keyVersion } = result
-            await saveLocalKey(key)
+            await saveLocalKey(key, keyVersion)
             await publishLocalKey('gnosis', key, walletAccount, keyVersion)
             toast.success('Ylide is authorized')
           }
@@ -406,9 +419,9 @@ const useYlideService = () => {
           // so sad :( weird case, wait for user to try to read some message
           return
         }
-        const { key } = result
+        const { key, keyVersion } = result
         if (isBytesEqual(key.publicKey, remoteKey.publicKey.bytes)) {
-          await saveLocalKey(key)
+          await saveLocalKey(key, keyVersion)
           toast.success('Ylide is authorized')
         } else {
           toast.error('Wrong password, please, try again')
