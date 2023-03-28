@@ -1,4 +1,4 @@
-import { Fragment, useCallback } from 'react'
+import { Fragment, useCallback, useEffect } from 'react'
 import Container from '@mui/material/Container'
 import Header from 'components/Header'
 import { H2, H4, Tiny } from '../../../components/Typography'
@@ -10,10 +10,20 @@ import { useRouter } from 'next/router'
 import { useTheme } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
+import { useUser, useYlide } from 'domains/data'
 
 const ChatsPage = () => {
   const theme = useTheme()
   const router = useRouter()
+  const { checkReadingAvailable } = useYlide()
+  const { didname } = useUser()
+
+  useEffect(() => {
+    console.log('feed mounted')
+    if (!checkReadingAvailable()) {
+      router.push(`/${didname}`)
+    }
+  }, [checkReadingAvailable, router, didname])
 
   const hasMoreData = true
   const isLoading = false

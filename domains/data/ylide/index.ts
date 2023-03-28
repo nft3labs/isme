@@ -1,8 +1,16 @@
 import type { EthereumWalletController, EthereumBlockchainController } from '@ylide/ethereum'
 import { EVM_CHAINS, EVM_NAMES, evmBlockchainFactories, EVMNetwork, evmWalletFactories } from '@ylide/ethereum'
-import type { BlockchainMap, ExternalYlidePublicKey, IGenericAccount, YlideKey, YlideKeyPair } from '@ylide/sdk'
+import type {
+  BlockchainMap,
+  ExternalYlidePublicKey,
+  IGenericAccount,
+  IMessage,
+  IMessageContent,
+  YlideKey,
+  YlideKeyPair,
+} from '@ylide/sdk'
 import { BrowserLocalStorage, Ylide, YlideKeyStore, YlideKeyStoreEvent } from '@ylide/sdk'
-
+import { toast } from 'lib/toastify'
 import { createContext } from 'app/utils/createContext'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNFT3 } from '@nft3sdk/did-manager'
@@ -10,13 +18,14 @@ import { blockchainMeta } from './constants'
 import { Wallet } from './Wallet'
 import { isBytesEqual } from './utils/isBytesEqual'
 import { chainIdByFaucetType, publishKeyThroughFaucet, requestFaucetSignature } from './utils/publish-helpers'
+import { useDialog } from 'app/hooks/useDialog'
 
 export enum AuthState {
-  NOT_AUTHORIZED, // no account connected in wallet
-  NO_REMOTE_KEY, // no key found for this wallet
-  NO_LOCAL_KEY, // remote key found, but no local key
-  LOCAL_REMOTE_MISMATCH, // local key found, but remote key is different
-  AUTHORIZED, // alles gut
+  NOT_AUTHORIZED = 'NOT_AUTHORIZED', // no account connected in wallet
+  NO_REMOTE_KEY = 'NO_REMOTE_KEY', // no key found for this wallet
+  HAS_REMOTE_BUT_NO_LOCAL_KEY = 'HAS_REMOTE_BUT_NO_LOCAL_KEY', // remote key found, but no local key
+  LOCAL_REMOTE_MISMATCH = 'LOCAL_REMOTE_MISMATCH', // local key found, but remote key is different
+  AUTHORIZED = 'AUTHORIZED', // alles gut
 }
 
 const INDEXER_BLOCKCHAINS = [
@@ -69,9 +78,9 @@ const useYlideService = () => {
 
   const [wallet, setWallet] = useState<Wallet>(null)
   // blockchainControllers will be used in future
-  const [, setBlockchainControllers] = useState<BlockchainMap<EthereumBlockchainController>>({})
+  const [blockchainControllers, setBlockchainControllers] = useState<BlockchainMap<EthereumBlockchainController>>({})
   const [walletAccount, setWalletAccount] = useState<null | IGenericAccount>(null)
-  const [keys, setKeys] = useState<YlideKey[]>([])
+  const [keys, setKeys] = useState<YlideKey[]>(keystore.keys)
   const [remoteKeys, setRemoteKeys] = useState<Record<string, ExternalYlidePublicKey | null>>({})
   const [remoteKey, setRemoteKey] = useState<ExternalYlidePublicKey | null>(null)
   const [initialized, setInitialized] = useState(false)
@@ -102,7 +111,6 @@ const useYlideService = () => {
     ;(async () => {
       if (initialized) return
       const availableWallets = await Ylide.getAvailableWallets()
-      const registeredBlockchains = Ylide.blockchainsList.map((b) => b.factory)
 
       const genericFactory = availableWallets.find((w) => w.wallet === 'generic')
       if (genericFactory && !wallet) {
@@ -131,25 +139,63 @@ const useYlideService = () => {
             walletConnectProvider: null,
           }
         )
-        setWallet(new Wallet(ylide, keystore, genericFactory, newWalletController))
+        const newWallet = new Wallet(ylide, keystore, genericFactory, newWalletController)
+        const handleDeriveRequest = async (
+          reason: string,
+          blockchainGroup: string,
+          walletName: string,
+          address: string,
+          magicString: string
+        ) => {
+          try {
+            if (newWallet.factory.wallet !== walletName) {
+              return null
+            }
+            return newWallet.controller.signMagicString(
+              {
+                address,
+                blockchain: blockchainGroup,
+                publicKey: null,
+              },
+              magicString
+            )
+          } catch (err) {
+            return null
+          }
+        }
+        keystore.options.onDeriveRequest = handleDeriveRequest
+        setWallet(newWallet)
       }
 
-      const controllers: Record<string, EthereumBlockchainController> = {}
-
-      for (const factory of registeredBlockchains) {
-        controllers[factory.blockchain] = (await ylide.controllers.addBlockchain(factory.blockchain, {
-          dev: false, //document.location.hostname === 'localhost',
-        })) as EthereumBlockchainController
-      }
-
-      setBlockchainControllers(controllers)
       setInitialized(true)
     })()
   }, [initialized, ylide, wallet, keystore, switchEVMChain])
 
   const handleKeysUpdate = useCallback((newKeys: YlideKey[]) => {
+    console.log('keys updated: ', newKeys)
     setKeys(newKeys)
   }, [])
+
+  useEffect(() => {
+    ;(async () => {
+      const registeredBlockchains = Ylide.blockchainsList.map((b) => b.factory)
+
+      const controllers: Record<string, EthereumBlockchainController> = Object.assign({}, blockchainControllers)
+      let changed = false
+      for (const factory of registeredBlockchains) {
+        if (!controllers[factory.blockchain]) {
+          controllers[factory.blockchain] = (await ylide.controllers.addBlockchain(factory.blockchain, {
+            dev: false, //document.location.hostname === 'localhost',
+          })) as EthereumBlockchainController
+          changed = true
+        }
+      }
+
+      if (changed) {
+        setBlockchainControllers((prev) => ({ ...prev, ...controllers }))
+      }
+    })()
+  }, [blockchainControllers, ylide])
 
   useEffect(() => {
     keystore.on(YlideKeyStoreEvent.KEYS_UPDATED, handleKeysUpdate)
@@ -162,17 +208,21 @@ const useYlideService = () => {
     ;(async () => {
       if (!wallet) return
       let lastWalletAccount: IGenericAccount | null = null
-      wallet.on('accountUpdate', (newWalletAccount) => {
+      wallet.on('accountUpdate', async (newWalletAccount) => {
         if (newWalletAccount !== lastWalletAccount) {
           lastWalletAccount = newWalletAccount
+          const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(newWalletAccount)
           setWalletAccount(newWalletAccount)
-          setRemoteKey(null)
-          setRemoteKeys({})
+          setRemoteKeys(remoteKeys)
+          setRemoteKey(remoteKey)
         }
       })
       await wallet.init()
       lastWalletAccount = wallet.currentWalletAccount
+      const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(wallet.currentWalletAccount)
       setWalletAccount(wallet.currentWalletAccount)
+      setRemoteKeys(remoteKeys)
+      setRemoteKey(remoteKey)
     })()
   }, [wallet])
 
@@ -182,10 +232,6 @@ const useYlideService = () => {
     setRemoteKeys(remoteKeys)
     setRemoteKey(remoteKey)
   }, [wallet, walletAccount])
-
-  useEffect(() => {
-    reloadRemoteKeys()
-  }, [reloadRemoteKeys])
 
   // okay, so:
   // 1. walletAccount - current wallet account
@@ -205,7 +251,7 @@ const useYlideService = () => {
     }
     const localKey = keys.find((k) => k.address === walletAccount.address)
     if (!localKey) {
-      setAuthState(AuthState.NO_LOCAL_KEY)
+      setAuthState(AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY)
       return
     }
     if (!isBytesEqual(localKey.keypair.publicKey, remoteKey.publicKey.bytes)) {
@@ -214,6 +260,26 @@ const useYlideService = () => {
     }
     setAuthState(AuthState.AUTHORIZED)
   }, [keys, remoteKey, walletAccount])
+
+  const saveLocalKey = useCallback(
+    async (key: YlideKeyPair) => {
+      console.log('save local key')
+      await keystore.storeKey(key, 'evm', 'generic')
+    },
+    [keystore]
+  )
+
+  const isPasswordNeeded = useMemo(() => {
+    if (remoteKey?.keyVersion === 1) {
+      return true
+    } else if (remoteKey?.keyVersion === 2) {
+      return true
+    } else if (remoteKey?.keyVersion === 3) {
+      return false
+    } else {
+      return false
+    }
+  }, [remoteKey])
 
   const createLocalKey = useCallback(
     async (password: string, forceNew?: boolean) => {
@@ -243,7 +309,7 @@ const useYlideService = () => {
         return { key: tempLocalKey, keyVersion }
       } catch (err) {
         console.log('createLocalKey error', err)
-        return
+        return null
       }
     },
     [wallet, walletAccount, remoteKey]
@@ -286,20 +352,110 @@ const useYlideService = () => {
 
   useEffect(() => {
     if (account && identifier) {
-      // TODO
+      ;(async () => {
+        console.log('authorized: ', account, identifier, authState)
+        if (authState === AuthState.AUTHORIZED) {
+          console.log('User authorized in Ylide')
+          // do nothing, user already authorized
+        } else if (authState === AuthState.NO_REMOTE_KEY) {
+          const result = await createLocalKey('')
+          if (!result) {
+            // so sad :( wait for user to try to read some message
+            return
+          }
+          const { key, keyVersion } = result
+          await saveLocalKey(key)
+          await publishLocalKey('gnosis', key, walletAccount, keyVersion)
+          toast.success('Ylide is authorized')
+        } else if (authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
+          if (isPasswordNeeded) {
+            // do nothing, wait for user to try to read some message
+          } else {
+            const result = await createLocalKey('')
+            if (!result) {
+              // so sad :( weird case, wait for user to try to read some message
+              return
+            }
+            const { key, keyVersion } = result
+            await saveLocalKey(key)
+            await publishLocalKey('gnosis', key, walletAccount, keyVersion)
+            toast.success('Ylide is authorized')
+          }
+        } else {
+          console.log('no account', account, identifier)
+          // no account, do nothing
+        }
+      })()
     }
-  }, [account, identifier])
+  }, [account, identifier, authState, isPasswordNeeded, createLocalKey, saveLocalKey, publishLocalKey, walletAccount])
+
+  const enterPasswordDialog = useDialog({
+    onClose: async (e, password: string | null) => {
+      if (!password) {
+        return
+      }
+      if (authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
+        const result = await createLocalKey(password)
+        if (!result) {
+          // so sad :( weird case, wait for user to try to read some message
+          return
+        }
+        const { key } = result
+        if (isBytesEqual(key.publicKey, remoteKey.publicKey.bytes)) {
+          await saveLocalKey(key)
+          toast.success('Ylide is authorized')
+        } else {
+          toast.error('Wrong password, please, try again')
+          enterPasswordDialog.open()
+        }
+      }
+    },
+  })
+
+  const checkReadingAvailable = useCallback(() => {
+    console.log('checkReadingAvailable', authState)
+    if (authState === AuthState.AUTHORIZED) {
+      return true
+    } else {
+      enterPasswordDialog.open()
+      return false
+    }
+  }, [authState, enterPasswordDialog])
+
+  const decodeMessage = async (msgId: string, msg: IMessage, recepient: IGenericAccount) => {
+    const content = await ylide.core.getMessageContent(msg)
+    if (!content || content.corrupted) {
+      toast.error('Content is not available or corrupted')
+      return
+    }
+
+    const result = msg.isBroadcast
+      ? ylide.core.decryptBroadcastContent(msg, content as IMessageContent)
+      : await ylide.core.decryptMessageContent(recepient, msg, content as IMessageContent)
+
+    return {
+      msgId,
+      decodedSubject: result.content.subject,
+      decodedTextData: result.content.content,
+    }
+  }
 
   return {
+    enterPasswordDialog,
+
     authState,
     walletAccount,
 
     remoteKey,
     remoteKeys,
 
+    checkReadingAvailable,
+
     createLocalKey,
+    saveLocalKey,
     reloadRemoteKeys,
     publishLocalKey,
+    decodeMessage,
   }
 }
 const { Provider: YlideProvider, createUseContext } = createContext(useYlideService)

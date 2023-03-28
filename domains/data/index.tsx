@@ -10,7 +10,7 @@ import NFT3Provider, {
   createStatsContext,
   createReferrerStatsContext,
 } from './nft3'
-import YlideProvider from './ylide'
+import YlideProvider, { createYlideContext } from './ylide'
 
 const Provider: FC = ({ children }) => {
   return (
@@ -25,6 +25,7 @@ const Provider: FC = ({ children }) => {
 export default Provider
 
 export const useUser = createUserContext()
+export const useYlide = createYlideContext()
 export const useNFT3 = createNFT3Context()
 export const useNFT3Assets = createAssetsContext()
 export const useNFT3Follow = createFollowContext()
