@@ -15,14 +15,10 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { ImageButton } from '../../../components/btn/IconButton'
+import type { ChatMessage } from '../../../domains/data/ylide/chats'
+import { ChatState, useChat } from '../../../domains/data/ylide/chats'
 
-interface MessageData {
-  date: number
-  isIncoming: boolean
-  content: string
-}
-
-const Message = ({ message, recipientId }: { message: MessageData; recipientId: string }) => {
+const Message = ({ message, recipientId }: { message: ChatMessage; recipientId: string }) => {
   const theme = useTheme()
 
   const renderBody = () => (
@@ -30,7 +26,7 @@ const Message = ({ message, recipientId }: { message: MessageData; recipientId: 
       <Stack direction="row" justifyContent="space-between" spacing={2}>
         <H6>{message.isIncoming ? `${recipientId}.isme` : 'You'}</H6>
 
-        <Span fontSize={12}>{formatDate(message.date, 'MMM d, yyyy')}</Span>
+        <Span fontSize={12}>{formatDate(message.msg.createdAt * 1000, 'MMM d, yyyy')}</Span>
       </Stack>
 
       <Span
@@ -43,7 +39,7 @@ const Message = ({ message, recipientId }: { message: MessageData; recipientId: 
           borderTopRightRadius: message.isIncoming ? undefined : 0,
         }}
       >
-        <NlToBr text={message.content} />
+        <NlToBr text={message.decoded.decodedTextData.toString()} />
       </Span>
     </Stack>
   )
@@ -65,28 +61,8 @@ const Message = ({ message, recipientId }: { message: MessageData; recipientId: 
 
 const ChatPage = () => {
   const router = useRouter()
-  const id = router.query.id
-
-  const messages: MessageData[] = useMemo(
-    () => [
-      {
-        date: Date.now(),
-        isIncoming: false,
-        content: 'Hey man! Long time no see...\nWhazzup?',
-      },
-      {
-        date: Date.now(),
-        isIncoming: true,
-        content: "Yo bro! It's okay. What's going on?",
-      },
-      {
-        date: Date.now(),
-        isIncoming: false,
-        content: 'Not too much...',
-      },
-    ],
-    []
-  )
+  const recipientName = router.query.id?.toString()
+  const chat = useChat({ recipientName })
 
   const mainRef = useRef(null)
 
@@ -94,9 +70,11 @@ const ChatPage = () => {
     if (mainRef.current) {
       mainRef.current.scrollTop = Number.MAX_SAFE_INTEGER
     }
-  }, [messages])
+  }, [chat.list])
 
   const fileInput = useMemo(() => {
+    if (typeof window === 'undefined') return
+
     const input = document.createElement('input')
     input.type = 'file'
     input.onchange = () => {
@@ -107,24 +85,30 @@ const ChatPage = () => {
 
   return (
     <Fragment>
-      <Header title={`ISME | Chat with ${id}.isme`} />
+      <Header title={`ISME | Chat with ${recipientName}.isme`} />
       <Container sx={{ width: { sm: 1, md: 0.6 }, padding: 0 }}>
         <Stack paddingTop={4} spacing={2}>
           <H2>
-            <ImageButton src={backSvg} href="/app/chats" /> {id}.isme
+            <ImageButton src={backSvg} href="/app/chats" /> {recipientName}.isme
           </H2>
 
           <Stack spacing={1}>
             <Card ref={mainRef} sx={{ padding: 2, paddingY: 4, height: '55vh', minHeight: '500px', overflowY: 'auto' }}>
-              {messages.length ? (
+              {chat.list.length ? (
                 <Stack minHeight="100%" justifyContent="end" spacing={4}>
-                  {messages.map((message, i) => (
-                    <Message key={i} message={message} recipientId="username" />
+                  {chat.list.map((message, i) => (
+                    <Message key={i} message={message} recipientId={recipientName} />
                   ))}
                 </Stack>
               ) : (
                 <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-                  <Tiny>No messages yet ...</Tiny>
+                  <Tiny color={chat.state === ChatState.ERROR ? 'error.main' : undefined}>
+                    {chat.state === ChatState.ERROR
+                      ? "Couldn't load messages 😒"
+                      : chat.state === ChatState.LOADING
+                      ? 'Loading ...'
+                      : 'No messages yet ...'}
+                  </Tiny>
                 </Box>
               )}
             </Card>

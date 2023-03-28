@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useYlide } from '../index'
 import { useNFT3 } from '@nft3sdk/did-manager'
+import type { IMessage } from '@ylide/sdk'
+import type { YlideDecodedMessage } from './index'
 
 const INDEXER_URL = 'https://idx1.ylide.io'
-const CHAT_LIST_ENDPOINT = '/otc-chats'
 
 async function request<Data>(url: string, body: any) {
   const response = await fetch(`${INDEXER_URL}${url}`, {
@@ -24,6 +25,7 @@ async function request<Data>(url: string, body: any) {
 
 //
 
+const CHAT_LIST_ENDPOINT = '/otc-chats'
 const CHAT_LIST_PAGE_SIZE = 10
 
 interface ChatThread {
@@ -44,7 +46,7 @@ export function useChatList() {
   const [state, setState] = useState(ChatListState.IDLE)
   const [list, setList] = useState<ChatThread[]>([])
   const [page, setPage] = useState(0)
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(false)
 
   const loadMore = useCallback(async () => {
     try {
@@ -86,11 +88,11 @@ export function useChatList() {
       console.log('Loading chat list failed', e)
       setState(ChatListState.ERROR)
     }
-  }, [checkReadingAvailable, client.did, list, page, state, walletAccount.address])
+  }, [checkReadingAvailable, client.did, list, page, state, walletAccount])
 
   useEffect(() => {
-    console.log(`useEffect`)
-    loadMore().then()
+    loadMore()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return {
@@ -98,5 +100,79 @@ export function useChatList() {
     list,
     hasMore,
     loadMore,
+  }
+}
+
+//
+
+const CHAT_ENDPOINT = '/otc-thread'
+
+export interface ChatMessage {
+  id: string
+  msg: IMessage
+  isIncoming: boolean
+  decoded: YlideDecodedMessage
+}
+
+export enum ChatState {
+  IDLE,
+  LOADING,
+  LOADED,
+  ERROR,
+}
+
+export function useChat({ recipientName }: { recipientName?: string }) {
+  const { client } = useNFT3()
+  const { checkReadingAvailable, walletAccount, decodeMessage } = useYlide()
+
+  const [state, setState] = useState(ChatState.IDLE)
+  const [list, setList] = useState<ChatMessage[]>([])
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        if (!recipientName || !checkReadingAvailable() || state !== ChatState.IDLE) return
+        setState(ChatState.LOADING)
+
+        const recipientInfo = await client.did.info(client.did.convertName(recipientName))
+        const recipientAddress = recipientInfo.addresses[0]?.split(':')[1]
+
+        const { entries } = await request<{
+          totalCount: number
+          entries: { type: 'message' | string; id: string; isIncoming: boolean; msg: IMessage }[]
+        }>(CHAT_ENDPOINT, {
+          myAddress: walletAccount.address,
+          recipientAddress,
+          offset: 0,
+          limit: 100,
+        })
+
+        const messages = await Promise.all(
+          entries
+            .filter((e) => e.type === 'message')
+            .map(async (entry) => {
+              const decoded = await decodeMessage(entry.id, entry.msg, walletAccount)
+
+              return {
+                id: entry.id,
+                msg: entry.msg,
+                isIncoming: entry.isIncoming,
+                decoded,
+              } as ChatMessage
+            })
+        )
+
+        setList(messages)
+        setState(ChatState.LOADED)
+      } catch (e) {
+        console.log('Loading chat failed', e)
+        setState(ChatState.ERROR)
+      }
+    })()
+  }, [checkReadingAvailable, client.did, decodeMessage, recipientName, state, walletAccount])
+
+  return {
+    state,
+    list,
   }
 }

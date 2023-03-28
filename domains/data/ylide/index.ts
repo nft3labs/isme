@@ -1,4 +1,4 @@
-import type { EthereumWalletController, EthereumBlockchainController } from '@ylide/ethereum'
+import type { EthereumBlockchainController, EthereumWalletController } from '@ylide/ethereum'
 import { EVM_CHAINS, EVM_NAMES, evmBlockchainFactories, EVMNetwork, evmWalletFactories } from '@ylide/ethereum'
 import type {
   BlockchainMap,
@@ -8,9 +8,9 @@ import type {
   IMessageContent,
   YlideKey,
   YlideKeyPair,
+  YMF,
 } from '@ylide/sdk'
-import { YlidePublicKeyVersion } from '@ylide/sdk'
-import { BrowserLocalStorage, Ylide, YlideKeyStore, YlideKeyStoreEvent } from '@ylide/sdk'
+import { BrowserLocalStorage, Ylide, YlideKeyStore, YlideKeyStoreEvent, YlidePublicKeyVersion } from '@ylide/sdk'
 import { toast } from 'lib/toastify'
 import { createContext } from 'app/utils/createContext'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -64,6 +64,12 @@ Ylide.registerBlockchainFactory(evmBlockchainFactories[EVMNetwork.MOONRIVER])
 Ylide.registerBlockchainFactory(evmBlockchainFactories[EVMNetwork.METIS])
 
 Ylide.registerWalletFactory(evmWalletFactories.generic)
+
+export interface YlideDecodedMessage {
+  msgId: string
+  decodedSubject: string
+  decodedTextData: string | YMF
+}
 
 const useYlideService = () => {
   const storage = useMemo(() => new BrowserLocalStorage(), [])
@@ -456,7 +462,7 @@ const useYlideService = () => {
       msgId,
       decodedSubject: result.content.subject,
       decodedTextData: result.content.content,
-    }
+    } as YlideDecodedMessage
   }
 
   return {
