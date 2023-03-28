@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import Container from '@mui/material/Container'
 import Header from 'components/Header'
 import { H2, H4, Tiny } from '../../../components/Typography'
@@ -11,29 +11,20 @@ import { useTheme } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { useUser, useYlide } from 'domains/data'
+import { ChatListState, useChatList } from '../../../domains/data/ylide/chats'
 
 const ChatsPage = () => {
   const theme = useTheme()
   const router = useRouter()
   const { checkReadingAvailable } = useYlide()
   const { didname } = useUser()
+  const chatList = useChatList()
 
   useEffect(() => {
-    console.log('feed mounted')
     if (!checkReadingAvailable()) {
       router.push(`/${didname}`)
     }
   }, [checkReadingAvailable, router, didname])
-
-  const hasMoreData = true
-  const isLoading = false
-
-  const goToChat = useCallback(
-    (username: string) => {
-      router.push(`/app/chats/${username}`)
-    },
-    [router]
-  )
 
   return (
     <Fragment>
@@ -42,13 +33,12 @@ const ChatsPage = () => {
         <Stack paddingTop={4} spacing={2}>
           <H2>Chats</H2>
 
-          <Stack spacing={2}>
-            {Array(5)
-              .fill(0)
-              .map((_, i) => (
+          {chatList.list.length ? (
+            <Stack spacing={2}>
+              {chatList.list.map((thread, i) => (
                 <Card
                   key={i}
-                  onClick={() => goToChat('username')}
+                  onClick={() => router.push(`/app/chats/${thread.didname}`)}
                   sx={{
                     cursor: 'pointer',
                     border: 'solid 1px transparent',
@@ -61,25 +51,32 @@ const ChatsPage = () => {
                     <Avatar sx={{ width: 48, height: 48 }} />
 
                     <Stack>
-                      <H4>username.isme</H4>
-                      <Tiny>{formatDate(Date.now(), 'MMM d, yyyy')}</Tiny>
+                      <H4>{thread.didname}.isme</H4>
+                      <Tiny>{formatDate(thread.lastMessageDate, 'MMM d, yyyy')}</Tiny>
                     </Stack>
                   </Stack>
                 </Card>
               ))}
-          </Stack>
+            </Stack>
+          ) : (
+            <Box display="flex" justifyContent="center" alignItems="center" height={100}>
+              <Tiny color={chatList.state === ChatListState.ERROR ? 'error.main' : undefined}>
+                {chatList.state === ChatListState.ERROR
+                  ? "Couldn't load chats 😒"
+                  : chatList.state === ChatListState.LOADING
+                  ? 'Loading ...'
+                  : 'No messages yet ...'}
+              </Tiny>
+            </Box>
+          )}
 
-          <Box justifyContent="center" display="flex">
-            {hasMoreData ? (
-              <Button size="small" disabled={isLoading}>
+          {chatList.hasMore && (
+            <Box justifyContent="center" display="flex">
+              <Button size="small" disabled={chatList.state === ChatListState.LOADING}>
                 Load More
               </Button>
-            ) : (
-              <Button size="small" disabled>
-                No more data
-              </Button>
-            )}
-          </Box>
+            </Box>
+          )}
         </Stack>
       </Container>
     </Fragment>
