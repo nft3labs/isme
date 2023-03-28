@@ -76,11 +76,16 @@ const useYlideService = () => {
   )
   const ylide = useMemo(() => new Ylide(keystore, INDEXER_BLOCKCHAINS), [keystore])
 
+  useEffect(() => {
+    keystore.init()
+  }, [keystore])
+
   const [wallet, setWallet] = useState<Wallet>(null)
   // blockchainControllers will be used in future
   const [blockchainControllers, setBlockchainControllers] = useState<BlockchainMap<EthereumBlockchainController>>({})
   const [walletAccount, setWalletAccount] = useState<null | IGenericAccount>(null)
   const [keys, setKeys] = useState<YlideKey[]>(keystore.keys)
+  console.log('keys: ', keys)
   const [remoteKeys, setRemoteKeys] = useState<Record<string, ExternalYlidePublicKey | null>>({})
   const [remoteKey, setRemoteKey] = useState<ExternalYlidePublicKey | null>(null)
   const [initialized, setInitialized] = useState(false)
@@ -173,7 +178,7 @@ const useYlideService = () => {
 
   const handleKeysUpdate = useCallback((newKeys: YlideKey[]) => {
     console.log('keys updated: ', newKeys)
-    setKeys(newKeys)
+    setKeys([...newKeys])
   }, [])
 
   useEffect(() => {
@@ -265,6 +270,7 @@ const useYlideService = () => {
     async (key: YlideKeyPair) => {
       console.log('save local key')
       await keystore.storeKey(key, 'evm', 'generic')
+      await keystore.save()
     },
     [keystore]
   )
