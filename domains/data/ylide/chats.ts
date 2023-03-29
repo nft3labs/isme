@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useUser, useYlide } from '../index'
 import { useNFT3 } from '@nft3sdk/did-manager'
 import type { IMessage } from '@ylide/sdk'
+import { MessageContentV4, YMF } from '@ylide/sdk'
 import type { YlideDecodedMessage } from './index'
 
 const INDEXER_URL = 'https://idx1.ylide.io'
@@ -230,5 +231,52 @@ export function useChat({ recipientName }: { recipientName?: string }) {
   return {
     state,
     list,
+  }
+}
+
+//
+
+export function useSendChatMessage() {
+  const { client } = useNFT3()
+  const { sendMessage } = useYlide()
+
+  const [isSending, setSending] = useState(false)
+
+  const send = useCallback(
+    async ({ recipientName, text }: { recipientName: string; text: string }) => {
+      try {
+        setSending(true)
+
+        const content = new MessageContentV4({
+          sendingAgentName: 'ysh',
+          sendingAgentVersion: { major: 1, minor: 0, patch: 0 },
+          subject: '',
+          content: YMF.fromPlainText(text.trim()),
+          attachments: [],
+          extraBytes: new Uint8Array(0),
+          extraJson: {},
+        })
+
+        const recipientInfo = await client.did.info(client.did.convertName(recipientName))
+        const recipientAddress = recipientInfo.addresses[0]?.split(':')[1]
+
+        if (!recipientAddress) {
+          throw new Error("Couldn't find recipient address")
+        }
+
+        await sendMessage({
+          recipients: [recipientAddress],
+          content,
+        })
+      } finally {
+        setSending(false)
+      }
+    },
+    [client.did, sendMessage]
+  )
+
+  return {
+    isSending,
+    send,
   }
 }

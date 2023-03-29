@@ -7,6 +7,7 @@ import WalletSelect from './WalletSelect'
 import NFT3Register from './NFT3Register'
 import Menu from '../Menu'
 import YlidePassword from './YlidePassword'
+import ChooseEvmNetwork from './ChooseEvmNetwork'
 
 const ROOT = styled('div')``
 const Content = styled(Stack)`
@@ -24,6 +25,7 @@ const Actions: FC = () => {
       </Content>
       <WalletSelect />
       <YlidePassword />
+      <ChooseEvmNetwork />
       <NFT3Register />
     </ROOT>
   )

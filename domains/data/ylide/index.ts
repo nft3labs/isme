@@ -6,14 +6,23 @@ import type {
   IGenericAccount,
   IMessage,
   IMessageContent,
+  MessageContentV4,
+  Uint256,
   YlideKey,
   YlideKeyPair,
   YMF,
 } from '@ylide/sdk'
-import { BrowserLocalStorage, Ylide, YlideKeyStore, YlideKeyStoreEvent, YlidePublicKeyVersion } from '@ylide/sdk'
+import {
+  BrowserLocalStorage,
+  ServiceCode,
+  Ylide,
+  YlideKeyStore,
+  YlideKeyStoreEvent,
+  YlidePublicKeyVersion,
+} from '@ylide/sdk'
 import { toast } from 'lib/toastify'
 import { createContext } from 'app/utils/createContext'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNFT3 } from '@nft3sdk/did-manager'
 import { blockchainMeta } from './constants'
 import { Wallet } from './Wallet'
@@ -87,7 +96,7 @@ const useYlideService = () => {
     keystore.init()
   }, [keystore])
 
-  const [wallet, setWallet] = useState<Wallet>(null)
+  const [wallet, setWallet] = useState<Wallet | null>(null)
   // blockchainControllers will be used in future
   const [blockchainControllers, setBlockchainControllers] = useState<BlockchainMap<EthereumBlockchainController>>({})
   const [walletAccount, setWalletAccount] = useState<null | IGenericAccount>(null)
@@ -449,23 +458,69 @@ const useYlideService = () => {
     }
   }, [authState, enterPasswordDialog])
 
-  const decodeMessage = async (msgId: string, msg: IMessage, recepient: IGenericAccount) => {
-    const content = await ylide.core.getMessageContent(msg)
-    if (!content || content.corrupted) {
-      toast.error('Content is not available or corrupted')
-      return
-    }
+  const decodeMessage = useCallback(
+    async (msgId: string, msg: IMessage, recepient: IGenericAccount) => {
+      const content = await ylide.core.getMessageContent(msg)
+      if (!content || content.corrupted) {
+        toast.error('Content is not available or corrupted')
+        return
+      }
 
-    const result = msg.isBroadcast
-      ? ylide.core.decryptBroadcastContent(msg, content as IMessageContent)
-      : await ylide.core.decryptMessageContent(recepient, msg, content as IMessageContent)
+      const result = msg.isBroadcast
+        ? ylide.core.decryptBroadcastContent(msg, content as IMessageContent)
+        : await ylide.core.decryptMessageContent(recepient, msg, content as IMessageContent)
 
-    return {
-      msgId,
-      decodedSubject: result.content.subject,
-      decodedTextData: result.content.content,
-    } as YlideDecodedMessage
-  }
+      return {
+        msgId,
+        decodedSubject: result.content.subject,
+        decodedTextData: result.content.content,
+      } as YlideDecodedMessage
+    },
+    [ylide.core]
+  )
+
+  const evmNetworkCallbackRef = useRef<(network?: EVMNetwork) => void>()
+  const chooseEvmNetworkDialog = useDialog({
+    onOpen: (callback?: (network?: EVMNetwork) => void) => {
+      evmNetworkCallbackRef.current = callback
+    },
+    onClose: async (network?: EVMNetwork) => {
+      evmNetworkCallbackRef.current?.(network)
+    },
+  })
+
+  const sendMessage = useCallback(
+    async ({ recipients, content }: { recipients: string[]; content: MessageContentV4 }) => {
+      if (!wallet || !walletAccount) {
+        throw new Error('No account')
+      }
+
+      const network = await new Promise((resolve) => {
+        chooseEvmNetworkDialog.open((network?: EVMNetwork) => {
+          resolve(network)
+        })
+      })
+
+      if (network == null) {
+        throw new Error('Network not selected')
+      }
+
+      return await ylide.core.sendMessage(
+        {
+          wallet: wallet.controller,
+          sender: walletAccount,
+          content,
+          recipients,
+          serviceCode: ServiceCode.MAIL,
+          feedId: '0000000000000000000000000000000000000000000000000000000000000001' as Uint256, // FIXME
+        },
+        {
+          network,
+        }
+      )
+    },
+    [chooseEvmNetworkDialog, wallet, walletAccount, ylide.core]
+  )
 
   return {
     enterPasswordDialog,
@@ -483,6 +538,9 @@ const useYlideService = () => {
     reloadRemoteKeys,
     publishLocalKey,
     decodeMessage,
+
+    chooseEvmNetworkDialog,
+    sendMessage,
   }
 }
 const { Provider: YlideProvider, createUseContext } = createContext(useYlideService)

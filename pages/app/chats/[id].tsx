@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import Container from '@mui/material/Container'
 import Header from 'components/Header'
 import { H2, H6, NlToBr, Span, Tiny } from '../../../components/Typography'
@@ -16,7 +16,8 @@ import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { ImageButton } from '../../../components/btn/IconButton'
 import type { ChatMessage } from '../../../domains/data/ylide/chats'
-import { ChatState, useChat } from '../../../domains/data/ylide/chats'
+import { ChatState, useChat, useSendChatMessage } from '../../../domains/data/ylide/chats'
+import { toast } from '../../../lib/toastify'
 
 const Message = ({ message }: { message: ChatMessage }) => {
   const theme = useTheme()
@@ -61,8 +62,9 @@ const Message = ({ message }: { message: ChatMessage }) => {
 
 const ChatPage = () => {
   const router = useRouter()
-  const recipientName = router.query.id?.toString()
+  const recipientName = router.query.id?.toString() || ''
   const chat = useChat({ recipientName })
+  const { isSending, send } = useSendChatMessage()
 
   const mainRef = useRef<HTMLDivElement>(null)
 
@@ -71,6 +73,8 @@ const ChatPage = () => {
       mainRef.current.scrollTop = Number.MAX_SAFE_INTEGER
     }
   }, [chat.list])
+
+  const [text, setText] = useState('')
 
   const fileInput = useMemo(() => {
     if (typeof window === 'undefined') return
@@ -82,6 +86,17 @@ const ChatPage = () => {
     }
     return input
   }, [])
+
+  const sendMessage = () => {
+    send({ recipientName, text: text.trim() })
+      .then(() => {
+        toast.success('Your message has been sent successfully 🔥')
+      })
+      .catch((e) => {
+        console.log(e)
+        toast.success("Couldn't send your message 😒")
+      })
+  }
 
   return (
     <Fragment>
@@ -122,13 +137,21 @@ const ChatPage = () => {
                   maxRows={10}
                   placeholder="Type your message here"
                   sx={{ flexGrow: 1 }}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
                 />
 
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <ImageButton src={attachmentSvg} title="Attachment" onClick={() => fileInput?.click()} />
 
-                  <Button variant="gradient" size="large" sx={{ flexShrink: 0 }}>
-                    Send
+                  <Button
+                    variant="gradient"
+                    size="large"
+                    sx={{ flexShrink: 0 }}
+                    disabled={!text.trim() || isSending}
+                    onClick={() => sendMessage()}
+                  >
+                    {isSending ? 'Sending ...' : 'Send'}
                   </Button>
                 </Stack>
               </Stack>
