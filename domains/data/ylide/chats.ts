@@ -137,7 +137,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
         const recipientInfo = await client.did.info(client.did.convertName(recipientName))
         const recipientAddress = recipientInfo.addresses[0]?.split(':')[1]
 
-        const { entries } = await request<{
+        const { entries: enteriesRaw } = await request<{
           totalCount: number
           entries: { type: 'message' | string; id: string; isIncoming: boolean; msg: IMessage }[]
         }>(CHAT_ENDPOINT, {
@@ -146,6 +146,14 @@ export function useChat({ recipientName }: { recipientName?: string }) {
           offset: 0,
           limit: 100,
         })
+
+        const entries = enteriesRaw.map((entry) => ({
+          ...entry,
+          msg: {
+            ...entry.msg,
+            key: new Uint8Array(entry.msg.key),
+          },
+        }))
 
         const messages = await Promise.all(
           entries

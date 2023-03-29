@@ -442,7 +442,9 @@ const useYlideService = () => {
     if (authState === AuthState.AUTHORIZED) {
       return true
     } else {
-      enterPasswordDialog.open()
+      if (authState === AuthState.NO_REMOTE_KEY || authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
+        enterPasswordDialog.open()
+      }
       return false
     }
   }, [authState, enterPasswordDialog])
