@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useYlide } from '../index'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useUser, useYlide } from '../index'
 import { useNFT3 } from '@nft3sdk/did-manager'
 import type { IMessage } from '@ylide/sdk'
 import type { YlideDecodedMessage } from './index'
@@ -41,59 +41,80 @@ export enum ChatListState {
 
 export function useChatList() {
   const { client } = useNFT3()
-  const { checkReadingAvailable, walletAccount } = useYlide()
+  const { account } = useUser()
+  const { checkReadingAvailable } = useYlide()
 
-  const [state, setState] = useState(ChatListState.IDLE)
+  const stateRef = useRef(ChatListState.IDLE)
+  const [state, setState] = useState(stateRef.current)
   const [list, setList] = useState<ChatThread[]>([])
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(false)
 
-  const loadMore = useCallback(async () => {
-    try {
-      if (!checkReadingAvailable() || !walletAccount || state === ChatListState.LOADING) return
-      setState(ChatListState.LOADING)
+  const loadMore = useCallback(() => setPage((p) => p + 1), [])
 
-      const newPage = page + 1
-
-      const { totalCount, entries } = await request<{
-        totalCount: number
-        entries: { address: string; lastMessageTimestamp: number }[]
-      }>(CHAT_LIST_ENDPOINT, {
-        myAddress: walletAccount.address,
-        offset: page * CHAT_LIST_PAGE_SIZE,
-        limit: CHAT_LIST_PAGE_SIZE,
-      })
-
-      const threads = await Promise.all(
-        entries.map(async (entry) => {
-          const didname = (
-            await client.did.search({
-              keyword: entry.address,
-              mode: 'address',
-            })
-          )[0]?.didname
-
-          return {
-            didname: didname || entry.address,
-            lastMessageDate: entry.lastMessageTimestamp * 1000,
-          } as ChatThread
-        })
-      )
-
-      setPage(newPage)
-      setHasMore(totalCount > newPage * CHAT_LIST_PAGE_SIZE)
-      setList([...list, ...threads])
-      setState(ChatListState.IDLE)
-    } catch (e) {
-      console.log('Loading chat list failed', e)
-      setState(ChatListState.ERROR)
-    }
-  }, [checkReadingAvailable, client.did, list, page, state, walletAccount])
+  /*
+  Reset everything if account has been changed.
+  PS: It's kind of weird that one of deps is 'checkReadingAvailable'... FIXME
+   */
+  useEffect(() => {
+    setState((stateRef.current = ChatListState.IDLE))
+    setList([])
+    setPage(1)
+    setHasMore(false)
+  }, [account, checkReadingAvailable])
 
   useEffect(() => {
-    loadMore()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    let isCancelled = false
+
+    ;(async () => {
+      try {
+        if (stateRef.current === ChatListState.LOADING || !account || !checkReadingAvailable()) return
+        setState((stateRef.current = ChatListState.LOADING))
+
+        const { totalCount, entries } = await request<{
+          totalCount: number
+          entries: { address: string; lastMessageTimestamp: number }[]
+        }>(CHAT_LIST_ENDPOINT, {
+          myAddress: account,
+          offset: page * CHAT_LIST_PAGE_SIZE,
+          limit: CHAT_LIST_PAGE_SIZE,
+        })
+
+        if (isCancelled) return
+
+        const threads = await Promise.all(
+          entries.map(async (entry) => {
+            const didname = (
+              await client.did.search({
+                keyword: entry.address,
+                mode: 'address',
+              })
+            )[0]?.didname
+
+            return {
+              didname: didname || entry.address,
+              lastMessageDate: entry.lastMessageTimestamp * 1000,
+            } as ChatThread
+          })
+        )
+
+        if (isCancelled) return
+
+        setHasMore(totalCount > page * CHAT_LIST_PAGE_SIZE)
+        setList((list) => [...list, ...threads])
+        setState((stateRef.current = ChatListState.IDLE))
+      } catch (e) {
+        if (isCancelled) return
+        console.error('Loading chat list failed', e)
+        setState((stateRef.current = ChatListState.ERROR))
+      }
+    })()
+
+    return () => {
+      isCancelled = true
+      setState((stateRef.current = ChatListState.IDLE))
+    }
+  }, [account, checkReadingAvailable, client.did, page])
 
   return {
     state,
@@ -124,16 +145,36 @@ export enum ChatState {
 
 export function useChat({ recipientName }: { recipientName?: string }) {
   const { client } = useNFT3()
+  const { account } = useUser()
   const { checkReadingAvailable, walletAccount, decodeMessage } = useYlide()
 
-  const [state, setState] = useState(ChatState.IDLE)
+  const stateRef = useRef(ChatState.IDLE)
+  const [state, setState] = useState(stateRef.current)
   const [list, setList] = useState<ChatMessage[]>([])
 
+  /*
+  Reset everything if account has been changed.
+  PS: It's kind of weird that one of deps is 'checkReadingAvailable'... FIXME
+   */
   useEffect(() => {
+    setState((stateRef.current = ChatState.IDLE))
+    setList([])
+  }, [account, checkReadingAvailable])
+
+  useEffect(() => {
+    const isCancelled = false
+
     ;(async () => {
       try {
-        if (!checkReadingAvailable() || !walletAccount || !recipientName || state !== ChatState.IDLE) return
-        setState(ChatState.LOADING)
+        if (
+          stateRef.current !== ChatState.IDLE ||
+          !account ||
+          !checkReadingAvailable() ||
+          !walletAccount ||
+          !recipientName
+        )
+          return
+        setState((stateRef.current = ChatState.LOADING))
 
         const recipientInfo = await client.did.info(client.did.convertName(recipientName))
         const recipientAddress = recipientInfo.addresses[0]?.split(':')[1]
@@ -142,11 +183,13 @@ export function useChat({ recipientName }: { recipientName?: string }) {
           totalCount: number
           entries: { type: 'message' | string; id: string; isIncoming: boolean; msg: IMessage }[]
         }>(CHAT_ENDPOINT, {
-          myAddress: walletAccount.address,
+          myAddress: account,
           recipientAddress: recipientAddress || recipientName,
           offset: 0,
           limit: 100,
         })
+
+        if (isCancelled) return
 
         const entries = enteriesRaw.map((entry) => ({
           ...entry,
@@ -172,14 +215,17 @@ export function useChat({ recipientName }: { recipientName?: string }) {
             })
         )
 
+        if (isCancelled) return
+
         setList(messages)
-        setState(ChatState.LOADED)
+        setState((stateRef.current = ChatState.LOADED))
       } catch (e) {
+        if (isCancelled) return
         console.log('Loading chat failed', e)
-        setState(ChatState.ERROR)
+        setState((stateRef.current = ChatState.ERROR))
       }
     })()
-  }, [checkReadingAvailable, client.did, decodeMessage, recipientName, state, walletAccount])
+  }, [account, checkReadingAvailable, client.did, decodeMessage, recipientName, walletAccount])
 
   return {
     state,
