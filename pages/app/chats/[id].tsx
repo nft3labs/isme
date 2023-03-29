@@ -18,13 +18,13 @@ import { ImageButton } from '../../../components/btn/IconButton'
 import type { ChatMessage } from '../../../domains/data/ylide/chats'
 import { ChatState, useChat } from '../../../domains/data/ylide/chats'
 
-const Message = ({ message, recipientId }: { message: ChatMessage; recipientId: string }) => {
+const Message = ({ message }: { message: ChatMessage }) => {
   const theme = useTheme()
 
   const renderBody = () => (
     <Stack spacing={0.5}>
       <Stack direction="row" justifyContent="space-between" spacing={2}>
-        <H6>{message.isIncoming ? `${recipientId}.isme` : 'You'}</H6>
+        <H6>{message.isIncoming ? `${message.recipientName}.isme` : 'You'}</H6>
 
         <Span fontSize={12}>{formatDate(message.msg.createdAt * 1000, 'MMM d, yyyy')}</Span>
       </Stack>
@@ -64,7 +64,7 @@ const ChatPage = () => {
   const recipientName = router.query.id?.toString()
   const chat = useChat({ recipientName })
 
-  const mainRef = useRef(null)
+  const mainRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (mainRef.current) {
@@ -78,7 +78,7 @@ const ChatPage = () => {
     const input = document.createElement('input')
     input.type = 'file'
     input.onchange = () => {
-      console.log(input.files[0])
+      console.log(input.files?.[0])
     }
     return input
   }, [])
@@ -97,7 +97,7 @@ const ChatPage = () => {
               {chat.list.length ? (
                 <Stack minHeight="100%" justifyContent="end" spacing={4}>
                   {chat.list.map((message, i) => (
-                    <Message key={i} message={message} recipientId={recipientName} />
+                    <Message key={i} message={message} />
                   ))}
                 </Stack>
               ) : (
@@ -125,7 +125,7 @@ const ChatPage = () => {
                 />
 
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <ImageButton src={attachmentSvg} title="Attachment" onClick={() => fileInput.click()} />
+                  <ImageButton src={attachmentSvg} title="Attachment" onClick={() => fileInput?.click()} />
 
                   <Button variant="gradient" size="large" sx={{ flexShrink: 0 }}>
                     Send

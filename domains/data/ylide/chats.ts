@@ -50,7 +50,7 @@ export function useChatList() {
 
   const loadMore = useCallback(async () => {
     try {
-      if (!checkReadingAvailable() || state === ChatListState.LOADING) return
+      if (!checkReadingAvailable() || !walletAccount || state === ChatListState.LOADING) return
       setState(ChatListState.LOADING)
 
       const newPage = page + 1
@@ -111,6 +111,7 @@ export interface ChatMessage {
   id: string
   msg: IMessage
   isIncoming: boolean
+  recipientName: string
   decoded: YlideDecodedMessage
 }
 
@@ -131,7 +132,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
   useEffect(() => {
     ;(async () => {
       try {
-        if (!recipientName || !checkReadingAvailable() || state !== ChatState.IDLE) return
+        if (!checkReadingAvailable() || !walletAccount || !recipientName || state !== ChatState.IDLE) return
         setState(ChatState.LOADING)
 
         const recipientInfo = await client.did.info(client.did.convertName(recipientName))
@@ -142,7 +143,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
           entries: { type: 'message' | string; id: string; isIncoming: boolean; msg: IMessage }[]
         }>(CHAT_ENDPOINT, {
           myAddress: walletAccount.address,
-          recipientAddress,
+          recipientAddress: recipientAddress || recipientName,
           offset: 0,
           limit: 100,
         })
@@ -165,6 +166,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
                 id: entry.id,
                 msg: entry.msg,
                 isIncoming: entry.isIncoming,
+                recipientName,
                 decoded,
               } as ChatMessage
             })
