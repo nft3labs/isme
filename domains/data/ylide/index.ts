@@ -547,7 +547,7 @@ const useYlideService = () => {
           content,
           recipients,
           serviceCode: ServiceCode.MAIL,
-          feedId: '0000000000000000000000000000000000000000000000000000000000000001' as Uint256, // FIXME
+          feedId: '0000000000000000000000000000000000000000000000000000000000000002' as Uint256, // FIXME
         },
         {
           network,

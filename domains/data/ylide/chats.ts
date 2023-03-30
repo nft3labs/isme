@@ -26,7 +26,7 @@ async function request<Data>(url: string, body: any) {
 
 //
 
-const CHAT_LIST_ENDPOINT = '/otc-chats'
+const CHAT_LIST_ENDPOINT = '/nft3-chats'
 const CHAT_LIST_PAGE_SIZE = 10
 
 interface ChatThread {
@@ -127,7 +127,7 @@ export function useChatList() {
 
 //
 
-const CHAT_ENDPOINT = '/otc-thread'
+const CHAT_ENDPOINT = '/nft3-thread'
 
 export interface ChatMessage {
   id: string
