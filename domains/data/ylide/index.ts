@@ -534,11 +534,7 @@ const useYlideService = () => {
         throw new Error('No account')
       }
 
-      const network = await new Promise((resolve) => {
-        chooseEvmNetworkDialog.open((network?: EVMNetwork) => {
-          resolve(network)
-        })
-      })
+      const network = await new Promise((resolve) => chooseEvmNetworkDialog.open(resolve))
 
       if (network == null) {
         throw new Error('Network not selected')
