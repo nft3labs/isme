@@ -74,11 +74,32 @@ Ylide.registerBlockchainFactory(evmBlockchainFactories[EVMNetwork.METIS])
 
 Ylide.registerWalletFactory(evmWalletFactories.generic)
 
+export const chainToNetworkMeta: Record<string, { network: EVMNetwork; name: string }> = {
+  ETHEREUM: { network: EVMNetwork.ETHEREUM, name: 'Ethereum' },
+  BNBCHAIN: { network: EVMNetwork.BNBCHAIN, name: 'BNB Chain' },
+  POLYGON: { network: EVMNetwork.POLYGON, name: 'Polygon' },
+  ARBITRUM: { network: EVMNetwork.ARBITRUM, name: 'Arbitrum' },
+  OPTIMISM: { network: EVMNetwork.OPTIMISM, name: 'Optimism' },
+  AVALANCHE: { network: EVMNetwork.AVALANCHE, name: 'Avalanche' },
+  CRONOS: { network: EVMNetwork.CRONOS, name: 'Cronos' },
+  FANTOM: { network: EVMNetwork.FANTOM, name: 'Fantom' },
+  KLAYTN: { network: EVMNetwork.KLAYTN, name: 'Klaytn' },
+  GNOSIS: { network: EVMNetwork.GNOSIS, name: 'Gnosis' },
+  AURORA: { network: EVMNetwork.AURORA, name: 'Aurora' },
+  CELO: { network: EVMNetwork.CELO, name: 'Celo' },
+  MOONBEAM: { network: EVMNetwork.MOONBEAM, name: 'Moonbeam' },
+  MOONRIVER: { network: EVMNetwork.MOONRIVER, name: 'Moonriver' },
+  METIS: { network: EVMNetwork.METIS, name: 'Metis' },
+  ASTAR: { network: EVMNetwork.ASTAR, name: 'Astar' },
+}
+
 export interface YlideDecodedMessage {
   msgId: string
   decodedSubject: string
   decodedTextData: string | YMF
 }
+
+export type BlockchainBalances = Record<string, { original: string; numeric: number; e18: string }>
 
 const useYlideService = () => {
   const storage = useMemo(() => new BrowserLocalStorage(), [])
@@ -382,6 +403,24 @@ const useYlideService = () => {
     [wallet]
   )
 
+  const getBalancesOf = useCallback(
+    async (address: string): Promise<BlockchainBalances> => {
+      const chains = Ylide.blockchainsList.map((b) => b.factory)
+      const balances = await Promise.all(
+        chains.map((chain) => blockchainControllers[chain.blockchain]!.getBalance(address))
+      )
+
+      return chains.reduce(
+        (p, c, i) => ({
+          ...p,
+          [c.blockchain]: balances[i]!,
+        }),
+        {} as BlockchainBalances
+      )
+    },
+    [blockchainControllers]
+  )
+
   const { account, identifier } = useNFT3()
 
   useEffect(() => {
@@ -537,6 +576,8 @@ const useYlideService = () => {
     saveLocalKey,
     reloadRemoteKeys,
     publishLocalKey,
+    getBalancesOf,
+
     decodeMessage,
 
     chooseEvmNetworkDialog,

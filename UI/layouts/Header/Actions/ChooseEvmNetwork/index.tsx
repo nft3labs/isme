@@ -1,34 +1,34 @@
 import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 
-import { useYlide } from 'domains/data'
+import { useUser, useYlide } from 'domains/data'
 import Dialog from 'components/Dialog'
-import { EVMNetwork } from '@ylide/ethereum'
 import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
 import { useTheme } from '@mui/material/styles'
-
-const networkMeta = [
-  { network: EVMNetwork.ETHEREUM, name: 'Ethereum' },
-  { network: EVMNetwork.BNBCHAIN, name: 'BNB Chain' },
-  { network: EVMNetwork.POLYGON, name: 'Polygon' },
-  { network: EVMNetwork.ARBITRUM, name: 'Arbitrum' },
-  { network: EVMNetwork.OPTIMISM, name: 'Optimism' },
-  { network: EVMNetwork.AVALANCHE, name: 'Avalanche' },
-  { network: EVMNetwork.CRONOS, name: 'Cronos' },
-  { network: EVMNetwork.FANTOM, name: 'Fantom' },
-  { network: EVMNetwork.KLAYTN, name: 'Klaytn' },
-  { network: EVMNetwork.GNOSIS, name: 'Gnosis' },
-  { network: EVMNetwork.AURORA, name: 'Aurora' },
-  { network: EVMNetwork.CELO, name: 'Celo' },
-  { network: EVMNetwork.MOONBEAM, name: 'Moonbeam' },
-  { network: EVMNetwork.MOONRIVER, name: 'Moonriver' },
-  { network: EVMNetwork.METIS, name: 'Metis' },
-  { network: EVMNetwork.ASTAR, name: 'Astar' },
-]
+import type { BlockchainBalances } from '../../../../../domains/data/ylide'
+import { chainToNetworkMeta } from '../../../../../domains/data/ylide'
+import Box from '@mui/material/Box'
+import { ListItemButton } from '@mui/material'
+import Stack from '@mui/material/Stack'
 
 const ChooseEvmNetwork: FC = () => {
   const theme = useTheme()
-  const { chooseEvmNetworkDialog } = useYlide()
+  const { account } = useUser()
+  const { chooseEvmNetworkDialog, getBalancesOf } = useYlide()
+
+  const [isLoading, setLoading] = useState(true)
+  const [balances, setBalances] = useState<BlockchainBalances>({})
+  useEffect(() => {
+    ;(async () => {
+      if (chooseEvmNetworkDialog.visible && account) {
+        setBalances(await getBalancesOf(account))
+        setLoading(false)
+      } else {
+        setBalances({})
+        setLoading(true)
+      }
+    })()
+  }, [account, chooseEvmNetworkDialog.visible, getBalancesOf])
 
   return (
     <Dialog
@@ -37,26 +37,46 @@ const ChooseEvmNetwork: FC = () => {
       title="Choose Network"
     >
       <List>
-        {networkMeta.map((meta) => (
-          <ListItem
-            key={meta.network}
-            sx={{
-              border: 'solid 1px',
-              borderColor: theme.palette.divider,
-              borderRadius: 3,
-              paddingY: theme.spacing(1),
-              paddingX: theme.spacing(2),
-              marginBottom: theme.spacing(1),
-              cursor: 'pointer',
-              '&:hover': {
-                backgroundColor: theme.palette.divider,
-              },
-            }}
-            onClick={() => chooseEvmNetworkDialog.close(meta.network)}
-          >
-            {meta.name}
-          </ListItem>
-        ))}
+        {isLoading ? (
+          <Box display="flex" justifyContent="center" paddingY={3}>
+            Loading ...
+          </Box>
+        ) : (
+          Object.keys(balances)
+            .sort((a, b) => {
+              const balanceA = balances[a]!.numeric
+              const balanceB = balances[b]!.numeric
+              return balanceA > balanceB ? -1 : balanceA < balanceB ? 1 : 0
+            })
+            .map((chain) => {
+              const balance = balances[chain]!
+
+              return (
+                <ListItemButton
+                  key={chain}
+                  sx={{
+                    border: 'solid 1px',
+                    borderColor: theme.palette.divider,
+                    borderRadius: 3,
+                    paddingY: theme.spacing(1),
+                    paddingX: theme.spacing(2),
+                    marginBottom: theme.spacing(1),
+                    cursor: 'pointer',
+                    '&:hover': {
+                      backgroundColor: theme.palette.divider,
+                    },
+                  }}
+                  disabled={balance.numeric <= 0}
+                  onClick={() => chooseEvmNetworkDialog.close(chainToNetworkMeta[chain]!.network)}
+                >
+                  <Stack direction="row" justifyContent="space-between" spacing={2} width="100%">
+                    <Box>{chainToNetworkMeta[chain]!.name}</Box>
+                    <Box>{Number(balance.numeric.toFixed(12))}</Box>
+                  </Stack>
+                </ListItemButton>
+              )
+            })
+        )}
       </List>
     </Dialog>
   )

@@ -146,22 +146,6 @@ export class Wallet extends EventEmitter {
   //     })
   //   }
 
-  //   async getBalancesOf(address: string): Promise<Record<string, { original: string; numeric: number; e18: string }>> {
-  //     const chains = this.domain.registeredBlockchains.filter((bc) => bc.blockchainGroup === this.factory.blockchainGroup)
-  //     const balances = await Promise.all(
-  //       chains.map(async (chain) => {
-  //         return this.domain.blockchains[chain.blockchain].getBalance(address)
-  //       })
-  //     )
-  //     return chains.reduce(
-  //       (p, c, i) => ({
-  //         ...p,
-  //         [c.blockchain]: balances[i],
-  //       }),
-  //       {} as Record<string, { original: string; numeric: number; e18: string }>
-  //     )
-  //   }
-
   // async connectNonCurrentAccount() {
   // 	if (this.controller.isMultipleAccountsSupported()) {
   // 		return 'SUGGEST_CHANGE';
