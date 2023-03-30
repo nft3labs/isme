@@ -51,13 +51,7 @@ const ChatsPage = () => {
             </Stack>
           ) : (
             <Box display="flex" justifyContent="center" alignItems="center" height={100}>
-              <Tiny color={chatList.state === ChatListState.ERROR ? 'error.main' : undefined}>
-                {chatList.state === ChatListState.ERROR
-                  ? "Couldn't load chats 😒"
-                  : chatList.state === ChatListState.LOADING
-                  ? 'Loading ...'
-                  : 'No messages yet ...'}
-              </Tiny>
+              <Tiny>{chatList.state === ChatListState.LOADING ? 'Loading ...' : 'No messages yet ...'}</Tiny>
             </Box>
           )}
 

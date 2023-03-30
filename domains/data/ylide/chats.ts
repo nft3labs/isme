@@ -37,7 +37,6 @@ interface ChatThread {
 export enum ChatListState {
   IDLE,
   LOADING,
-  ERROR,
 }
 
 export function useChatList() {
@@ -106,7 +105,7 @@ export function useChatList() {
         if (isCancelled) return
 
         console.error('Loading chat list failed', e)
-        setState((stateRef.current = ChatListState.ERROR))
+        setState((stateRef.current = ChatListState.IDLE))
       })
 
     return () => {
@@ -137,7 +136,6 @@ export interface ChatMessage {
 export enum ChatState {
   IDLE,
   LOADING,
-  ERROR,
 }
 
 export function useChat({ recipientName }: { recipientName?: string }) {
@@ -218,7 +216,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
         console.log('Loading chat failed', e)
 
         setList([])
-        setState((stateRef.current = ChatState.ERROR))
+        setState((stateRef.current = ChatState.IDLE))
       })
 
     return () => {
