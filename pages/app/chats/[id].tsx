@@ -91,6 +91,8 @@ const ChatPage = () => {
     send({ recipientName, text: text.trim() })
       .then(() => {
         toast.success('Your message has been sent successfully 🔥')
+        setText('')
+        chat.reloadMessages()
       })
       .catch((e) => {
         console.log(e)

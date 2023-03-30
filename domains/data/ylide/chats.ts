@@ -53,69 +53,66 @@ export function useChatList() {
 
   const loadMore = useCallback(() => setPage((p) => p + 1), [])
 
-  /*
-  Reset everything if account has been changed.
-  PS: It's kind of weird that one of deps is 'checkReadingAvailable'... FIXME
-   */
-  useEffect(() => {
-    setState((stateRef.current = ChatListState.IDLE))
-    setList([])
-    setPage(1)
-    setHasMore(false)
-  }, [account, checkReadingAvailable])
+  const loadThreads = useCallback(
+    async (page: number) => {
+      if (!account || !checkReadingAvailable()) {
+        throw new Error('Wrong state')
+      }
+
+      const { totalCount, entries } = await request<{
+        totalCount: number
+        entries: { address: string; lastMessageTimestamp: number }[]
+      }>(CHAT_LIST_ENDPOINT, {
+        myAddress: account,
+        offset: (page - 1) * CHAT_LIST_PAGE_SIZE,
+        limit: CHAT_LIST_PAGE_SIZE,
+      })
+
+      const threads = await Promise.all(
+        entries.map(async (entry) => {
+          const didname = (
+            await client.did.search({
+              keyword: entry.address,
+              mode: 'address',
+            })
+          )[0]?.didname
+
+          return {
+            didname: didname || entry.address,
+            lastMessageDate: entry.lastMessageTimestamp * 1000,
+          } as ChatThread
+        })
+      )
+
+      return { totalCount, threads }
+    },
+    [account, checkReadingAvailable, client.did]
+  )
 
   useEffect(() => {
     let isCancelled = false
 
-    ;(async () => {
-      try {
-        if (stateRef.current === ChatListState.LOADING || !account || !checkReadingAvailable()) return
-        setState((stateRef.current = ChatListState.LOADING))
+    setState((stateRef.current = ChatListState.LOADING))
 
-        const { totalCount, entries } = await request<{
-          totalCount: number
-          entries: { address: string; lastMessageTimestamp: number }[]
-        }>(CHAT_LIST_ENDPOINT, {
-          myAddress: account,
-          offset: page * CHAT_LIST_PAGE_SIZE,
-          limit: CHAT_LIST_PAGE_SIZE,
-        })
-
-        if (isCancelled) return
-
-        const threads = await Promise.all(
-          entries.map(async (entry) => {
-            const didname = (
-              await client.did.search({
-                keyword: entry.address,
-                mode: 'address',
-              })
-            )[0]?.didname
-
-            return {
-              didname: didname || entry.address,
-              lastMessageDate: entry.lastMessageTimestamp * 1000,
-            } as ChatThread
-          })
-        )
-
+    loadThreads(page)
+      .then(({ totalCount, threads }) => {
         if (isCancelled) return
 
         setHasMore(totalCount > page * CHAT_LIST_PAGE_SIZE)
-        setList((list) => [...list, ...threads])
+        setList((l) => [...l, ...threads])
         setState((stateRef.current = ChatListState.IDLE))
-      } catch (e) {
+      })
+      .catch((e) => {
         if (isCancelled) return
+
         console.error('Loading chat list failed', e)
         setState((stateRef.current = ChatListState.ERROR))
-      }
-    })()
+      })
 
     return () => {
       isCancelled = true
-      setState((stateRef.current = ChatListState.IDLE))
     }
-  }, [account, checkReadingAvailable, client.did, page])
+  }, [loadThreads, page])
 
   return {
     state,
@@ -140,7 +137,6 @@ export interface ChatMessage {
 export enum ChatState {
   IDLE,
   LOADING,
-  LOADED,
   ERROR,
 }
 
@@ -153,84 +149,87 @@ export function useChat({ recipientName }: { recipientName?: string }) {
   const [state, setState] = useState(stateRef.current)
   const [list, setList] = useState<ChatMessage[]>([])
 
-  /*
-  Reset everything if account has been changed.
-  PS: It's kind of weird that one of deps is 'checkReadingAvailable'... FIXME
-   */
-  useEffect(() => {
-    setState((stateRef.current = ChatState.IDLE))
-    setList([])
-  }, [account, checkReadingAvailable])
+  const loadMessages = useCallback(async () => {
+    if (!account || !checkReadingAvailable() || !walletAccount || !recipientName) {
+      throw new Error('Wrong state')
+    }
 
-  useEffect(() => {
-    const isCancelled = false
+    const recipientInfo = await client.did.info(client.did.convertName(recipientName))
+    const recipientAddress = recipientInfo.addresses[0]?.split(':')[1]
 
-    ;(async () => {
-      try {
-        if (
-          stateRef.current !== ChatState.IDLE ||
-          !account ||
-          !checkReadingAvailable() ||
-          !walletAccount ||
-          !recipientName
-        )
-          return
-        setState((stateRef.current = ChatState.LOADING))
+    const { entries: enteriesRaw } = await request<{
+      totalCount: number
+      entries: { type: 'message' | string; id: string; isIncoming: boolean; msg: IMessage }[]
+    }>(CHAT_ENDPOINT, {
+      myAddress: account,
+      recipientAddress: recipientAddress || recipientName,
+      offset: 0,
+      limit: 100,
+    })
 
-        const recipientInfo = await client.did.info(client.did.convertName(recipientName))
-        const recipientAddress = recipientInfo.addresses[0]?.split(':')[1]
+    const entries = enteriesRaw.map((entry) => ({
+      ...entry,
+      msg: {
+        ...entry.msg,
+        key: new Uint8Array(entry.msg.key),
+      },
+    }))
 
-        const { entries: enteriesRaw } = await request<{
-          totalCount: number
-          entries: { type: 'message' | string; id: string; isIncoming: boolean; msg: IMessage }[]
-        }>(CHAT_ENDPOINT, {
-          myAddress: account,
-          recipientAddress: recipientAddress || recipientName,
-          offset: 0,
-          limit: 100,
+    return await Promise.all(
+      entries
+        .filter((e) => e.type === 'message')
+        .map(async (entry) => {
+          const decoded = await decodeMessage(entry.id, entry.msg, walletAccount)
+
+          return {
+            id: entry.id,
+            msg: entry.msg,
+            isIncoming: entry.isIncoming,
+            recipientName,
+            decoded,
+          } as ChatMessage
         })
+    )
+  }, [account, checkReadingAvailable, client.did, decodeMessage, recipientName, walletAccount])
 
-        if (isCancelled) return
+  const [reloadCounter, setReloadCounter] = useState(0)
+  const reloadMessages = useCallback(() => setReloadCounter((c) => c + 1), [])
 
-        const entries = enteriesRaw.map((entry) => ({
-          ...entry,
-          msg: {
-            ...entry.msg,
-            key: new Uint8Array(entry.msg.key),
-          },
-        }))
+  useEffect(() => {
+    const timer = setInterval(reloadMessages, 15 * 1000)
+    return () => clearInterval(timer)
+  }, [reloadMessages])
 
-        const messages = await Promise.all(
-          entries
-            .filter((e) => e.type === 'message')
-            .map(async (entry) => {
-              const decoded = await decodeMessage(entry.id, entry.msg, walletAccount)
+  useEffect(() => {
+    let isCancelled = false
 
-              return {
-                id: entry.id,
-                msg: entry.msg,
-                isIncoming: entry.isIncoming,
-                recipientName,
-                decoded,
-              } as ChatMessage
-            })
-        )
+    setState((stateRef.current = ChatState.LOADING))
 
+    loadMessages()
+      .then((messages) => {
         if (isCancelled) return
 
         setList(messages)
-        setState((stateRef.current = ChatState.LOADED))
-      } catch (e) {
+        setState((stateRef.current = ChatState.IDLE))
+      })
+      .catch((e) => {
         if (isCancelled) return
+
         console.log('Loading chat failed', e)
+
+        setList([])
         setState((stateRef.current = ChatState.ERROR))
-      }
-    })()
-  }, [account, checkReadingAvailable, client.did, decodeMessage, recipientName, walletAccount])
+      })
+
+    return () => {
+      isCancelled = true
+    }
+  }, [reloadCounter, loadMessages])
 
   return {
     state,
     list,
+    reloadMessages,
   }
 }
 
