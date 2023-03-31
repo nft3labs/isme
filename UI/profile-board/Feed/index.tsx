@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
-import { H2, Span, Tiny } from '../../../components/Typography'
+import { H2, NlToBr, Span, Tiny } from '../../../components/Typography'
 import { format as formatDate } from 'date-fns'
 import Avatar from '@mui/material/Avatar'
 import expandSvg from './expand.svg'
@@ -166,8 +166,9 @@ const FeedItem: FC<FeedItemProps> = ({ expanded, post }) => {
               maxHeight: foldState === FeedItemFoldState.EXPANDED ? undefined : FEED_ITEM_CONTENT_MAX_HEIGHT,
               overflow: 'hidden',
             }}
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          >
+            <NlToBr text={post.content} />
+          </Box>
         )}
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
