@@ -17,8 +17,10 @@ import TextField from '@mui/material/TextField'
 import imageAttachmentSvg from '../../../public/image-attachment.svg'
 import { useDebounceMemo } from '../../../app/hooks/useDebounceMemo'
 import { toast } from '../../../lib/toastify'
+import type { IMessage, Uint256 } from '@ylide/sdk'
 import { MessageContentV4, YMF } from '@ylide/sdk'
-import { useFeedLoader } from 'domains/data/ylide/chats'
+import { constructFeedId } from '@ylide/ethereum'
+import { indexerRequest } from '../../../domains/data/ylide/utils/net'
 
 interface PostData {
   title?: string
@@ -78,6 +80,31 @@ const defaultPosts: PostData[] = [
     date: Date.now(),
   },
 ]
+
+const uniqueFeedId = '0000000000000000000000000000000000000000000000000000000000000117' as Uint256 // ISME const
+
+export function useFeedLoader(userAddress: string) {
+  const feedId = constructFeedId(userAddress, true, uniqueFeedId)
+  const { walletAccount, decodeMessage } = useYlide()
+
+  return useCallback(
+    async (offset: number, limit: number) => {
+      const data = await indexerRequest<IMessage[]>(`/broadcasts/`, {
+        feedId,
+        offset,
+        limit,
+      })
+
+      const messages = await Promise.all(data.map((entry) => decodeMessage(entry.msgId, entry, walletAccount!)))
+
+      return data.map((d, idx) => ({
+        body: messages[idx]!,
+        msg: d,
+      }))
+    },
+    [decodeMessage, feedId, walletAccount]
+  )
+}
 
 //
 

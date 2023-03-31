@@ -1,31 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useUser, useYlide } from '../index'
 import { useNFT3 } from '@nft3sdk/did-manager'
-import type { IMessage, Uint256 } from '@ylide/sdk'
+import type { IMessage } from '@ylide/sdk'
 import { MessageContentV4, YMF } from '@ylide/sdk'
 import type { YlideDecodedMessage } from './index'
-import { constructFeedId } from '@ylide/ethereum'
-
-const INDEXER_URL = 'https://idx1.ylide.io'
-
-async function request<Data>(url: string, body: any) {
-  const response = await fetch(`${INDEXER_URL}${url}`, {
-    method: 'POST',
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': 'text/plain',
-    },
-  })
-
-  const responseBody = await response.json()
-  if (responseBody.data) {
-    return responseBody.data as Data
-  } else {
-    throw new Error(responseBody.error || 'Request error')
-  }
-}
-
-//
+import { indexerRequest } from './utils/net'
 
 const CHAT_LIST_ENDPOINT = '/nft3-chats'
 const CHAT_LIST_PAGE_SIZE = 10
@@ -38,31 +17,6 @@ interface ChatThread {
 export enum ChatListState {
   IDLE,
   LOADING,
-}
-
-const uniqueFeedId = '0000000000000000000000000000000000000000000000000000000000000117' as Uint256 // ISME const
-
-export function useFeedLoader(userAddress: string) {
-  const feedId = constructFeedId(userAddress, true, uniqueFeedId)
-  const { walletAccount, decodeMessage } = useYlide()
-
-  return useCallback(
-    async (offset: number, limit: number) => {
-      const data = await request<IMessage[]>(`/broadcasts/`, {
-        feedId,
-        offset,
-        limit,
-      })
-
-      const messages = await Promise.all(data.map((entry) => decodeMessage(entry.msgId, entry, walletAccount!)))
-
-      return data.map((d, idx) => ({
-        body: messages[idx]!,
-        msg: d,
-      }))
-    },
-    [decodeMessage, feedId, walletAccount]
-  )
 }
 
 export function useChatList() {
@@ -84,7 +38,7 @@ export function useChatList() {
         throw new Error('Wrong state')
       }
 
-      const { totalCount, entries } = await request<{
+      const { totalCount, entries } = await indexerRequest<{
         totalCount: number
         entries: { address: string; lastMessageTimestamp: number }[]
       }>(CHAT_LIST_ENDPOINT, {
@@ -181,7 +135,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
     const recipientInfo = await client.did.info(client.did.convertName(recipientName))
     const recipientAddress = recipientInfo.addresses[0]?.split(':')[1]
 
-    const { entries: enteriesRaw } = await request<{
+    const { entries: enteriesRaw } = await indexerRequest<{
       totalCount: number
       entries: { type: 'message' | string; id: string; isIncoming: boolean; msg: IMessage }[]
     }>(CHAT_ENDPOINT, {
