@@ -10,11 +10,10 @@ import Avatar from '@mui/material/Avatar'
 import expandSvg from './expand.svg'
 import { ImageButton } from '../../../components/btn/IconButton'
 import { useNFT3, useNFT3Profile, useYlide } from '../../../domains/data'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
-import imageAttachmentSvg from '../../../public/image-attachment.svg'
 import { useDebounceMemo } from '../../../app/hooks/useDebounceMemo'
 import { toast } from '../../../lib/toastify'
 import type { IMessage, Uint256 } from '@ylide/sdk'
@@ -212,53 +211,20 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [imageData, setImageData] = useState('')
-
-  const fileInput = useMemo(() => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = 'image/*'
-    input.onchange = () => {
-      const file = input.files![0]
-      if (file) {
-        const image = document.createElement('img')
-        const reader = new FileReader()
-
-        const onerror = () => {
-          toast.error("Couldn't load the image")
-        }
-
-        reader.onloadend = () => {
-          image.src = reader.result!.toString()
-        }
-
-        image.onload = () => {
-          setImageData(image.src)
-        }
-
-        reader.onerror = onerror
-        image.onerror = onerror
-
-        reader.readAsDataURL(file)
-      }
-    }
-    return input
-  }, [])
 
   const preview = useDebounceMemo<PostData | undefined>(
     () => {
       const postData: PostData = {
         title: title.trim(),
         content: content.trim(),
-        image: imageData,
         date: Date.now(),
       }
 
-      if (postData.title || postData.content || postData.image) {
+      if (postData.title || postData.content) {
         return postData
       }
     },
-    [title, content, imageData],
+    [title, content],
     1000
   )
 
@@ -285,7 +251,6 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
 
         setTitle('')
         setContent('')
-        setImageData('')
         setTitleVisible(false)
 
         toast.success('Your post has been created successfully 🔥')
@@ -323,29 +288,17 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
             )}
           </Stack>
 
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <ImageButton
-              disabled={isSending}
-              src={imageAttachmentSvg}
-              title="Attach Cover Image"
-              onClick={() => {
-                setTitleVisible(true)
-                fileInput.click()
-              }}
-            />
-
-            <Button
-              disabled={isSending}
-              variant="gradient"
-              size="large"
-              sx={{ flexShrink: 0 }}
-              onClick={() => {
-                handlePost()
-              }}
-            >
-              {isSending ? 'Sending ...' : 'Post'}
-            </Button>
-          </Stack>
+          <Button
+            disabled={isSending}
+            variant="gradient"
+            size="large"
+            sx={{ flexShrink: 0 }}
+            onClick={() => {
+              handlePost()
+            }}
+          >
+            {isSending ? 'Sending ...' : 'Post'}
+          </Button>
         </Stack>
       </Card>
 

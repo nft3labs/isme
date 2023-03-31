@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import Container from '@mui/material/Container'
 import Header from 'components/Header'
 import { H2, H6, NlToBr, Span, Tiny } from '../../../components/Typography'
@@ -8,7 +8,6 @@ import Avatar from '@mui/material/Avatar'
 import { format as formatDate } from 'date-fns'
 import { useRouter } from 'next/router'
 import backSvg from '../../../public/back.svg'
-import attachmentSvg from '../../../public/attachment.svg'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
@@ -76,17 +75,6 @@ const ChatPage = () => {
 
   const [text, setText] = useState('')
 
-  const fileInput = useMemo(() => {
-    if (typeof window === 'undefined') return
-
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.onchange = () => {
-      console.log(input.files?.[0])
-    }
-    return input
-  }, [])
-
   const sendMessage = () => {
     send({ recipientName, text: text.trim() })
       .then(() => {
@@ -137,24 +125,15 @@ const ChatPage = () => {
                   onChange={(e) => setText(e.target.value)}
                 />
 
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <ImageButton
-                    disabled={isSending}
-                    src={attachmentSvg}
-                    title="Attachment"
-                    onClick={() => fileInput?.click()}
-                  />
-
-                  <Button
-                    variant="gradient"
-                    size="large"
-                    sx={{ flexShrink: 0 }}
-                    disabled={!text.trim() || isSending}
-                    onClick={() => sendMessage()}
-                  >
-                    {isSending ? 'Sending ...' : 'Send'}
-                  </Button>
-                </Stack>
+                <Button
+                  variant="gradient"
+                  size="large"
+                  sx={{ flexShrink: 0 }}
+                  disabled={!text.trim() || isSending}
+                  onClick={() => sendMessage()}
+                >
+                  {isSending ? 'Sending ...' : 'Send'}
+                </Button>
               </Stack>
             </Paper>
           </Stack>
