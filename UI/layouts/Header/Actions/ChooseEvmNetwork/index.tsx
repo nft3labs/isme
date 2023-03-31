@@ -6,10 +6,10 @@ import Dialog from 'components/Dialog'
 import List from '@mui/material/List'
 import { useTheme } from '@mui/material/styles'
 import type { BlockchainBalances } from '../../../../../domains/data/ylide'
-import { chainToNetworkMeta } from '../../../../../domains/data/ylide'
 import Box from '@mui/material/Box'
 import { ListItemButton } from '@mui/material'
 import Stack from '@mui/material/Stack'
+import { blockchainMeta, evmNameToNetwork } from '../../../../../domains/data/ylide/constants'
 
 const ChooseEvmNetwork: FC = () => {
   const theme = useTheme()
@@ -50,6 +50,7 @@ const ChooseEvmNetwork: FC = () => {
             })
             .map((chain) => {
               const balance = balances[chain]!
+              const meta = blockchainMeta[chain]!
 
               return (
                 <ListItemButton
@@ -67,11 +68,16 @@ const ChooseEvmNetwork: FC = () => {
                     },
                   }}
                   disabled={balance.numeric <= 0}
-                  onClick={() => chooseEvmNetworkDialog.close(chainToNetworkMeta[chain]!.network)}
+                  onClick={() => chooseEvmNetworkDialog.close(evmNameToNetwork(chain))}
                 >
                   <Stack direction="row" justifyContent="space-between" spacing={2} width="100%">
-                    <Box>{chainToNetworkMeta[chain]!.name}</Box>
-                    <Box>{Number(balance.numeric.toFixed(12))}</Box>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      {meta.logo()}
+                      <Box>{meta.title}</Box>
+                    </Stack>
+                    <Box>
+                      {Number(balance.numeric.toFixed(4))} {meta.ethNetwork.nativeCurrency.symbol || 'ETH'}
+                    </Box>
                   </Stack>
                 </ListItemButton>
               )

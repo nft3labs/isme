@@ -1,4 +1,21 @@
 import { EVM_NAMES, EVMNetwork } from '@ylide/ethereum'
+import { EthereumLogo } from './networkIcons/EthereumLogo'
+import { CronosLogo } from './networkIcons/CronosLogo'
+import { BNBChainLogo } from './networkIcons/BNBChainLogo'
+import { ArbitrumLogo } from './networkIcons/ArbitrumLogo'
+import { AvalancheLogo } from './networkIcons/AvalancheLogo'
+import { OptimismLogo } from './networkIcons/OptimismLogo'
+import { PolygonLogo } from './networkIcons/PolygonLogo'
+import { FantomLogo } from './networkIcons/FantomLogo'
+import { KlaytnLogo } from './networkIcons/KlaytnLogo'
+import { GnosisLogo } from './networkIcons/GnosisLogo'
+import { AuroraLogo } from './networkIcons/AuroraLogo'
+import { MoonbeamLogo } from './networkIcons/MoonbeamLogo'
+import { CeloLogo } from './networkIcons/CeloLogo'
+import { MoonriverLogo } from './networkIcons/MoonriverLogo'
+import { MetisLogo } from './networkIcons/MetisLogo'
+import { AstarLogo } from './networkIcons/AstarLogo'
+import type { ReactNode } from 'react'
 
 export interface IEthereumNetworkDescriptor {
   chainId: string
@@ -16,11 +33,13 @@ export const blockchainMeta: Record<
   string,
   {
     title: string
+    logo: (s?: number) => ReactNode
     ethNetwork: IEthereumNetworkDescriptor
   }
 > = {
   [EVM_NAMES[EVMNetwork.LOCAL_HARDHAT]]: {
     title: 'LocalNet',
+    logo: (s = 16) => <EthereumLogo size={s} />,
     ethNetwork: {
       chainId: '0x7A69',
       chainName: 'Hardhat Local',
@@ -35,6 +54,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.CRONOS]]: {
     title: 'Cronos',
+    logo: (s = 16) => <CronosLogo size={s} />,
     ethNetwork: {
       chainId: '0x19',
       chainName: 'Cronos Mainnet Beta',
@@ -54,6 +74,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.ETHEREUM]]: {
     title: 'Ethereum',
+    logo: (s = 16) => <EthereumLogo size={s} />,
     ethNetwork: {
       chainId: '0x1',
       chainName: 'Ethereum Mainnet',
@@ -90,6 +111,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.BNBCHAIN]]: {
     title: 'BNB Chain',
+    logo: (s = 16) => <BNBChainLogo size={s} />,
     ethNetwork: {
       chainId: '0x38',
       chainName: 'Binance Smart Chain Mainnet',
@@ -129,6 +151,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.ARBITRUM]]: {
     title: 'Arbitrum',
+    logo: (s = 16) => <ArbitrumLogo size={s} />,
     ethNetwork: {
       chainId: '0xa4b1',
       chainName: 'Arbitrum One',
@@ -143,6 +166,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.AVALANCHE]]: {
     title: 'Avalanche',
+    logo: (s = 16) => <AvalancheLogo size={s} />,
     ethNetwork: {
       chainId: '0xa86a',
       chainName: 'Avalanche C-Chain',
@@ -163,6 +187,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.OPTIMISM]]: {
     title: 'Optimism',
+    logo: (s = 16) => <OptimismLogo size={s} />,
     ethNetwork: {
       chainId: '0xa',
       chainName: 'Optimism',
@@ -182,6 +207,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.POLYGON]]: {
     title: 'Polygon',
+    logo: (s = 16) => <PolygonLogo size={s} />,
     ethNetwork: {
       chainId: '0x89',
       chainName: 'Polygon Mainnet',
@@ -213,6 +239,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.FANTOM]]: {
     title: 'Fantom',
+    logo: (s = 16) => <FantomLogo size={s} />,
     ethNetwork: {
       chainId: '0xfa',
       chainName: 'Fantom Opera',
@@ -236,6 +263,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.KLAYTN]]: {
     title: 'Klaytn',
+    logo: (s = 16) => <KlaytnLogo size={s} />,
     ethNetwork: {
       chainId: '0x2019',
       chainName: 'Klaytn Mainnet Cypress',
@@ -258,6 +286,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.GNOSIS]]: {
     title: 'Gnosis',
+    logo: (s = 16) => <GnosisLogo size={s} />,
     ethNetwork: {
       chainId: '0x64',
       chainName: 'Gnosis',
@@ -281,6 +310,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.AURORA]]: {
     title: 'Aurora',
+    logo: (s = 16) => <AuroraLogo size={s} />,
     ethNetwork: {
       chainId: '0x4e454152',
       chainName: 'Aurora Mainnet',
@@ -295,6 +325,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.CELO]]: {
     title: 'Celo',
+    logo: (s = 16) => <CeloLogo size={s} />,
     ethNetwork: {
       chainId: '0xa4ec',
       chainName: 'Celo Mainnet',
@@ -309,6 +340,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.MOONBEAM]]: {
     title: 'Moonbeam',
+    logo: (s = 16) => <MoonbeamLogo size={s} />,
     ethNetwork: {
       chainId: '0x504',
       chainName: 'Moonbeam',
@@ -329,6 +361,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.MOONRIVER]]: {
     title: 'Moonriver',
+    logo: (s = 16) => <MoonriverLogo size={s} />,
     ethNetwork: {
       chainId: '0x505',
       chainName: 'Moonriver',
@@ -349,6 +382,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.METIS]]: {
     title: 'Metis',
+    logo: (s = 16) => <MetisLogo size={s} />,
     ethNetwork: {
       chainId: '0x440',
       chainName: 'Metis Andromeda Mainnet',
@@ -363,6 +397,7 @@ export const blockchainMeta: Record<
   },
   [EVM_NAMES[EVMNetwork.ASTAR]]: {
     title: 'Astar',
+    logo: (s = 16) => <AstarLogo size={s} />,
     ethNetwork: {
       chainId: '0x250',
       chainName: 'Astar',

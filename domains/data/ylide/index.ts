@@ -74,25 +74,6 @@ Ylide.registerBlockchainFactory(evmBlockchainFactories[EVMNetwork.METIS])
 
 Ylide.registerWalletFactory(evmWalletFactories.generic)
 
-export const chainToNetworkMeta: Record<string, { network: EVMNetwork; name: string }> = {
-  ETHEREUM: { network: EVMNetwork.ETHEREUM, name: 'Ethereum' },
-  BNBCHAIN: { network: EVMNetwork.BNBCHAIN, name: 'BNB Chain' },
-  POLYGON: { network: EVMNetwork.POLYGON, name: 'Polygon' },
-  ARBITRUM: { network: EVMNetwork.ARBITRUM, name: 'Arbitrum' },
-  OPTIMISM: { network: EVMNetwork.OPTIMISM, name: 'Optimism' },
-  AVALANCHE: { network: EVMNetwork.AVALANCHE, name: 'Avalanche' },
-  CRONOS: { network: EVMNetwork.CRONOS, name: 'Cronos' },
-  FANTOM: { network: EVMNetwork.FANTOM, name: 'Fantom' },
-  KLAYTN: { network: EVMNetwork.KLAYTN, name: 'Klaytn' },
-  GNOSIS: { network: EVMNetwork.GNOSIS, name: 'Gnosis' },
-  AURORA: { network: EVMNetwork.AURORA, name: 'Aurora' },
-  CELO: { network: EVMNetwork.CELO, name: 'Celo' },
-  MOONBEAM: { network: EVMNetwork.MOONBEAM, name: 'Moonbeam' },
-  MOONRIVER: { network: EVMNetwork.MOONRIVER, name: 'Moonriver' },
-  METIS: { network: EVMNetwork.METIS, name: 'Metis' },
-  ASTAR: { network: EVMNetwork.ASTAR, name: 'Astar' },
-}
-
 export interface YlideDecodedMessage {
   msgId: string
   decodedSubject: string
