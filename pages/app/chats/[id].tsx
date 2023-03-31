@@ -96,7 +96,7 @@ const ChatPage = () => {
       })
       .catch((e) => {
         console.log(e)
-        toast.success("Couldn't send your message 😒")
+        toast.error("Couldn't send your message 😒")
       })
   }
 
@@ -138,7 +138,12 @@ const ChatPage = () => {
                 />
 
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <ImageButton src={attachmentSvg} title="Attachment" onClick={() => fileInput?.click()} />
+                  <ImageButton
+                    disabled={isSending}
+                    src={attachmentSvg}
+                    title="Attachment"
+                    onClick={() => fileInput?.click()}
+                  />
 
                   <Button
                     variant="gradient"

@@ -262,7 +262,11 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
     1000
   )
 
+  const [isSending, setSending] = useState(false)
+
   const handlePost = useCallback(async () => {
+    setSending(true)
+
     const msgContent = new MessageContentV4({
       sendingAgentName: 'isme-feed',
       sendingAgentVersion: { major: 1, minor: 0, patch: 0 },
@@ -273,13 +277,24 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
       extraJson: {},
     })
 
-    const result = await broadcastMessage({ content: msgContent })
-    if (result.pushes.length) {
-      onPost()
-      setTitle('')
-      setContent('')
-      setImageData('')
-    }
+    broadcastMessage({ content: msgContent })
+      .then((result) => {
+        if (!result.pushes.length) {
+          throw new Error('No result')
+        }
+
+        setTitle('')
+        setContent('')
+        setImageData('')
+        setTitleVisible(false)
+
+        toast.success('Your post has been created successfully 🔥')
+        onPost()
+      })
+      .catch(() => toast.error("Couldn't create your post 😒"))
+      .finally(() => {
+        setSending(false)
+      })
   }, [title, content, broadcastMessage, onPost])
 
   return (
@@ -310,6 +325,7 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
 
           <Stack direction="row" alignItems="center" spacing={1}>
             <ImageButton
+              disabled={isSending}
               src={imageAttachmentSvg}
               title="Attach Cover Image"
               onClick={() => {
@@ -319,6 +335,7 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
             />
 
             <Button
+              disabled={isSending}
               variant="gradient"
               size="large"
               sx={{ flexShrink: 0 }}
@@ -326,7 +343,7 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
                 handlePost()
               }}
             >
-              Post
+              {isSending ? 'Sending ...' : 'Post'}
             </Button>
           </Stack>
         </Stack>
