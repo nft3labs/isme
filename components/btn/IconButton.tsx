@@ -25,7 +25,7 @@ export const ToastifyCloseIconButton: FC<IconButtonProps> = styled(CloseIconButt
 
 type RoundButtonProps = {
   href?: string
-  onClick?: () => boolean | Promise<boolean> | void
+  onClick?: () => boolean | Promise<boolean> | Promise<void> | void
 } & IconButtonProps
 
 export const RoundButton: FC<RoundButtonProps> = ({ children, href, onClick, ...others }) => {
