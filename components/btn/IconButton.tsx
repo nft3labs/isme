@@ -23,20 +23,16 @@ export const ToastifyCloseIconButton: FC<IconButtonProps> = styled(CloseIconButt
   color: theme.palette.text.disabled,
 }))
 
-type ImageButtonProps = {
-  src: any
-  alt?: string
-  title?: string
+type RoundButtonProps = {
   href?: string
   onClick?: () => void
-}
+} & IconButtonProps
 
-export const ImageButton: FC<ImageButtonProps & IconButtonProps> = ({ src, alt, title, href, onClick, ...others }) => {
+export const RoundButton: FC<RoundButtonProps> = ({ children, href, onClick, ...others }) => {
   const router = useRouter()
 
   return (
     <IconButton
-      title={title}
       onClick={() => {
         onClick?.()
 
@@ -47,7 +43,20 @@ export const ImageButton: FC<ImageButtonProps & IconButtonProps> = ({ src, alt, 
       size="small"
       {...others}
     >
-      <Image src={src} alt={alt} />
+      {children}
     </IconButton>
+  )
+}
+
+type ImageButtonProps = {
+  src: any
+  alt?: string
+} & RoundButtonProps
+
+export const ImageButton: FC<ImageButtonProps> = ({ src, alt, ...others }) => {
+  return (
+    <RoundButton {...others}>
+      <Image src={src} alt={alt} />
+    </RoundButton>
   )
 }

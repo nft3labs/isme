@@ -51,6 +51,7 @@ const ChooseEvmNetwork: FC = () => {
             .map((chain) => {
               const balance = balances[chain]!
               const meta = blockchainMeta[chain]!
+              const displayBalance = Number(balance.numeric.toFixed(4))
 
               return (
                 <ListItemButton
@@ -67,7 +68,7 @@ const ChooseEvmNetwork: FC = () => {
                       backgroundColor: theme.palette.divider,
                     },
                   }}
-                  disabled={balance.numeric <= 0}
+                  disabled={displayBalance <= 0}
                   onClick={() => chooseEvmNetworkDialog.close(evmNameToNetwork(chain))}
                 >
                   <Stack direction="row" justifyContent="space-between" spacing={2} width="100%">
@@ -76,7 +77,7 @@ const ChooseEvmNetwork: FC = () => {
                       <Box>{meta.title}</Box>
                     </Stack>
                     <Box>
-                      {Number(balance.numeric.toFixed(4))} {meta.ethNetwork.nativeCurrency.symbol || 'ETH'}
+                      {displayBalance} {meta.ethNetwork.nativeCurrency.symbol || 'ETH'}
                     </Box>
                   </Stack>
                 </ListItemButton>

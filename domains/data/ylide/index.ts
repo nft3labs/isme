@@ -24,7 +24,7 @@ import { toast } from 'lib/toastify'
 import { createContext } from 'app/utils/createContext'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNFT3 } from '@nft3sdk/did-manager'
-import { blockchainMeta } from './constants'
+import { blockchainMeta, evmNameToNetwork } from './constants'
 import { Wallet } from './Wallet'
 import { isBytesEqual } from './utils/isBytesEqual'
 import { chainIdByFaucetType, publishKeyThroughFaucet, requestFaucetSignature } from './utils/publish-helpers'
@@ -127,6 +127,8 @@ const useYlideService = () => {
     } catch (err) {
       throw err
     }
+
+    setActiveNetwork(needNetwork)
   }, [])
 
   useEffect(() => {
@@ -495,12 +497,31 @@ const useYlideService = () => {
     [ylide.core]
   )
 
+  const [activeNetwork, setActiveNetwork] = useState<EVMNetwork>()
+
+  useEffect(() => {
+    let isCancelled = false
+
+    wallet?.controller.getCurrentBlockchain().then((blockchain) => {
+      if (isCancelled) return
+      setActiveNetwork(evmNameToNetwork(blockchain))
+    })
+
+    return () => {
+      isCancelled = true
+    }
+  }, [wallet])
+
   const evmNetworkCallbackRef = useRef<(network?: EVMNetwork) => void>()
   const chooseEvmNetworkDialog = useDialog({
     onOpen: (callback?: (network?: EVMNetwork) => void) => {
       evmNetworkCallbackRef.current = callback
     },
     onClose: async (network?: EVMNetwork) => {
+      if (network != null && activeNetwork != network) {
+        await switchEVMChain(wallet!.controller as EthereumWalletController, network)
+      }
+
       evmNetworkCallbackRef.current?.(network)
     },
   })
@@ -510,14 +531,8 @@ const useYlideService = () => {
 
   const sendMessage = useCallback(
     async ({ recipients, content }: { recipients: string[]; content: MessageContentV4 }) => {
-      if (!wallet || !walletAccount) {
+      if (!wallet || !walletAccount || activeNetwork == null) {
         throw new Error('No account')
-      }
-
-      const network = await new Promise((resolve) => chooseEvmNetworkDialog.open(resolve))
-
-      if (network == null) {
-        throw new Error('Network not selected')
       }
 
       return await ylide.core.sendMessage(
@@ -530,11 +545,11 @@ const useYlideService = () => {
           feedId: mailingFeedId,
         },
         {
-          network,
+          network: activeNetwork,
         }
       )
     },
-    [chooseEvmNetworkDialog, wallet, walletAccount, ylide.core]
+    [activeNetwork, chooseEvmNetworkDialog, wallet, walletAccount, ylide.core]
   )
 
   const broadcastMessage = useCallback(
@@ -587,6 +602,8 @@ const useYlideService = () => {
 
     broadcastMessage,
     chooseEvmNetworkDialog,
+    activeNetwork,
+    setActiveNetwork,
     sendMessage,
   }
 }

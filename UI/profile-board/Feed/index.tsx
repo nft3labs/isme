@@ -11,7 +11,6 @@ import expandSvg from './expand.svg'
 import { ImageButton } from '../../../components/btn/IconButton'
 import { useNFT3, useNFT3Profile, useYlide } from '../../../domains/data'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { useDebounceMemo } from '../../../app/hooks/useDebounceMemo'
@@ -20,6 +19,7 @@ import type { IMessage, Uint256 } from '@ylide/sdk'
 import { MessageContentV4, YMF } from '@ylide/sdk'
 import { constructFeedId } from '@ylide/ethereum'
 import { indexerRequest } from '../../../domains/data/ylide/utils/net'
+import { SendMessageButton } from '../../../components/btn/SendMessageButton'
 
 interface PostData {
   title?: string
@@ -295,15 +295,9 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
             )}
           </Stack>
 
-          <Button
-            disabled={isSending}
-            variant="gradient"
-            size="large"
-            sx={{ flexShrink: 0 }}
-            onClick={() => hasData && handlePost()}
-          >
+          <SendMessageButton disabled={!hasData || isSending} onClick={() => hasData && handlePost()}>
             {isSending ? 'Sending ...' : 'Post'}
-          </Button>
+          </SendMessageButton>
         </Stack>
       </Card>
 

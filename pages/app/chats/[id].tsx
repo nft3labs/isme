@@ -11,12 +11,12 @@ import backSvg from '../../../public/back.svg'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { ImageButton } from '../../../components/btn/IconButton'
 import type { ChatMessage } from '../../../domains/data/ylide/chats'
 import { ChatState, useChat, useSendChatMessage } from '../../../domains/data/ylide/chats'
 import { toast } from '../../../lib/toastify'
+import { SendMessageButton } from '../../../components/btn/SendMessageButton'
 
 const Message = ({ message }: { message: ChatMessage }) => {
   const theme = useTheme()
@@ -125,15 +125,9 @@ const ChatPage = () => {
                   onChange={(e) => setText(e.target.value)}
                 />
 
-                <Button
-                  variant="gradient"
-                  size="large"
-                  sx={{ flexShrink: 0 }}
-                  disabled={!text.trim() || isSending}
-                  onClick={() => sendMessage()}
-                >
+                <SendMessageButton disabled={!text.trim() || isSending} onClick={sendMessage}>
                   {isSending ? 'Sending ...' : 'Send'}
-                </Button>
+                </SendMessageButton>
               </Stack>
             </Paper>
           </Stack>
