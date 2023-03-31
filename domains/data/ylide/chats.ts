@@ -142,7 +142,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
       myAddress: account,
       recipientAddress: recipientAddress || recipientName,
       offset: 0,
-      limit: 100,
+      limit: 1000,
     })
 
     const entries = enteriesRaw.map((entry) => ({

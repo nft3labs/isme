@@ -367,18 +367,26 @@ const Feed: FC = () => {
   const address = didinfo?.addresses[0]?.split(':')[1] || ''
   const [posts, setPosts] = useState<PostData[]>([])
   const feedLoader = useFeedLoader(address)
+  const [isLoading, setLoading] = useState(false)
 
   const loadPosts = useCallback(
-    async (offset = 0, limit = 10) => {
-      const newPosts = await feedLoader(offset, limit)
-      setPosts(
-        newPosts.map(({ body, msg }) => ({
-          title: body.decodedSubject,
-          content: typeof body.decodedTextData === 'string' ? body.decodedTextData : body.decodedTextData.toPlainText(),
-          image: '',
-          date: msg.createdAt * 1000,
-        }))
-      )
+    async (offset = 0, limit = 1000) => {
+      setLoading(true)
+
+      feedLoader(offset, limit)
+        .then((newPosts) =>
+          setPosts(
+            newPosts.map(({ body, msg }) => ({
+              title: body.decodedSubject,
+              content:
+                typeof body.decodedTextData === 'string' ? body.decodedTextData : body.decodedTextData.toPlainText(),
+              image: '',
+              date: msg.createdAt * 1000,
+            }))
+          )
+        )
+        .catch(() => toast.error("Couldn't load posts 😒"))
+        .finally(() => setLoading(false))
     },
     [feedLoader]
   )
@@ -393,34 +401,15 @@ const Feed: FC = () => {
     })()
   }, [address, loadPosts])
 
-  const hasMoreData = true
-  const isLoading = false
-
   return (
     <Stack spacing={2}>
       {isUser && <NewPostForm onPost={loadPosts} />}
 
       {posts.length ? (
-        <>
-          {posts.map((post, i) => (
-            <FeedItem key={i} post={post} />
-          ))}
-
-          <Box justifyContent="center" display="flex">
-            {hasMoreData ? (
-              <Button size="small" disabled={isLoading}>
-                Load More
-              </Button>
-            ) : (
-              <Button size="small" disabled>
-                No more data
-              </Button>
-            )}
-          </Box>
-        </>
+        posts.map((post, i) => <FeedItem key={i} post={post} />)
       ) : (
         <Box display="flex" justifyContent="center" alignItems="center" height={200}>
-          <Typography color="text.disabled">No posts yet.</Typography>
+          <Typography color="text.disabled">{isLoading ? 'Loading ...' : 'No posts yet.'}</Typography>
         </Box>
       )}
     </Stack>
