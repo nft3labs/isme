@@ -210,34 +210,41 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
   const { broadcastMessage } = useYlide()
 
   const [title, setTitle] = useState('')
+  const cleanTitle = title.trim()
+
   const [content, setContent] = useState('')
+  const cleanContent = content.trim()
+
+  const hasData = !!cleanTitle || !!cleanContent
 
   const preview = useDebounceMemo<PostData | undefined>(
     () => {
-      const postData: PostData = {
-        title: title.trim(),
-        content: content.trim(),
-        date: Date.now(),
-      }
+      if (!hasData) return
 
-      if (postData.title || postData.content) {
-        return postData
-      }
+      return {
+        title: cleanTitle,
+        content: cleanContent,
+        date: Date.now(),
+      } as PostData
     },
-    [title, content],
+    [cleanTitle, cleanContent],
     1000
   )
 
   const [isSending, setSending] = useState(false)
 
   const handlePost = useCallback(async () => {
+    if (!hasData) {
+      throw new Error('No data')
+    }
+
     setSending(true)
 
     const msgContent = new MessageContentV4({
       sendingAgentName: 'isme-feed',
       sendingAgentVersion: { major: 1, minor: 0, patch: 0 },
-      subject: title,
-      content: YMF.fromPlainText(content),
+      subject: cleanTitle,
+      content: YMF.fromPlainText(cleanContent),
       attachments: [], // TODO?
       extraBytes: new Uint8Array(0),
       extraJson: {},
@@ -260,7 +267,7 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
       .finally(() => {
         setSending(false)
       })
-  }, [title, content, broadcastMessage, onPost])
+  }, [cleanTitle, cleanContent, broadcastMessage, onPost])
 
   return (
     <Form>
@@ -293,9 +300,7 @@ const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
             variant="gradient"
             size="large"
             sx={{ flexShrink: 0 }}
-            onClick={() => {
-              handlePost()
-            }}
+            onClick={() => hasData && handlePost()}
           >
             {isSending ? 'Sending ...' : 'Post'}
           </Button>
