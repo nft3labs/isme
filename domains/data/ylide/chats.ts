@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useUser, useYlide } from '../index'
 import { useNFT3 } from '@nft3sdk/did-manager'
-import type { IMessage } from '@ylide/sdk'
+import type { IMessage, Uint256 } from '@ylide/sdk'
 import { MessageContentV4, YMF } from '@ylide/sdk'
 import type { YlideDecodedMessage } from './index'
+import { constructFeedId } from '@ylide/ethereum'
 
 const INDEXER_URL = 'https://idx1.ylide.io'
 
@@ -37,6 +38,39 @@ interface ChatThread {
 export enum ChatListState {
   IDLE,
   LOADING,
+}
+
+const uniqueFeedId = '0000000000000000000000000000000000000000000000000000000000000117' as Uint256 // ISME const
+
+export function useFeedLoader(userAddress: string) {
+  const feedId = constructFeedId(userAddress, true, uniqueFeedId)
+  const { walletAccount, decodeMessage } = useYlide()
+
+  const loadFeedPosts = useCallback(
+    async (offset: number, limit: number) => {
+      const data = await request<IMessage[]>(`/broadcasts/`, {
+        feedId,
+        offset,
+        limit,
+      })
+
+      const messages = await Promise.all(
+        data.map(async (entry) => {
+          const decoded = await decodeMessage(entry.msgId, entry, walletAccount)
+
+          return decoded
+        })
+      )
+
+      return data.map((d, idx) => ({
+        body: messages[idx],
+        msg: d,
+      }))
+    },
+    [decodeMessage, feedId, walletAccount]
+  )
+
+  return loadFeedPosts
 }
 
 export function useChatList() {

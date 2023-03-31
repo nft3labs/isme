@@ -122,7 +122,6 @@ const useYlideService = () => {
   const [blockchainControllers, setBlockchainControllers] = useState<BlockchainMap<EthereumBlockchainController>>({})
   const [walletAccount, setWalletAccount] = useState<null | IGenericAccount>(null)
   const [keys, setKeys] = useState<YlideKey[]>(keystore.keys)
-  console.log('keys: ', keys)
   const [remoteKeys, setRemoteKeys] = useState<Record<string, ExternalYlidePublicKey | null>>({})
   const [remoteKey, setRemoteKey] = useState<ExternalYlidePublicKey | null>(null)
   const [initialized, setInitialized] = useState(false)
@@ -214,7 +213,6 @@ const useYlideService = () => {
   }, [initialized, ylide, wallet, keystore, switchEVMChain])
 
   const handleKeysUpdate = useCallback((newKeys: YlideKey[]) => {
-    console.log('keys updated: ', newKeys)
     setKeys([...newKeys])
   }, [])
 
@@ -317,7 +315,6 @@ const useYlideService = () => {
 
   const saveLocalKey = useCallback(
     async (key: YlideKeyPair, keyVersion: YlidePublicKeyVersion) => {
-      console.log('save local key')
       await keystore.storeKey(key, keyVersion, 'evm', 'generic')
       await keystore.save()
     },
@@ -426,7 +423,6 @@ const useYlideService = () => {
   useEffect(() => {
     if (account && identifier) {
       ;(async () => {
-        console.log('authorized: ', account, identifier, authState)
         if (authState === AuthState.AUTHORIZED) {
           console.log('User authorized in Ylide')
           // do nothing, user already authorized
@@ -528,6 +524,9 @@ const useYlideService = () => {
     },
   })
 
+  const mailingFeedId = '0000000000000000000000000000000000000000000000000000000000000002' as Uint256 // ISME const
+  const uniqueFeedId = '0000000000000000000000000000000000000000000000000000000000000117' as Uint256 // ISME const
+
   const sendMessage = useCallback(
     async ({ recipients, content }: { recipients: string[]; content: MessageContentV4 }) => {
       if (!wallet || !walletAccount) {
@@ -547,10 +546,39 @@ const useYlideService = () => {
           content,
           recipients,
           serviceCode: ServiceCode.MAIL,
-          feedId: '0000000000000000000000000000000000000000000000000000000000000002' as Uint256, // FIXME
+          feedId: mailingFeedId,
         },
         {
           network,
+        }
+      )
+    },
+    [chooseEvmNetworkDialog, wallet, walletAccount, ylide.core]
+  )
+
+  const broadcastMessage = useCallback(
+    async ({ content }: { content: MessageContentV4 }) => {
+      if (!wallet || !walletAccount) {
+        throw new Error('No account')
+      }
+
+      const network = await new Promise((resolve) => chooseEvmNetworkDialog.open(resolve))
+
+      if (network == null) {
+        throw new Error('Network not selected')
+      }
+
+      return await ylide.core.broadcastMessage(
+        {
+          wallet: wallet.controller,
+          sender: walletAccount,
+          content,
+          serviceCode: 5, // ISME const
+          feedId: uniqueFeedId,
+        },
+        {
+          network,
+          isPersonal: true,
         }
       )
     },
@@ -576,6 +604,7 @@ const useYlideService = () => {
 
     decodeMessage,
 
+    broadcastMessage,
     chooseEvmNetworkDialog,
     sendMessage,
   }

@@ -10,13 +10,15 @@ import Avatar from '@mui/material/Avatar'
 import expandSvg from './expand.svg'
 import { ImageButton } from '../../../components/btn/IconButton'
 import { useNFT3, useNFT3Profile, useYlide } from '../../../domains/data'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import imageAttachmentSvg from '../../../public/image-attachment.svg'
 import { useDebounceMemo } from '../../../app/hooks/useDebounceMemo'
 import { toast } from '../../../lib/toastify'
+import { MessageContentV4, YMF } from '@ylide/sdk'
+import { useFeedLoader } from 'domains/data/ylide/chats'
 
 interface PostData {
   title?: string
@@ -25,7 +27,7 @@ interface PostData {
   date: number
 }
 
-const posts: PostData[] = [
+const defaultPosts: PostData[] = [
   {
     title: 'Hello World',
     content:
@@ -177,8 +179,9 @@ const Form = styled(Box)`
   })}
 `
 
-const NewPostForm: FC = () => {
+const NewPostForm: FC<{ onPost?: () => void }> = ({ onPost }) => {
   const [isTitleVisible, setTitleVisible] = useState(false)
+  const { broadcastMessage } = useYlide()
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -232,6 +235,26 @@ const NewPostForm: FC = () => {
     1000
   )
 
+  const handlePost = useCallback(async () => {
+    const msgContent = new MessageContentV4({
+      sendingAgentName: 'isme-feed',
+      sendingAgentVersion: { major: 1, minor: 0, patch: 0 },
+      subject: title,
+      content: YMF.fromPlainText(content),
+      attachments: [], // TODO?
+      extraBytes: new Uint8Array(0),
+      extraJson: {},
+    })
+
+    const result = await broadcastMessage({ content: msgContent })
+    if (result.pushes.length) {
+      onPost()
+      setTitle('')
+      setContent('')
+      setImageData('')
+    }
+  }, [title, content, broadcastMessage, onPost])
+
   return (
     <Form>
       <Card sx={{ padding: 2 }}>
@@ -268,7 +291,14 @@ const NewPostForm: FC = () => {
               }}
             />
 
-            <Button variant="gradient" size="large" sx={{ flexShrink: 0 }}>
+            <Button
+              variant="gradient"
+              size="large"
+              sx={{ flexShrink: 0 }}
+              onClick={() => {
+                handlePost()
+              }}
+            >
               Post
             </Button>
           </Stack>
@@ -289,14 +319,42 @@ const NewPostForm: FC = () => {
 //
 
 const Feed: FC = () => {
-  const { isUser } = useNFT3Profile()
+  const { isUser, didinfo } = useNFT3Profile()
+  const address = didinfo.addresses.length ? didinfo.addresses[0].split(':')[1] : null
+  const [posts, setPosts] = useState<PostData[]>([])
+  const feedLoader = useFeedLoader(address)
+
+  const loadPosts = useCallback(
+    async (offset = 0, limit = 10) => {
+      const newPosts = await feedLoader(offset, limit)
+      setPosts(
+        newPosts.map(({ body, msg }) => ({
+          title: body.decodedSubject,
+          content: typeof body.decodedTextData === 'string' ? body.decodedTextData : body.decodedTextData.toPlainText(),
+          image: '',
+          date: msg.createdAt * 1000,
+        }))
+      )
+    },
+    [feedLoader]
+  )
+
+  useEffect(() => {
+    ;(async () => {
+      if (address) {
+        loadPosts()
+      } else {
+        setPosts([])
+      }
+    })()
+  }, [address, loadPosts])
 
   const hasMoreData = true
   const isLoading = false
 
   return (
     <Stack spacing={2}>
-      {isUser && <NewPostForm />}
+      {isUser && <NewPostForm onPost={loadPosts} />}
 
       {posts.length ? (
         <>
