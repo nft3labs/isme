@@ -4,6 +4,7 @@ import { useNFT3 } from '@nft3sdk/did-manager'
 import type { IMessage } from '@ylide/sdk'
 import { MessageContentV4, YMF } from '@ylide/sdk'
 import type { YlideDecodedMessage } from './index'
+import { AuthState } from './index'
 import { indexerRequest } from './utils/net'
 
 const CHAT_LIST_ENDPOINT = '/nft3-chats'
@@ -21,17 +22,13 @@ export enum ChatListState {
 export function useChatList() {
   const { client } = useNFT3()
   const { account } = useUser()
-  const { checkReadingAvailable } = useYlide()
+  const { authState, forceAuth } = useYlide()
 
   const stateRef = useRef(ChatListState.IDLE)
   const [state, setState] = useState(stateRef.current)
   const [list, setList] = useState<ChatThread[]>([])
 
   const loadThreads = useCallback(async () => {
-    if (!account || !checkReadingAvailable()) {
-      throw new Error('Wrong state')
-    }
-
     const { totalCount, entries } = await indexerRequest<{
       totalCount: number
       entries: { address: string; lastMessageTimestamp: number }[]
@@ -58,10 +55,26 @@ export function useChatList() {
     )
 
     return { totalCount, threads }
-  }, [account, checkReadingAvailable, client.did])
+  }, [account, client.did])
 
   useEffect(() => {
     let isCancelled = false
+
+    if (!account) {
+      return
+    }
+    if (authState === AuthState.LOADING) {
+      return
+    }
+    if (authState === AuthState.NOT_AUTHORIZED) {
+      return
+    }
+
+    if (authState !== AuthState.AUTHORIZED) {
+      console.log(account, authState)
+      forceAuth()
+      return
+    }
 
     setState((stateRef.current = ChatListState.LOADING))
 
@@ -83,7 +96,7 @@ export function useChatList() {
     return () => {
       isCancelled = true
     }
-  }, [loadThreads])
+  }, [account, authState, forceAuth, loadThreads])
 
   return {
     state,
@@ -111,17 +124,13 @@ export enum ChatState {
 export function useChat({ recipientName }: { recipientName?: string }) {
   const { client } = useNFT3()
   const { account } = useUser()
-  const { checkReadingAvailable, walletAccount, decodeMessage } = useYlide()
+  const { walletAccount, decodeMessage, forceAuth, isLoading, authState } = useYlide()
 
   const stateRef = useRef(ChatState.IDLE)
   const [state, setState] = useState(stateRef.current)
   const [list, setList] = useState<ChatMessage[]>([])
 
   const loadMessages = useCallback(async () => {
-    if (!account || !checkReadingAvailable() || !walletAccount || !recipientName) {
-      throw new Error('Wrong state')
-    }
-
     const recipientInfo = await client.did.info(client.did.convertName(recipientName))
     const recipientAddress = recipientInfo.addresses[0]?.split(':')[1]
 
@@ -158,7 +167,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
           } as ChatMessage
         })
     )
-  }, [account, checkReadingAvailable, client.did, decodeMessage, recipientName, walletAccount])
+  }, [account, client.did, decodeMessage, recipientName, walletAccount])
 
   const [reloadCounter, setReloadCounter] = useState(0)
   const reloadMessages = useCallback(() => setReloadCounter((c) => c + 1), [])
@@ -170,6 +179,18 @@ export function useChat({ recipientName }: { recipientName?: string }) {
 
   useEffect(() => {
     let isCancelled = false
+
+    if (authState === AuthState.LOADING) {
+      return
+    }
+    if (authState === AuthState.NOT_AUTHORIZED) {
+      return
+    }
+
+    if (authState !== AuthState.AUTHORIZED) {
+      forceAuth()
+      return
+    }
 
     setState((stateRef.current = ChatState.LOADING))
 
@@ -192,7 +213,7 @@ export function useChat({ recipientName }: { recipientName?: string }) {
     return () => {
       isCancelled = true
     }
-  }, [reloadCounter, loadMessages])
+  }, [reloadCounter, loadMessages, forceAuth, isLoading, authState])
 
   return {
     state,

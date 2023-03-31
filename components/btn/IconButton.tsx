@@ -25,7 +25,7 @@ export const ToastifyCloseIconButton: FC<IconButtonProps> = styled(CloseIconButt
 
 type RoundButtonProps = {
   href?: string
-  onClick?: () => void
+  onClick?: () => boolean | Promise<boolean> | void
 } & IconButtonProps
 
 export const RoundButton: FC<RoundButtonProps> = ({ children, href, onClick, ...others }) => {
@@ -33,8 +33,14 @@ export const RoundButton: FC<RoundButtonProps> = ({ children, href, onClick, ...
 
   return (
     <IconButton
-      onClick={() => {
-        onClick?.()
+      onClick={async () => {
+        let result = onClick?.()
+        if (typeof result === 'object' && result instanceof Promise) {
+          result = await result
+        }
+        if (result === false) {
+          return
+        }
 
         if (href) {
           router.push(href).then()

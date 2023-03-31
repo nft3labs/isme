@@ -12,6 +12,7 @@ import type {
   YlideKeyPair,
   YMF,
 } from '@ylide/sdk'
+import { WalletEvent } from '@ylide/sdk'
 import {
   BrowserLocalStorage,
   ServiceCode,
@@ -32,6 +33,7 @@ import { useDialog } from 'app/hooks/useDialog'
 
 export enum AuthState {
   NOT_AUTHORIZED = 'NOT_AUTHORIZED', // no account connected in wallet
+  LOADING = 'LOADING', // loading
   NO_REMOTE_KEY = 'NO_REMOTE_KEY', // no key found for this wallet
   HAS_REMOTE_BUT_NO_LOCAL_KEY = 'HAS_REMOTE_BUT_NO_LOCAL_KEY', // remote key found, but no local key
   LOCAL_REMOTE_MISMATCH = 'LOCAL_REMOTE_MISMATCH', // local key found, but remote key is different
@@ -83,6 +85,7 @@ export interface YlideDecodedMessage {
 export type BlockchainBalances = Record<string, { original: string; numeric: number; e18: string }>
 
 const useYlideService = () => {
+  const { account, identifier } = useNFT3()
   const storage = useMemo(() => new BrowserLocalStorage(), [])
   const keystore = useMemo(
     () =>
@@ -106,6 +109,7 @@ const useYlideService = () => {
   const [remoteKeys, setRemoteKeys] = useState<Record<string, ExternalYlidePublicKey | null>>({})
   const [remoteKey, setRemoteKey] = useState<ExternalYlidePublicKey | null>(null)
   const [initialized, setInitialized] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const switchEVMChain = useCallback(async (_walletController: EthereumWalletController, needNetwork: EVMNetwork) => {
     try {
@@ -253,10 +257,12 @@ const useYlideService = () => {
         setWalletAccount(wallet.currentWalletAccount)
         setRemoteKeys(remoteKeys)
         setRemoteKey(remoteKey)
+        setIsLoading(false)
       } else {
         setWalletAccount(null)
         setRemoteKeys({})
         setRemoteKey(null)
+        setIsLoading(false)
       }
     })()
   }, [wallet])
@@ -276,7 +282,11 @@ const useYlideService = () => {
   const [authState, setAuthState] = useState<AuthState>(AuthState.NOT_AUTHORIZED)
 
   useEffect(() => {
-    if (!walletAccount) {
+    if (isLoading) {
+      setAuthState(AuthState.LOADING)
+      return
+    }
+    if (!walletAccount || !account) {
       setAuthState(AuthState.NOT_AUTHORIZED)
       return
     }
@@ -294,7 +304,7 @@ const useYlideService = () => {
       return
     }
     setAuthState(AuthState.AUTHORIZED)
-  }, [keys, remoteKey, walletAccount])
+  }, [account, isLoading, keys, remoteKey, walletAccount])
 
   const saveLocalKey = useCallback(
     async (key: YlideKeyPair, keyVersion: YlidePublicKeyVersion) => {
@@ -401,8 +411,6 @@ const useYlideService = () => {
     [blockchainControllers]
   )
 
-  const { account, identifier } = useNFT3()
-
   useEffect(() => {
     if (account && identifier) {
       ;(async () => {
@@ -441,40 +449,56 @@ const useYlideService = () => {
     }
   }, [account, identifier, authState, isPasswordNeeded, createLocalKey, saveLocalKey, publishLocalKey, walletAccount])
 
-  const enterPasswordDialog = useDialog({
-    onClose: async (e, password: string | null) => {
-      if (!password) {
-        return
-      }
-      if (authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
-        const result = await createLocalKey(password)
-        if (!result) {
-          // so sad :( weird case, wait for user to try to read some message
-          return
+  const enterPasswordDialogRef = useRef<ReturnType<typeof useDialog>>()
+  const enterPasswordCallbackRef = useRef<(result: boolean) => void>()
+  const enterPasswordDialogParams = useMemo(
+    () => ({
+      onOpen: (callback?: () => boolean) => {
+        enterPasswordCallbackRef.current = callback
+      },
+      onClose: async (e: any, password: string | null) => {
+        if (!password) {
+          return enterPasswordCallbackRef.current?.(false)
         }
-        const { key, keyVersion } = result
-        if (isBytesEqual(key.publicKey, remoteKey.publicKey.bytes)) {
-          await saveLocalKey(key, keyVersion)
-          toast.success('Ylide is authorized')
-        } else {
-          toast.error('Wrong password, please, try again')
-          enterPasswordDialog.open()
+        if (authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
+          const result = await createLocalKey(password)
+          if (!result) {
+            // so sad :( weird case, wait for user to try to read some message
+            return enterPasswordCallbackRef.current?.(false)
+          }
+          const { key, keyVersion } = result
+          if (isBytesEqual(key.publicKey, remoteKey.publicKey.bytes)) {
+            await saveLocalKey(key, keyVersion)
+            toast.success('Ylide is authorized')
+            enterPasswordCallbackRef.current?.(true)
+          } else {
+            toast.error('Wrong password, please, try again')
+            enterPasswordDialogRef.current?.open(enterPasswordCallbackRef.current)
+          }
         }
-      }
-    },
-  })
+      },
+    }),
+    [authState, createLocalKey, enterPasswordDialogRef, remoteKey, saveLocalKey]
+  )
+  const enterPasswordDialog = useDialog(enterPasswordDialogParams)
+  useEffect(() => {
+    enterPasswordDialogRef.current = enterPasswordDialog
+  }, [enterPasswordDialog])
 
-  const checkReadingAvailable = useCallback(() => {
-    console.log('checkReadingAvailable', authState)
+  const forceAuth = useCallback(async () => {
+    console.log('forceAuth', authState)
     if (authState === AuthState.AUTHORIZED) {
       return true
+    } else if (authState === AuthState.NO_REMOTE_KEY || authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
+      return await new Promise<boolean>(enterPasswordDialog.open)
     } else {
-      if (authState === AuthState.NO_REMOTE_KEY || authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
-        enterPasswordDialog.open()
-      }
       return false
     }
-  }, [authState, enterPasswordDialog])
+  }, [authState, enterPasswordDialog.open])
+
+  useEffect(() => {
+    console.log('authState changed', authState)
+  }, [authState])
 
   const decodeMessage = useCallback(
     async (msgId: string, msg: IMessage, recepient: IGenericAccount) => {
@@ -498,6 +522,19 @@ const useYlideService = () => {
   )
 
   const [activeNetwork, setActiveNetwork] = useState<EVMNetwork>()
+
+  useEffect(() => {
+    if (wallet) {
+      const handler = (chainNameOrId: string) => {
+        console.log('BLOCKCHAIN_CHANGED', chainNameOrId)
+        setActiveNetwork(evmNameToNetwork(chainNameOrId))
+      }
+      wallet.controller.on(WalletEvent.BLOCKCHAIN_CHANGED, handler)
+      return () => {
+        wallet.controller.off(WalletEvent.BLOCKCHAIN_CHANGED, handler)
+      }
+    }
+  }, [wallet])
 
   useEffect(() => {
     let isCancelled = false
@@ -549,7 +586,7 @@ const useYlideService = () => {
         }
       )
     },
-    [activeNetwork, chooseEvmNetworkDialog, wallet, walletAccount, ylide.core]
+    [activeNetwork, wallet, walletAccount, ylide.core]
   )
 
   const broadcastMessage = useCallback(
@@ -584,13 +621,14 @@ const useYlideService = () => {
   return {
     enterPasswordDialog,
 
+    isLoading,
     authState,
     walletAccount,
 
     remoteKey,
     remoteKeys,
 
-    checkReadingAvailable,
+    forceAuth,
 
     createLocalKey,
     saveLocalKey,
