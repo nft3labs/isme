@@ -46,7 +46,7 @@ export function useFeedLoader(userAddress: string) {
   const feedId = constructFeedId(userAddress, true, uniqueFeedId)
   const { walletAccount, decodeMessage } = useYlide()
 
-  const loadFeedPosts = useCallback(
+  return useCallback(
     async (offset: number, limit: number) => {
       const data = await request<IMessage[]>(`/broadcasts/`, {
         feedId,
@@ -54,23 +54,15 @@ export function useFeedLoader(userAddress: string) {
         limit,
       })
 
-      const messages = await Promise.all(
-        data.map(async (entry) => {
-          const decoded = await decodeMessage(entry.msgId, entry, walletAccount)
-
-          return decoded
-        })
-      )
+      const messages = await Promise.all(data.map((entry) => decodeMessage(entry.msgId, entry, walletAccount!)))
 
       return data.map((d, idx) => ({
-        body: messages[idx],
+        body: messages[idx]!,
         msg: d,
       }))
     },
     [decodeMessage, feedId, walletAccount]
   )
-
-  return loadFeedPosts
 }
 
 export function useChatList() {

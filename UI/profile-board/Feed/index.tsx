@@ -96,7 +96,6 @@ const FeedItem: FC<FeedItemProps> = ({ expanded, post }) => {
   const { format } = useNFT3()
 
   const contentRef = useRef<HTMLElement>()
-  const imageRef = useRef<HTMLImageElement>()
   const [foldState, setFoldState] = useState(expanded ? FeedItemFoldState.EXPANDED : FeedItemFoldState.UNKNOWN)
 
   useEffect(() => {
@@ -105,23 +104,23 @@ const FeedItem: FC<FeedItemProps> = ({ expanded, post }) => {
     // Feed item is not visible at the beginning, since it's insida a inactive Tab.
     // So we need to check its visibility periodically.
     const timer = setInterval(() => {
-      if (contentRef.current?.scrollHeight || imageRef.current) {
-        const isContentGreater = contentRef.current?.scrollHeight > FEED_ITEM_CONTENT_MAX_HEIGHT
+      const scrollHeight = contentRef.current?.scrollHeight || 0
+      if (scrollHeight || post.image) {
+        const isContentGreater = scrollHeight > FEED_ITEM_CONTENT_MAX_HEIGHT
 
         // We treat the post as collapsed if any image is present,
         // since 99.99% that this image is cropped and not visible entirely
-        setFoldState(isContentGreater || imageRef.current ? FeedItemFoldState.COLLAPSED : FeedItemFoldState.EXPANDED)
+        setFoldState(isContentGreater || post.image ? FeedItemFoldState.COLLAPSED : FeedItemFoldState.EXPANDED)
       }
     }, 500)
 
     return () => clearInterval(timer)
-  }, [foldState])
+  }, [foldState, post.image])
 
   return (
     <Card>
       {!!post.image && (
         <CardMedia
-          ref={imageRef}
           component="img"
           image={post.image}
           sx={{ height: foldState === FeedItemFoldState.EXPANDED ? undefined : 160 }}
@@ -179,7 +178,7 @@ const Form = styled(Box)`
   })}
 `
 
-const NewPostForm: FC<{ onPost?: () => void }> = ({ onPost }) => {
+const NewPostForm: FC<{ onPost: () => void }> = ({ onPost }) => {
   const [isTitleVisible, setTitleVisible] = useState(false)
   const { broadcastMessage } = useYlide()
 
@@ -192,7 +191,7 @@ const NewPostForm: FC<{ onPost?: () => void }> = ({ onPost }) => {
     input.type = 'file'
     input.accept = 'image/*'
     input.onchange = () => {
-      const file = input.files[0]
+      const file = input.files![0]
       if (file) {
         const image = document.createElement('img')
         const reader = new FileReader()
@@ -202,7 +201,7 @@ const NewPostForm: FC<{ onPost?: () => void }> = ({ onPost }) => {
         }
 
         reader.onloadend = () => {
-          image.src = reader.result.toString()
+          image.src = reader.result!.toString()
         }
 
         image.onload = () => {
@@ -320,7 +319,7 @@ const NewPostForm: FC<{ onPost?: () => void }> = ({ onPost }) => {
 
 const Feed: FC = () => {
   const { isUser, didinfo } = useNFT3Profile()
-  const address = didinfo.addresses.length ? didinfo.addresses[0].split(':')[1] : null
+  const address = didinfo?.addresses[0]?.split(':')[1] || ''
   const [posts, setPosts] = useState<PostData[]>([])
   const feedLoader = useFeedLoader(address)
 
