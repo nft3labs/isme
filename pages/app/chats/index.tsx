@@ -8,7 +8,6 @@ import Avatar from '@mui/material/Avatar'
 import { format as formatDate } from 'date-fns'
 import { useRouter } from 'next/router'
 import { useTheme } from '@mui/material/styles'
-import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { ChatListState, useChatList } from '../../../domains/data/ylide/chats'
 
@@ -52,14 +51,6 @@ const ChatsPage = () => {
           ) : (
             <Box display="flex" justifyContent="center" alignItems="center" height={100}>
               <Tiny>{chatList.state === ChatListState.LOADING ? 'Loading ...' : 'No messages yet ...'}</Tiny>
-            </Box>
-          )}
-
-          {chatList.hasMore && (
-            <Box justifyContent="center" display="flex">
-              <Button size="small" disabled={chatList.state === ChatListState.LOADING}>
-                Load More
-              </Button>
             </Box>
           )}
         </Stack>

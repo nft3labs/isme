@@ -7,7 +7,6 @@ import type { YlideDecodedMessage } from './index'
 import { indexerRequest } from './utils/net'
 
 const CHAT_LIST_ENDPOINT = '/nft3-chats'
-const CHAT_LIST_PAGE_SIZE = 10
 
 interface ChatThread {
   didname: string
@@ -27,77 +26,68 @@ export function useChatList() {
   const stateRef = useRef(ChatListState.IDLE)
   const [state, setState] = useState(stateRef.current)
   const [list, setList] = useState<ChatThread[]>([])
-  const [page, setPage] = useState(1)
-  const [hasMore, setHasMore] = useState(false)
 
-  const loadMore = useCallback(() => setPage((p) => p + 1), [])
+  const loadThreads = useCallback(async () => {
+    if (!account || !checkReadingAvailable()) {
+      throw new Error('Wrong state')
+    }
 
-  const loadThreads = useCallback(
-    async (page: number) => {
-      if (!account || !checkReadingAvailable()) {
-        throw new Error('Wrong state')
-      }
+    const { totalCount, entries } = await indexerRequest<{
+      totalCount: number
+      entries: { address: string; lastMessageTimestamp: number }[]
+    }>(CHAT_LIST_ENDPOINT, {
+      myAddress: account,
+      offset: 0,
+      limit: 1000,
+    })
 
-      const { totalCount, entries } = await indexerRequest<{
-        totalCount: number
-        entries: { address: string; lastMessageTimestamp: number }[]
-      }>(CHAT_LIST_ENDPOINT, {
-        myAddress: account,
-        offset: (page - 1) * CHAT_LIST_PAGE_SIZE,
-        limit: CHAT_LIST_PAGE_SIZE,
+    const threads = await Promise.all(
+      entries.map(async (entry) => {
+        const didname = (
+          await client.did.search({
+            keyword: entry.address,
+            mode: 'address',
+          })
+        )[0]?.didname
+
+        return {
+          didname: didname || entry.address,
+          lastMessageDate: entry.lastMessageTimestamp * 1000,
+        } as ChatThread
       })
+    )
 
-      const threads = await Promise.all(
-        entries.map(async (entry) => {
-          const didname = (
-            await client.did.search({
-              keyword: entry.address,
-              mode: 'address',
-            })
-          )[0]?.didname
-
-          return {
-            didname: didname || entry.address,
-            lastMessageDate: entry.lastMessageTimestamp * 1000,
-          } as ChatThread
-        })
-      )
-
-      return { totalCount, threads }
-    },
-    [account, checkReadingAvailable, client.did]
-  )
+    return { totalCount, threads }
+  }, [account, checkReadingAvailable, client.did])
 
   useEffect(() => {
     let isCancelled = false
 
     setState((stateRef.current = ChatListState.LOADING))
 
-    loadThreads(page)
-      .then(({ totalCount, threads }) => {
+    loadThreads()
+      .then(({ threads }) => {
         if (isCancelled) return
 
-        setHasMore(totalCount > page * CHAT_LIST_PAGE_SIZE)
-        setList((l) => [...l, ...threads])
+        setList(threads)
         setState((stateRef.current = ChatListState.IDLE))
       })
       .catch((e) => {
         if (isCancelled) return
 
         console.error('Loading chat list failed', e)
+        setList([])
         setState((stateRef.current = ChatListState.IDLE))
       })
 
     return () => {
       isCancelled = true
     }
-  }, [loadThreads, page])
+  }, [loadThreads])
 
   return {
     state,
     list,
-    hasMore,
-    loadMore,
   }
 }
 
