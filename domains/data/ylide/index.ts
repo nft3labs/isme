@@ -426,6 +426,10 @@ const useYlideService = () => {
           const { key, keyVersion } = result
           await saveLocalKey(key, keyVersion)
           await publishLocalKey('gnosis', key, walletAccount, keyVersion)
+          await new Promise((r) => setTimeout(r, 3000))
+          const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(walletAccount)
+          setRemoteKeys(remoteKeys)
+          setRemoteKey(remoteKey)
           toast.success('Ylide is authorized')
         } else if (authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
           if (isPasswordNeeded) {
@@ -439,6 +443,10 @@ const useYlideService = () => {
             const { key, keyVersion } = result
             await saveLocalKey(key, keyVersion)
             await publishLocalKey('gnosis', key, walletAccount, keyVersion)
+            await new Promise((r) => setTimeout(r, 3000))
+            const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(walletAccount)
+            setRemoteKeys(remoteKeys)
+            setRemoteKey(remoteKey)
             toast.success('Ylide is authorized')
           }
         } else {
@@ -447,7 +455,17 @@ const useYlideService = () => {
         }
       })()
     }
-  }, [account, identifier, authState, isPasswordNeeded, createLocalKey, saveLocalKey, publishLocalKey, walletAccount])
+  }, [
+    account,
+    identifier,
+    authState,
+    isPasswordNeeded,
+    createLocalKey,
+    saveLocalKey,
+    publishLocalKey,
+    walletAccount,
+    wallet,
+  ])
 
   const enterPasswordDialogRef = useRef<ReturnType<typeof useDialog>>()
   const enterPasswordCallbackRef = useRef<(result: boolean) => void>()
