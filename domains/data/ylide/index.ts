@@ -513,11 +513,37 @@ const useYlideService = () => {
     if (authState === AuthState.AUTHORIZED) {
       return true
     } else if (authState === AuthState.NO_REMOTE_KEY || authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
-      return await new Promise<boolean>(enterPasswordDialog.open)
+      if (isPasswordNeeded) {
+        return await new Promise<boolean>(enterPasswordDialog.open)
+      } else {
+        const result = await createLocalKey('')
+        if (!result) {
+          // so sad :( wait for user to try to read some message
+          return false
+        }
+        const { key, keyVersion } = result
+        await saveLocalKey(key, keyVersion)
+        await publishLocalKey('gnosis', key, walletAccount, keyVersion)
+        await new Promise((r) => setTimeout(r, 3000))
+        const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(walletAccount)
+        setRemoteKeys(remoteKeys)
+        setRemoteKey(remoteKey)
+        toast.success('Ylide is authorized')
+        return true
+      }
     } else {
       return false
     }
-  }, [authState, enterPasswordDialog.open])
+  }, [
+    authState,
+    enterPasswordDialog.open,
+    isPasswordNeeded,
+    createLocalKey,
+    saveLocalKey,
+    publishLocalKey,
+    walletAccount,
+    wallet,
+  ])
 
   useEffect(() => {
     console.log('authState changed', authState)
