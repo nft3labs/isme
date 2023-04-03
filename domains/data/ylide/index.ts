@@ -525,13 +525,23 @@ const useYlideService = () => {
 
   useEffect(() => {
     if (wallet) {
-      const handler = (chainNameOrId: string) => {
+      const handlerBlockchain = (chainNameOrId: string) => {
         console.log('BLOCKCHAIN_CHANGED', chainNameOrId)
         setActiveNetwork(evmNameToNetwork(chainNameOrId))
       }
-      wallet.controller.on(WalletEvent.BLOCKCHAIN_CHANGED, handler)
+      const handleAccount = (currentAccount?: IGenericAccount) => {
+        console.log('ACCOUNT_CHANGED', currentAccount)
+        setWalletAccount(currentAccount || null)
+      }
+      wallet.controller.on(WalletEvent.BLOCKCHAIN_CHANGED, handlerBlockchain)
+      wallet.controller.on(WalletEvent.ACCOUNT_CHANGED, handleAccount)
+      wallet.controller.on(WalletEvent.LOGIN, handleAccount)
+      wallet.controller.on(WalletEvent.LOGOUT, handleAccount)
       return () => {
-        wallet.controller.off(WalletEvent.BLOCKCHAIN_CHANGED, handler)
+        wallet.controller.off(WalletEvent.BLOCKCHAIN_CHANGED, handlerBlockchain)
+        wallet.controller.off(WalletEvent.ACCOUNT_CHANGED, handleAccount)
+        wallet.controller.off(WalletEvent.LOGIN, handleAccount)
+        wallet.controller.off(WalletEvent.LOGOUT, handleAccount)
       }
     }
   }, [wallet])
