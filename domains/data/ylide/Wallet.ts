@@ -56,22 +56,22 @@ export class Wallet extends EventEmitter {
     this.controller.off(WalletEvent.BLOCKCHAIN_CHANGED, this.handleBlockchainChanged)
   }
 
-  handleAccountChanged(newAccount: IGenericAccount) {
+  handleAccountChanged = (newAccount: IGenericAccount) => {
     this.currentWalletAccount = newAccount
     this.emit('accountUpdate', this.currentWalletAccount)
   }
 
-  handleAccountLogin(newAccount: IGenericAccount) {
+  handleAccountLogin = (newAccount: IGenericAccount) => {
     this.currentWalletAccount = newAccount
     this.emit('accountUpdate', this.currentWalletAccount)
   }
 
-  handleAccountLogout() {
+  handleAccountLogout = () => {
     this.currentWalletAccount = null
     this.emit('accountUpdate', this.currentWalletAccount)
   }
 
-  handleBlockchainChanged(newBlockchain: string) {
+  handleBlockchainChanged = (newBlockchain: string) => {
     this.currentBlockchain = newBlockchain
   }
 
@@ -136,24 +136,4 @@ export class Wallet extends EventEmitter {
     }
     return acc
   }
-
-  //   async instantiateNewAccount(account: IGenericAccount, keypair: YlideKeyPair) {
-  //     return new Promise<DomainAccount>(async (resolve) => {
-  //       this.domain.accounts.onceNewAccount(account, (acc) => {
-  //         resolve(acc)
-  //       })
-  //       await this.domain.keystore.storeKey(keypair, this.factory.blockchainGroup, this.factory.wallet)
-  //     })
-  //   }
-
-  // async connectNonCurrentAccount() {
-  // 	if (this.controller.isMultipleAccountsSupported()) {
-  // 		return 'SUGGEST_CHANGE';
-  // 	}
-  // 	const acc = await this.getCurrentAccount();
-  // 	if (acc) {
-  // 		await this.controller.disconnectAccount(acc);
-  // 	}
-  // 	return await this.connectCurrentAccount();
-  // }
 }
