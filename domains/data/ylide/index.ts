@@ -284,31 +284,24 @@ const useYlideService = () => {
   // 2. keys - all available local keys
   // 3. remoteKeys - remote keys for the current account
 
-  const [authState, setAuthState] = useState<AuthState>(AuthState.NOT_AUTHORIZED)
-
-  useEffect(() => {
+  const authState = useMemo(() => {
     if (isLoading) {
-      setAuthState(AuthState.LOADING)
-      return
+      return AuthState.LOADING
     }
     if (!walletAccount || !account) {
-      setAuthState(AuthState.NOT_AUTHORIZED)
-      return
+      return AuthState.NOT_AUTHORIZED
     }
     if (!remoteKey) {
-      setAuthState(AuthState.NO_REMOTE_KEY)
-      return
+      return AuthState.NO_REMOTE_KEY
     }
     const localKey = keys.find((k) => k.address === walletAccount.address)
     if (!localKey) {
-      setAuthState(AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY)
-      return
+      return AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY
     }
     if (!isBytesEqual(localKey.keypair.publicKey, remoteKey.publicKey.bytes)) {
-      setAuthState(AuthState.LOCAL_REMOTE_MISMATCH)
-      return
+      return AuthState.LOCAL_REMOTE_MISMATCH
     }
-    setAuthState(AuthState.AUTHORIZED)
+    return AuthState.AUTHORIZED
   }, [account, isLoading, keys, remoteKey, walletAccount])
 
   const saveLocalKey = useCallback(
@@ -333,6 +326,7 @@ const useYlideService = () => {
 
   const createLocalKey = useCallback(
     async (password: string, forceNew?: boolean) => {
+      console.log('createLocalKey')
       let tempLocalKey: YlideKeyPair
       let keyVersion: YlidePublicKeyVersion
       try {
@@ -418,6 +412,13 @@ const useYlideService = () => {
 
   useEffect(() => {
     if (account && identifier) {
+      console.log('Triggered: ', {
+        account,
+        identifier,
+        authState,
+        isPasswordNeeded,
+        walletAccount,
+      })
       ;(async () => {
         if (authState === AuthState.AUTHORIZED) {
           console.log('User authorized in Ylide')
@@ -433,7 +434,9 @@ const useYlideService = () => {
           await publishLocalKey('gnosis', key, walletAccount, keyVersion)
           await new Promise((r) => setTimeout(r, 3000))
           const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(walletAccount)
+          console.log('setRemoteKeys')
           setRemoteKeys(remoteKeys)
+          console.log('setRemoteKey')
           setRemoteKey(remoteKey)
           toast.success('Ylide is authorized')
         } else if (authState === AuthState.HAS_REMOTE_BUT_NO_LOCAL_KEY) {
@@ -450,7 +453,9 @@ const useYlideService = () => {
             await publishLocalKey('gnosis', key, walletAccount, keyVersion)
             await new Promise((r) => setTimeout(r, 3000))
             const { remoteKeys, remoteKey } = await wallet.readRemoteKeys(walletAccount)
+            console.log('setRemoteKeys')
             setRemoteKeys(remoteKeys)
+            console.log('setRemoteKey')
             setRemoteKey(remoteKey)
             toast.success('Ylide is authorized')
           }
