@@ -98,7 +98,7 @@ const ChatPage = () => {
           </H2>
 
           <Stack spacing={1}>
-            <Card ref={mainRef} sx={{ padding: 2, paddingY: 4, height: '55vh', minHeight: '500px', overflowY: 'auto' }}>
+            <Card ref={mainRef} sx={{ padding: 2, paddingY: 4, height: '50vh', minHeight: '200px', overflowY: 'auto' }}>
               {chat.list.length ? (
                 <Stack minHeight="100%" justifyContent="end" spacing={4}>
                   {chat.list.map((message, i) => (
