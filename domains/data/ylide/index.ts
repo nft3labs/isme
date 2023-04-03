@@ -240,6 +240,7 @@ const useYlideService = () => {
       if (!wallet) return
       let lastWalletAccount: IGenericAccount | null = null
       wallet.on('accountUpdate', async (newWalletAccount) => {
+        console.log('Account update: ', newWalletAccount)
         if (newWalletAccount !== lastWalletAccount) {
           lastWalletAccount = newWalletAccount
           if (newWalletAccount) {
