@@ -92,45 +92,43 @@ const ChatPage = () => {
     <Fragment>
       <Header title={`ISME | Chat with ${recipientName}.isme`} />
       <Container sx={{ width: { sm: 1, md: 0.6 }, padding: 0 }}>
-        <Stack paddingTop={4} spacing={2}>
+        <Stack paddingTop={4} spacing={1}>
           <H2>
             <ImageButton src={backSvg} href="/app/chats" /> {recipientName}.isme
           </H2>
 
-          <Stack spacing={1}>
-            <Card ref={mainRef} sx={{ padding: 2, paddingY: 4, height: '50vh', minHeight: '200px', overflowY: 'auto' }}>
-              {chat.list.length ? (
-                <Stack minHeight="100%" justifyContent="end" spacing={4}>
-                  {chat.list.map((message, i) => (
-                    <Message key={i} message={message} />
-                  ))}
-                </Stack>
-              ) : (
-                <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-                  <Tiny>{chat.state === ChatState.LOADING ? 'Loading ...' : 'No messages yet ...'}</Tiny>
-                </Box>
-              )}
-            </Card>
-
-            <Paper sx={{ padding: 2 }}>
-              <Stack direction="row" alignItems="end" spacing={2}>
-                <TextField
-                  multiline
-                  variant="standard"
-                  minRows={3}
-                  maxRows={10}
-                  placeholder="Type your message here"
-                  sx={{ flexGrow: 1 }}
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                />
-
-                <SendMessageButton disabled={!text.trim() || isSending} onClick={sendMessage}>
-                  {isSending ? 'Sending ...' : 'Send'}
-                </SendMessageButton>
+          <Card ref={mainRef} sx={{ padding: 2, paddingY: 4, height: '53vh', minHeight: '200px', overflowY: 'auto' }}>
+            {chat.list.length ? (
+              <Stack minHeight="100%" justifyContent="end" spacing={4}>
+                {chat.list.map((message, i) => (
+                  <Message key={i} message={message} />
+                ))}
               </Stack>
-            </Paper>
-          </Stack>
+            ) : (
+              <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                <Tiny>{chat.state === ChatState.LOADING ? 'Loading ...' : 'No messages yet ...'}</Tiny>
+              </Box>
+            )}
+          </Card>
+
+          <Paper sx={{ padding: 2 }}>
+            <Stack direction="row" alignItems="end" spacing={2}>
+              <TextField
+                multiline
+                variant="standard"
+                minRows={3}
+                maxRows={10}
+                placeholder="Type your message here"
+                sx={{ flexGrow: 1 }}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+
+              <SendMessageButton disabled={!text.trim() || isSending} onClick={sendMessage}>
+                {isSending ? 'Sending ...' : 'Send'}
+              </SendMessageButton>
+            </Stack>
+          </Paper>
         </Stack>
       </Container>
     </Fragment>
