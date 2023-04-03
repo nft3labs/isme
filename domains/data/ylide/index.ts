@@ -111,6 +111,10 @@ const useYlideService = () => {
   const [initialized, setInitialized] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  useEffect(() => {
+    console.log('Accounts changed, Ylide: ' + walletAccount?.address + ', NFT3: ' + account)
+  }, [walletAccount, account])
+
   const switchEVMChain = useCallback(async (_walletController: EthereumWalletController, needNetwork: EVMNetwork) => {
     try {
       const bData = blockchainMeta[EVM_NAMES[needNetwork]]
@@ -547,19 +551,9 @@ const useYlideService = () => {
         console.log('BLOCKCHAIN_CHANGED', chainNameOrId)
         setActiveNetwork(evmNameToNetwork(chainNameOrId))
       }
-      const handleAccount = (currentAccount?: IGenericAccount) => {
-        console.log('ACCOUNT_CHANGED', currentAccount)
-        setWalletAccount(currentAccount || null)
-      }
       wallet.controller.on(WalletEvent.BLOCKCHAIN_CHANGED, handlerBlockchain)
-      wallet.controller.on(WalletEvent.ACCOUNT_CHANGED, handleAccount)
-      wallet.controller.on(WalletEvent.LOGIN, handleAccount)
-      wallet.controller.on(WalletEvent.LOGOUT, handleAccount)
       return () => {
         wallet.controller.off(WalletEvent.BLOCKCHAIN_CHANGED, handlerBlockchain)
-        wallet.controller.off(WalletEvent.ACCOUNT_CHANGED, handleAccount)
-        wallet.controller.off(WalletEvent.LOGIN, handleAccount)
-        wallet.controller.off(WalletEvent.LOGOUT, handleAccount)
       }
     }
   }, [wallet])
