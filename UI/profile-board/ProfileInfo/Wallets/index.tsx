@@ -37,7 +37,7 @@ const Wallets: FC<WalletsProps> = () => {
       renderValue={(selected) => {
         return (
           <Stack spacing={1} direction="row">
-            <Image src={current?.icon} alt={current.network} width={16} height={16} />
+            {current && <Image src={current?.icon} alt={current?.network} width={16} height={16} />}
             <Paragraph>{textCenterEllipsis(selected)}</Paragraph>
           </Stack>
         )
