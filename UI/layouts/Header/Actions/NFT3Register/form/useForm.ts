@@ -104,7 +104,7 @@ export const useForm = () => {
         },
       })
       .then((data: any) => {
-        setEns(data.ensTextRecords[0])
+        setEns(data.ensTextRecords?.[0])
       })
   }, [account, queryer])
 

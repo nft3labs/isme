@@ -10,6 +10,7 @@ import Avatar from '@mui/material/Avatar'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
+import IconLinkOff from '@mui/icons-material/LinkOff'
 import { useRouter } from 'next/router'
 import { useNFT3, useUser } from 'domains/data'
 import { H4 } from 'components/Typography'
@@ -34,7 +35,12 @@ const AccountButton: FC = () => {
     logout()
   }
 
-  if (!account && !didname) {
+  const onDisconnect = () => {
+    close()
+    disconnect()
+  }
+
+  if (!account) {
     return (
       <Button variant="gradient" onClick={() => selectDialog.open()}>
         Login
@@ -139,6 +145,12 @@ const AccountButton: FC = () => {
             <GroupAddIcon />
           </ListItemIcon>
           <ListItemText>Referral</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={onDisconnect}>
+          <ListItemIcon>
+            <IconLinkOff />
+          </ListItemIcon>
+          <ListItemText>Disconnect</ListItemText>
         </MenuItem>
         <MenuItem onClick={onLogout}>
           <ListItemIcon>

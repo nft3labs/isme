@@ -5,6 +5,11 @@ import { useNFT3 } from '@nft3sdk/did-manager'
 import { safeGet } from 'app/utils/get'
 import ETHImg from 'public/eth.svg'
 import SolanaImg from 'public/solana.svg'
+import PolygonImg from 'public/polygon.svg'
+import BSCImg from 'public/bsc.svg'
+import ARBImg from 'public/arbitrum.svg'
+import OPImg from 'public/optimism.svg'
+import AptosImg from 'public/aptos.svg'
 
 import type { AccountRecord } from './types'
 
@@ -27,6 +32,27 @@ const useWalletService = () => {
         case 'solana':
           explorer = `https://explorer.solana.com/address/${account}`
           icon = SolanaImg
+          break
+        case 'polygon':
+          explorer = `https://polygonscan.com/address/${account}`
+          icon = PolygonImg
+          break
+        case 'bnb':
+          explorer = `https://bscscan.com/address/${account}`
+          icon = BSCImg
+          break
+        case 'arb':
+          explorer = `https://arbiscan.io/address/${account}`
+          icon = ARBImg
+          break
+        case 'op':
+          explorer = `https://optimistic.etherscan.io/address/${account}`
+          icon = OPImg
+          break
+        case 'aptos':
+          explorer = `https://explorer.aptoslabs.com/account/${account}`
+          icon = AptosImg
+          break
       }
       return {
         network,
