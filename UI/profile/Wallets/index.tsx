@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useCallback } from 'react'
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import Stack from '@mui/material/Stack'
@@ -8,22 +8,38 @@ import { useNFT3Wallet, useUser } from 'domains/data'
 import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { Paragraph, Tiny } from 'components/Typography'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
-import ETHImg from 'public/eth.svg'
 import Alert from '@mui/material/Alert'
 import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 
 const ROOT = styled(Stack)``
 
 const Wallets: FC = () => {
-  const { account } = useUser()
+  const { account, chainId } = useUser()
   const { accounts, add, remove } = useNFT3Wallet()
   const [loading, setLoading] = useState(false)
 
+  const getChainId = useCallback((name: string) => {
+    switch (name.toLowerCase()) {
+      case 'polygon':
+        return 137
+      case 'bnb':
+        return 56
+      case 'arb':
+        return 42161
+      case 'op':
+        return 10
+      default:
+        return 1
+    }
+  }, [])
+
   const added = useMemo(() => {
     if (!account) return false
-    const index = accounts.findIndex((item) => item.account.toLowerCase() === account?.toLowerCase())
+    const index = accounts.findIndex(
+      (item) => item.account.toLowerCase() === account?.toLowerCase() && getChainId(item.network) === chainId
+    )
     return index > -1
-  }, [accounts, account])
+  }, [accounts, account, chainId, getChainId])
 
   const onAdd = async () => {
     setLoading(true)
@@ -41,12 +57,12 @@ const Wallets: FC = () => {
 
   return (
     <ROOT spacing={2}>
-      {accounts.map(({ account: wallet }) => {
+      {accounts.map(({ account: wallet, icon, network }) => {
         return (
           <Stack key={wallet} spacing={1} direction="row">
-            <Image src={ETHImg} alt="ETH" />
+            <Image src={icon} alt={wallet} width={16} height={16} />
             <Paragraph>{textCenterEllipsis(wallet)}</Paragraph>
-            <Tiny lineHeight="24px">{wallet === account && '(Current)'}</Tiny>
+            <Tiny lineHeight="24px">{wallet === account && getChainId(network) === chainId && '(Current)'}</Tiny>
           </Stack>
         )
       })}
@@ -63,7 +79,10 @@ const Wallets: FC = () => {
           Remove current wallet
         </Button>
       </Stack>
-      <Alert severity="info">Switch to another wallet before adding a new one.</Alert>
+      <Alert severity="info">
+        Before adding a new one, switch to another address first, or disconnect the current wallet, and then login
+        through another wallet.
+      </Alert>
     </ROOT>
   )
 }

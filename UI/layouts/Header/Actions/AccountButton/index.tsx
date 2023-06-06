@@ -11,6 +11,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
+import IconLinkOff from '@mui/icons-material/LinkOff'
 import { useRouter } from 'next/router'
 import { useNFT3, useUser } from 'domains/data'
 import { H4 } from 'components/Typography'
@@ -35,6 +36,11 @@ const AccountButton: FC = () => {
     sessionStorage.removeItem('sessionKey')
     logout()
   }
+  
+  const onDisconnect = () => {
+    close()
+    disconnect()
+  }
 
   if (!account && !didname) {
     if (matches) {
@@ -44,6 +50,9 @@ const AccountButton: FC = () => {
         </Button>
       )
     }
+  }
+
+  if (!account) {
     return (
       <Avatar
         alt={profile.name}
@@ -174,6 +183,12 @@ const AccountButton: FC = () => {
             <GroupAddIcon />
           </ListItemIcon>
           <ListItemText>Referral</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={onDisconnect}>
+          <ListItemIcon>
+            <IconLinkOff />
+          </ListItemIcon>
+          <ListItemText>Disconnect</ListItemText>
         </MenuItem>
         <MenuItem onClick={onLogout}>
           <ListItemIcon>

@@ -12,7 +12,7 @@ import { getProfile } from '../nft3/profile/adapter'
 const useUserService = () => {
   const selectDialog = useDialog()
   const registerDialog = useDialog()
-  const { account, didname, ready, login, selectWallet, logout, register, client, identifier, disconnect } = useNFT3()
+  const { chainId, account, didname, ready, login, selectWallet, logout, register, client, identifier, disconnect } = useNFT3()
   const [profile, setProfileInternal] = useState<WithMeta<ProfileModel>>({} as any)
   const [didinfo, setDidinfo] = useState<DIDInfo>()
 
@@ -83,6 +83,7 @@ const useUserService = () => {
     selectDialog,
     registerDialog,
 
+    chainId,
     account,
     didname,
     ready,

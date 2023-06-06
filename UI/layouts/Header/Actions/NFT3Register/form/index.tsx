@@ -21,7 +21,7 @@ const Form = (): JSX.Element => {
         <Stack spacing={2}>
           <H5>Connect wallet</H5>
           <Stack spacing={1} direction="row">
-            <Image src={ETHImg} alt="ETH" />
+            <Image src={ETHImg} alt="ETH" width={16} height={16} />
             <Paragraph lineHeight="24px">{textCenterEllipsis(account)}</Paragraph>
             {ens && (
               <Tiny color="text.secondary" lineHeight="24px">

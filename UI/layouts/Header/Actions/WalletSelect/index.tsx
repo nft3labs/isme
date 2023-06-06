@@ -14,11 +14,13 @@ import Dialog from 'components/Dialog'
 
 import IconMetamask from './MetaMask'
 import IconPhantom from './Phantom'
+import IconPetra from './Petra'
 import { useDialog } from 'app/hooks/useDialog'
 import Claiming from './Claiming'
 
 interface IWalletItem {
   wallet: WalletType
+  title: string
   icon: any
   link: string
   check: () => boolean
@@ -26,6 +28,7 @@ interface IWalletItem {
 const wallets: IWalletItem[] = [
   {
     wallet: 'MetaMask',
+    title: 'Ethereum MetaMask',
     icon: IconMetamask,
     link: 'https://metamask.io/download/',
     check: () => {
@@ -34,10 +37,20 @@ const wallets: IWalletItem[] = [
   },
   {
     wallet: 'Phantom',
+    title: 'Solana Phantom',
     icon: IconPhantom,
     link: 'https://phantom.app/download',
     check: () => {
       return 'phantom' in window
+    },
+  },
+  {
+    wallet: 'Petra',
+    title: 'Aptos Petra',
+    icon: IconPetra,
+    link: 'https://petra.app/',
+    check: () => {
+      return 'aptos' in window
     },
   },
 ]
@@ -122,7 +135,7 @@ const WalletSelect: FC = () => {
               }}
             >
               <ListItemText
-                primary={item.check() ? item.wallet : `Install ${item.wallet}`}
+                primary={item.check() ? item.title : `Install ${item.wallet}`}
                 sx={{ '& .MuiListItemText-primary': { fontWeight: 'medium' } }}
               />
               <ListItemIcon sx={{ minWidth: 24 }}>
