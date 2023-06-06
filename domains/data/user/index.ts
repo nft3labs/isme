@@ -1,3 +1,4 @@
+import type { WalletType } from '@nft3sdk/did-manager'
 import { useNFT3 } from '@nft3sdk/did-manager'
 import { useDialog } from 'app/hooks/useDialog'
 import { useMount } from 'app/hooks/useMount'
@@ -48,6 +49,35 @@ const useUserService = () => {
     promises.push(updateDidInfo())
     Promise.all(promises)
   }, [identifier, client, updateProfile, updateDidInfo])
+
+  // const selectWallet = useCallback(
+  //   async (wallet: WalletType) => {
+  //     console.log('yay: ', wallet)
+  //     return selectWalletRaw(wallet)
+  //       .then((value) => {
+  //         console.log('yoy: ', value)
+  //         return value
+  //       })
+  //       .catch((err) => {
+  //         console.log('oii: ', err)
+  //         throw err
+  //       })
+  //   },
+  //   [selectWalletRaw]
+  // )
+
+  // const login = useCallback(async () => {
+  //   console.log('login yay')
+  //   return loginRaw()
+  //     .then((value) => {
+  //       console.log('login yoy: ', value)
+  //       return value
+  //     })
+  //     .catch((err) => {
+  //       console.log('login oii: ', err)
+  //       throw err
+  //     })
+  // }, [loginRaw])
 
   return {
     selectDialog,

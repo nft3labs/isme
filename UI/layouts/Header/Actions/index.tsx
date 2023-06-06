@@ -6,6 +6,8 @@ import AccountButton from './AccountButton'
 import WalletSelect from './WalletSelect'
 import NFT3Register from './NFT3Register'
 import Menu from '../Menu'
+import YlidePassword from './YlidePassword'
+import ChooseEvmNetwork from './ChooseEvmNetwork'
 
 const ROOT = styled('div')``
 const Content = styled(Stack)`
@@ -17,11 +19,13 @@ const Content = styled(Stack)`
 const Actions: FC = () => {
   return (
     <ROOT>
-      <Content direction="row" spacing={{ xs: 2, sm: 4 }}>
+      <Content direction="row" spacing={{ xs: 1, sm: 2 }}>
         <Menu />
         <AccountButton />
       </Content>
       <WalletSelect />
+      <YlidePassword />
+      <ChooseEvmNetwork />
       <NFT3Register />
     </ROOT>
   )
