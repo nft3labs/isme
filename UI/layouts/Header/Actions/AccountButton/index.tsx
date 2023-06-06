@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Avatar from '@mui/material/Avatar'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
@@ -26,6 +27,7 @@ const AccountButton: FC = () => {
   const theme = useTheme()
 
   const { Menu, open, close } = useAnchorMenu()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
   const onLogout = () => {
     close()
@@ -35,22 +37,44 @@ const AccountButton: FC = () => {
   }
 
   if (!account && !didname) {
+    if (matches) {
+      return (
+        <Button variant="gradient" onClick={() => selectDialog.open()}>
+          Login
+        </Button>
+      )
+    }
     return (
-      <Button variant="gradient" onClick={() => selectDialog.open()}>
-        Login
-      </Button>
+      <Avatar
+        alt={profile.name}
+        sx={{
+          width: 24,
+          height: 24,
+        }}
+      />
     )
   }
   if (!didname) {
+    if (matches) {
+      return (
+        <Button
+          variant="outlined"
+          onClick={() => {
+            onLogout()
+          }}
+        >
+          Logging in
+        </Button>
+      )
+    }
     return (
-      <Button
-        variant="outlined"
-        onClick={() => {
-          onLogout()
+      <Avatar
+        alt={profile.name}
+        sx={{
+          width: 24,
+          height: 24,
         }}
-      >
-        Logging in
-      </Button>
+      />
     )
   }
   return (
@@ -59,7 +83,7 @@ const AccountButton: FC = () => {
         component="button"
         elevation={3}
         sx={{
-          p: '10px 20px',
+          p: matches ? '10px 20px' : '5px',
           borderRadius: '12px',
           border: 'solid 1px transparent',
           '&:hover': {
@@ -69,19 +93,30 @@ const AccountButton: FC = () => {
         }}
         onClick={open}
       >
-        <Stack spacing={2} direction="row" justifyContent="center">
+        {matches ? (
+          <Stack spacing={2} direction="row" justifyContent="center">
+            <Avatar
+              alt={profile.name}
+              src={format(profile.avatar)}
+              sx={{
+                width: 36,
+                height: 36,
+              }}
+            />
+            <H4 fontWeight="medium" lineHeight="36px">
+              {didname}
+            </H4>
+          </Stack>
+        ) : (
           <Avatar
             alt={profile.name}
             src={format(profile.avatar)}
             sx={{
-              width: 36,
-              height: 36,
+              width: 24,
+              height: 24,
             }}
           />
-          <H4 fontWeight="medium" lineHeight="36px">
-            {didname}
-          </H4>
-        </Stack>
+        )}
       </Paper>
       <Menu
         sx={{

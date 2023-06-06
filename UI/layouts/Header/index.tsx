@@ -35,6 +35,7 @@ const MobileBODY = styled(Box)`
 const MobileRow = styled(Box)`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   ${({ theme }) => ({
     marginBottom: `${theme.spacing(2)}`,
   })}

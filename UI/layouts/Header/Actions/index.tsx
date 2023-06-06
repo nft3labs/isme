@@ -19,7 +19,7 @@ const Content = styled(Stack)`
 const Actions: FC = () => {
   return (
     <ROOT>
-      <Content direction="row" spacing={{ xs: 2, sm: 4 }}>
+      <Content direction="row" spacing={{ xs: 1, sm: 2 }}>
         <Menu />
         <AccountButton />
       </Content>

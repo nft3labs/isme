@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack'
 import MuiTabs from '@mui/material/Tabs'
 import MuiTab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { Paragraph } from 'components/Typography'
 
 const applyProps = (index: number) => {
@@ -41,10 +42,19 @@ type TabTitleProps = {
   icon: ReactNode
 }
 const TabTitle: FC<TabTitleProps> = ({ icon, label }) => {
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'))
+
   return (
     <Stack spacing={1} direction="row">
-      {icon}
-      <Paragraph lineHeight="24px">{label}</Paragraph>
+      {matches && icon}
+      {matches ? (
+        <Paragraph lineHeight="24px">{label}</Paragraph>
+      ) : (
+        <Paragraph lineHeight="24px" fontSize="12px">
+          {label}
+        </Paragraph>
+      )}
     </Stack>
   )
 }
@@ -76,14 +86,13 @@ const Tabs: FC<TabsProps> = ({ tabs }) => {
             },
           }}
           variant="fullWidth"
-          allowScrollButtonsMobile
           value={value}
           onChange={handleChange}
         >
           {tabs.map(({ title }, index) => {
             return (
               <Tab
-                sx={{ width: { xs: 'auto', sm: '23%' } }}
+                sx={{ width: { xs: 'auto', sm: '18%', padding: '0 5px', minWidth: '0' } }}
                 key={title.label}
                 label={<TabTitle {...title} />}
                 {...applyProps(index)}

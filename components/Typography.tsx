@@ -3,7 +3,7 @@ import { Box, styled } from '@mui/material'
 import clsx from 'clsx'
 import React, { type ReactNode } from 'react'
 
-const StyledBox = styled(Box)<{ ellipsis?: boolean }>(({ ellipsis }) => ({
+const StyledBox = styled(Box)<{ ellipsis?: boolean | string }>(({ ellipsis }) => ({
   ...(ellipsis && {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -11,7 +11,7 @@ const StyledBox = styled(Box)<{ ellipsis?: boolean }>(({ ellipsis }) => ({
   }),
 }))
 
-type Props = { ellipsis?: boolean }
+type Props = { ellipsis?: boolean | string }
 
 export const H1: React.FC<BoxProps & Props> = (props) => {
   const { ellipsis, children, className, ...others } = props
