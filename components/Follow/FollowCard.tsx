@@ -123,7 +123,7 @@ const FollowCard: FC<FollowMember> = (props) => {
               sx={{ cursor: 'pointer', '&:hover': { color: theme.palette.primary.main } }}
               onClick={goToProfileBoard}
               fontWeight="medium"
-              ellipsis
+              ellipsis="true"
             >
               {name}.isme
             </H4>

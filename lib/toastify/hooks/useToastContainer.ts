@@ -166,6 +166,8 @@ export function useToastContainer(props: ToastContainerProps) {
 
     if (isValidElement(content) && !isStr(content.type)) {
       toastContent = cloneElement(content, {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         closeToast,
         toastProps,
         data,
