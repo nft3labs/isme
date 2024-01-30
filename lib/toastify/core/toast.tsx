@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { render } from 'react-dom'
+import ReactDOM from 'react-dom/client'
 
 import { POSITION, TYPE, canUseDom, isStr, isNum, isFn } from '../utils'
 import type { OnChangeCallback } from './eventManager'
@@ -78,7 +78,8 @@ function dispatchToast(content: ToastContent, options: NotValidatedToastProps): 
       lazy = false
       containerDomNode = document.createElement('div')
       document.body.appendChild(containerDomNode)
-      render(<ToastContainer {...containerConfig} />, containerDomNode)
+      const root = ReactDOM.createRoot(containerDomNode)
+      root.render(<ToastContainer {...containerConfig} />)
     }
   }
 

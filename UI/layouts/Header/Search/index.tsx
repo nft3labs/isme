@@ -8,7 +8,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { TransitionGroup } from 'react-transition-group'
 import Collapse from '@mui/material/Collapse'
 import debounce from '@mui/utils/debounce'
-import { useNFT3 } from '@nft3sdk/did-manager'
+import { useROOT } from '@rootlabs/did-manager'
 
 import { useDialog } from 'app/hooks/useDialog'
 import SearchInput from 'components/input-fields/SearchInput'
@@ -27,7 +27,7 @@ const ROOT = styled('div')`
 
 const Search = () => {
   const router = useRouter()
-  const { client } = useNFT3()
+  const { client } = useROOT()
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
   const { visible, open, close } = useDialog({

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import type { NFT3Stats } from '@nft3sdk/client'
+import type { ROOTStats } from '@rootlabs/client'
 import { createContext } from 'app/utils/createContext'
 import { useNFT3 } from 'domains/data'
 
@@ -7,7 +7,7 @@ const useStatsService = () => {
   const { queryer } = useNFT3()
 
   const [loading, setLoading] = useState(false)
-  const [stats, setStats] = useState<NFT3Stats>({} as any)
+  const [stats, setStats] = useState<ROOTStats>({} as any)
 
   const request = useCallback(
     () => {
@@ -17,8 +17,8 @@ const useStatsService = () => {
         .query({
           nft3Stats: {},
         })
-        .then((data) => {
-          setStats(data.nft3Stats)
+        .then((data: any) => {
+          setStats(data.ROOTStats)
         })
         .finally(() => {
           setLoading(false)

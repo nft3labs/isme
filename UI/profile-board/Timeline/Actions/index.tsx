@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemText from '@mui/material/ListItemText'
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded'
-import type { TimelineRecord } from '@nft3sdk/client'
+import type { TimelineRecord } from '@rootlabs/client'
 
 import { safeGet } from 'app/utils/get'
 import { useAnchorMenu } from 'app/hooks/useAnchor'

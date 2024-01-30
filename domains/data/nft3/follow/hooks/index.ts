@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react'
-import { useNFT3 } from '@nft3sdk/did-manager'
+import { useROOT } from '@rootlabs/did-manager'
 import type { FollowMember } from 'components/Follow/types'
 import { useDebounceMemo } from 'app/hooks/useDebounceMemo'
 
 export const useFollow = (identifier: string) => {
-  const { client } = useNFT3()
+  const { client } = useROOT()
   const [count, setCount] = useState({
     following: 0,
     followers: 0,

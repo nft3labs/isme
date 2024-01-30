@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack'
 import { useNFT3Social, useUser, useNFT3 } from 'domains/data'
 import { useMount } from 'app/hooks/useMount'
 import { useCallback, useState } from 'react'
-import type { ProfileModel, DIDInfo, WithMeta } from '@nft3sdk/client'
+import type { ProfileModel, WithMeta } from '@rootlabs/client'
 import { getProfile } from 'domains/data/nft3/profile/adapter'
 import Avatar from '@mui/material/Avatar'
 
@@ -26,7 +26,6 @@ const Invitee: FC<{ inviter: ReferrerModel }> = ({ inviter: { createdAt, __owner
   const identifier = __owner
   const [twitter, setTwitter] = useState<any>()
   const [profile, setProfile] = useState<WithMeta<ProfileModel>>({} as any)
-  const [didinfo, setDidinfo] = useState<DIDInfo>()
 
   const updateProfile = useCallback(() => {
     if (!identifier) return
@@ -38,10 +37,7 @@ const Invitee: FC<{ inviter: ReferrerModel }> = ({ inviter: { createdAt, __owner
 
   const updateDidInfo = useCallback(() => {
     if (!identifier) return
-    return client.did.info(identifier).then((didinfo) => {
-      setDidinfo(didinfo)
-    })
-  }, [client.did, identifier])
+  }, [identifier])
 
   const updateTwitter = useCallback(async () => {
     const items = await client.socialAccount.list(identifier)

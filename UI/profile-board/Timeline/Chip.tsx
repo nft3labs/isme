@@ -3,7 +3,7 @@ import type { StackTypeMap } from '@mui/material/Stack'
 import Stack from '@mui/material/Stack'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import type { TimelineRecord } from '@nft3sdk/client'
+import type { TimelineRecord } from '@rootlabs/client'
 import { NETWORK_MAP } from './netwrok'
 
 export const ChipStack: FC<StackTypeMap<{}, 'div'>['props']> = (props) => (

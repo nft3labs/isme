@@ -36,18 +36,18 @@ const BindTwitter: FC<BindTwitterProps> = ({ visible, close }) => {
     setActiveStep(0)
   }
 
-  const verify = () => {
-    close()
+  const verify = (link: string) => {
     return createToastifyPromise(
-      twitter.verify(account!, info!.msghash).then((verify) => {
-        if (!verify.result) return Promise.reject()
+      twitter.verify(account!, info!.msghash, link).then((verify) => {
+        close()
+        if (!verify.result) return Promise.reject('Twitter verify failed')
         return twitter
           .add({
             account: account!,
             type: 'twitter',
             proof: verify.proof,
             verifier_key: verify.verifier_key,
-            msghash: info!.msghash,
+            msghash: info!.msghash
           })
           .then(() => {
             setInfo(undefined)

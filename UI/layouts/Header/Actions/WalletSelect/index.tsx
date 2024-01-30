@@ -4,9 +4,9 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import type { WalletType } from '@nft3sdk/did-manager'
+import type { WalletType } from '@rootlabs/did-manager'
 import { useTheme } from '@mui/material/styles'
-import { useNFT3 } from '@nft3sdk/did-manager'
+import { useROOT } from '@rootlabs/did-manager'
 
 import { useUser } from 'domains/data'
 import { createToastifyPromise } from 'app/utils/promise/toastify'
@@ -57,7 +57,7 @@ const wallets: IWalletItem[] = [
 
 const WalletSelect: FC = () => {
   const theme = useTheme()
-  const { client } = useNFT3()
+  const { client } = useROOT()
   const { selectDialog, selectWallet, login, registerDialog, logout, disconnect } = useUser()
   const onLogout = useCallback(() => {
     logout()

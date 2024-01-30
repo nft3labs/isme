@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { ProfileModel, DIDInfo, WithMeta } from '@nft3sdk/client'
+import type { ProfileModel, DIDInfo, WithMeta } from '@rootlabs/client'
 import { createContext } from 'app/utils/createContext'
 import { merge } from 'lodash'
 
@@ -21,14 +21,14 @@ const useProfileService = () => {
   const [profile, setProfileInternal] = useState<WithMeta<ProfileModel>>({} as any)
 
   const updateProfile = useCallback(() => {
-    return client.profile.info(did).then((profile) => {
+    return client.profile.info(did).then((profile: any) => {
       if (!profile) return
       setProfileInternal(getProfile(profile) as any)
     })
   }, [client.profile, did])
 
   const updateDidInfo = useCallback(() => {
-    return client.did.info(did).then((didinfo) => {
+    return client.did.info(did).then((didinfo: any) => {
       setDidinfo(didinfo)
     })
   }, [client.did, did])

@@ -25,7 +25,7 @@ const useReferrerStatsService = () => {
             did: identifier,
           },
         })
-        .then((data) => {
+        .then((data: any) => {
           setReferrerStats(data.nft3ReferrerStats)
         })
         .finally(() => {

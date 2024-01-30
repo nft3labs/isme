@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-// import type { ENSTextRecord } from '@nft3sdk/client'
+// import type { ENSTextRecord } from '@rootlabs/client'
 interface ENSTextRecord {
   snapshot: string
   email: string

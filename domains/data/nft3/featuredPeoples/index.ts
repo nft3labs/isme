@@ -24,12 +24,12 @@ const useFeaturedPeoplesService = () => {
             limit,
           },
         })
-        .then((data) => {
+        .then((data: any) => {
           setFeaturedPeoples((featuredPeoples) => {
             return featuredPeoples.concat(
               data.nft3Featured
-                .filter((item) => item && item.profile)
-                .map((item, index) => {
+                .filter((item: any) => item && item.profile)
+                .map((item: any, index: number) => {
                   return {
                     identifier: item.did,
                     name: item.profile.name,

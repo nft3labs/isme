@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { NFT3Queryer } from '@nft3sdk/client'
+import { ROOTQueryer } from '@rootlabs/client'
 import { createContext } from 'app/utils/createContext'
 
 import useIpfs from './hooks/useIpfs'
@@ -17,7 +17,7 @@ const useNFT3Service = () => {
   const { format, upload } = useIpfs()
 
   const queryer = useMemo(() => {
-    return new NFT3Queryer('https://t0.onebitdev.com/nft3-queryer/')
+    return new ROOTQueryer('https://t0.onebitdev.com/nft3-queryer/')
   }, [])
 
   return {

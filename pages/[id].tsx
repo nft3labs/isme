@@ -1,5 +1,5 @@
-import { NFT3Client } from '@nft3sdk/client'
-import type { ProfileModel, WithMeta } from '@nft3sdk/client'
+import { ROOTClient } from '@rootlabs/client'
+import type { ProfileModel, WithMeta } from '@rootlabs/client'
 import { useNFT3, useNFT3Profile } from 'domains/data'
 import type { GetServerSideProps } from 'next'
 import { useEffect, Fragment } from 'react'
@@ -11,7 +11,7 @@ import Header from 'components/Header'
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params
   const didname = typeof id === 'string' ? id : id[0]
-  const client = new NFT3Client(NFT3Endpoint)
+  const client = new ROOTClient(NFT3Endpoint)
   const did = client.did.convertName(didname)
   const promises = []
   const data: any = {

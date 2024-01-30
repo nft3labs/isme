@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import type { ProfileModel, WithMeta } from '@nft3sdk/client'
+import type { ProfileModel, WithMeta } from '@rootlabs/client'
 
 import { createToastifyPromise } from 'app/utils/promise/toastify'
 import { useNFT3, useNFT3Profile } from 'domains/data'

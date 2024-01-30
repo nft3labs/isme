@@ -1,7 +1,7 @@
 import { createContext } from 'app/utils/createContext'
 import { useNFT3, useNFT3Profile } from 'domains/data'
 import { useState, useCallback, useEffect } from 'react'
-import type { TokenRecord, OpenseaAssetsRecord, ENSRecord, TimelineRecord, POAPRecord } from '@nft3sdk/client'
+import type { TokenRecord, OpenseaAssetsRecord, ENSRecord, TimelineRecord, POAPRecord } from '@rootlabs/client'
 import { useTimeline } from './timeline'
 
 const useAssetsService = () => {

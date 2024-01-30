@@ -1,24 +1,28 @@
 import { useCallback, useMemo } from 'react'
-import { useNFT3 } from '@nft3sdk/did-manager'
-import type { NFT3Verifier, SocialAccountModel } from '@nft3sdk/client'
+import { useROOT } from '@rootlabs/did-manager'
+import type { ROOTVerifier, SocialAccountModel } from '@rootlabs/client'
 import type { SocialRecord } from '../types'
 
 type TwitterProps = {
-  verifier: NFT3Verifier
+  verifier: ROOTVerifier
   socials: SocialRecord[]
 }
 
 export const useTwitter = (props: TwitterProps) => {
   const { verifier, socials } = props
-  const { client } = useNFT3()
+  const { client } = useROOT()
   const request = useCallback(() => {
     const info = verifier.requestTwitter()
     return info
   }, [verifier])
 
   const verify = useCallback(
-    async (account: string, msghash: string) => {
-      const result = await verifier.verifyTwitter(account, msghash)
+    async (account: string, msghash: string, link: string) => {
+      const regex = /^https?:\/\/(twitter\.com|x\.com)\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)$/
+      if (regex.test(link) !== true) {
+        throw new Error('Invalid tweet link')
+      }
+      const result = await verifier.verifyTwitter(account, msghash, link)
       return result
     },
     [verifier]

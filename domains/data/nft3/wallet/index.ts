@@ -1,7 +1,7 @@
 import { createContext } from 'app/utils/createContext'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useNFT3Profile, useUser } from 'domains/data'
-import { useNFT3 } from '@nft3sdk/did-manager'
+import { useROOT } from '@rootlabs/did-manager'
 import { safeGet } from 'app/utils/get'
 import ETHImg from 'public/eth.svg'
 import SolanaImg from 'public/solana.svg'
@@ -14,7 +14,7 @@ import AptosImg from 'public/aptos.svg'
 import type { AccountRecord } from './types'
 
 const useWalletService = () => {
-  const { client } = useNFT3()
+  const { client } = useROOT()
   const { account } = useUser()
   const { isUser, didinfo, didname, updateDidInfo } = useNFT3Profile()
   const [value, setValue] = useState('')

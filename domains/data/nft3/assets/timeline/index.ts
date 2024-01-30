@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { NFT3Queryer, TimelineRecord } from '@nft3sdk/client'
+import type { ROOTQueryer, TimelineRecord } from '@rootlabs/client'
 
 const REQUEST_LIMIT = 10
 type TimelineProps = {
-  queryer: NFT3Queryer
+  queryer: ROOTQueryer
   baseData: TimelineRecord[]
   baseLoading: boolean
   identifier: any

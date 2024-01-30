@@ -1,15 +1,15 @@
-import { useNFT3 } from '@nft3sdk/did-manager'
-import { NFT3Verifier } from '@nft3sdk/client'
+import { useROOT } from '@rootlabs/did-manager'
+import { ROOTVerifier } from '@rootlabs/client'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTwitter } from '.'
 import type { SocialRecord } from '../types'
 
 export const useSocial = (did: string) => {
-  const { client } = useNFT3()
+  const { client } = useROOT()
   const [socials, setSocials] = useState<SocialRecord[]>([])
 
   const verifier = useMemo(() => {
-    return new NFT3Verifier(client, 'https://t0.onebitdev.com/nft3-verifier/')
+    return new ROOTVerifier(client, 'https://t0.onebitdev.com/nft3-verifier/')
   }, [client])
 
   const update = useCallback(
