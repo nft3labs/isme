@@ -18,7 +18,7 @@ const useStatsService = () => {
           nft3Stats: {},
         })
         .then((data: any) => {
-          setStats(data.ROOTStats)
+          setStats(data.nft3Stats)
         })
         .finally(() => {
           setLoading(false)

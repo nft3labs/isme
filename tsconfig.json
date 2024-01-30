@@ -14,7 +14,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
-    "importsNotUsedAsValues": "error",
     "jsx": "preserve",
     "baseUrl": ".",
     "incremental": true
