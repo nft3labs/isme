@@ -18,7 +18,7 @@ export const useTwitter = (props: TwitterProps) => {
 
   const verify = useCallback(
     async (account: string, msghash: string, link: string) => {
-      const regex = /^https?:\/\/(twitter\.com|x\.com)\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)$/
+      const regex = /^https?:\/\/(twitter\.com|x\.com)\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)/
       if (regex.test(link) !== true) {
         throw new Error('Invalid tweet link')
       }
