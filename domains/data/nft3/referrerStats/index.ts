@@ -43,6 +43,7 @@ const useReferrerStatsService = () => {
   return {
     referrerStats,
     loading,
+    request
   }
 }
 const { Provider: ReferrerStatsProvider, createUseContext } = createContext(useReferrerStatsService)

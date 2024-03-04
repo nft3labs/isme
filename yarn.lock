@@ -863,10 +863,10 @@
     redux-thunk "^2.4.2"
     reselect "^4.1.7"
 
-"@rootlabs/client@0.3.2", "@rootlabs/client@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.npmjs.org/@rootlabs/client/-/client-0.3.2.tgz#6281a55cb0821cdb1783cf16d12e0bc8c581b2be"
-  integrity sha512-4kZZc+02IVxaLX/eKsTbqCBfF9NRM/75IoADC+pifdQAesyWKco6MF0AY5ndEF2XxD04R2Lb/7kJV3kQNKZAAA==
+"@rootlabs/client@0.3.3", "@rootlabs/client@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.npmjs.org/@rootlabs/client/-/client-0.3.3.tgz#bbaca0d45f922534861ccbc87323442c8e052768"
+  integrity sha512-bs1sUdlzeotbmwRsq/8ygS8NALsBxbK20pQ+EgLDZjbtxfcfMiH204bT/kWmaqOHucqZMX0NPjhzylS2Lp+UMA==
   dependencies:
     "@ethersproject/abstract-signer" "^5.6.2"
     "@ethersproject/basex" "^5.7.0"
@@ -881,13 +881,13 @@
     axios "^0.27.2"
     tweetnacl "^1.0.3"
 
-"@rootlabs/did-manager@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.npmjs.org/@rootlabs/did-manager/-/did-manager-0.3.2.tgz#5656508302d75a5ce606c5c1ebe9a3ffb0c201a5"
-  integrity sha512-m2VHLbVsFwtSlqQItw2PzeX5rmvyE1D3iV/EYUpBnAAHa8kf7XvcY9LkWTjFU5rPsLqWXR7DCnYt2NKzj9rkww==
+"@rootlabs/did-manager@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.npmjs.org/@rootlabs/did-manager/-/did-manager-0.3.3.tgz#e2dc10f7aad4bcdb1dc2179d05a3dccfec002e6e"
+  integrity sha512-0lNechCLr40IN+ONLmhthTYqNZVfva9SyRU4K0iGk+3O81gDFy6CbvAflD0uOKrIom7Rvi//2lvmbX+Z9AiI/w==
   dependencies:
     "@ethersproject/providers" "^5.6.8"
-    "@rootlabs/client" "0.3.2"
+    "@rootlabs/client" "0.3.3"
 
 "@rushstack/eslint-patch@^1.1.3":
   version "1.2.0"

@@ -1,10 +1,11 @@
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import Image from 'next/image'
 
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Card from '@mui/material/Card'
+import Button from '@mui/material/Button'
 import CardContent from '@mui/material/CardContent'
 
 import { H1, H3, H5, Paragraph } from 'components/Typography'
@@ -16,11 +17,13 @@ import { DisplayNumber } from 'components/Number'
 import TwitterContent from './TwitterContent'
 import referralBg from './images/referral-bg.jpg'
 import TwitterIcon from '@mui/icons-material/Twitter'
+import CheckIcon from '@mui/icons-material/CheckCircle'
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { textCenterEllipsis } from 'app/utils/string/text-center-ellipsis'
 import { safeGet } from 'app/utils/get'
 import { useSocial } from 'domains/data/nft3/social/hooks/useSocial'
+import { toast } from 'lib/toastify'
 
 const ROOT = styled(Card)(({ theme }) => {
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
@@ -38,10 +41,14 @@ const Badge = styled(Stack)(() => ({
 }))
 
 const ReferralCard: FC = () => {
+  const [bonus, setBonus] = useState(0)
+  const [loading, setLoading] = useState(false)
   const { didname, didinfo, identifier } = useUser()
   const {
     referrerStats: { invitees, verified_invitess, reward, claimable_reward },
+    request
   } = useNFT3ReferrerStats()
+
   const accounts = useMemo(
     () =>
       safeGet(() =>
@@ -55,15 +62,35 @@ const ReferralCard: FC = () => {
       ) || [],
     [didinfo?.addresses]
   )
-  const {
-    twitter: {
-      account: { account: twitterAccount },
-    },
-  } = useSocial(identifier)
+  const { twitter, checkBonus, getBonus } = useSocial(identifier)
+
+  const onCheck = useCallback(async () => {
+    try {
+      if (!twitter?.account?.account) {
+        return toast.error('You need to verify your twitter account first.')
+      }
+      setLoading(true)
+      const result = await checkBonus()
+      setBonus(result)
+      if (result === 0) {
+        toast.error('Verify bonus failed.')
+      } else {
+        toast.success('Verify bonus successful.')
+        request()
+      }
+    } finally {
+      setLoading(false)
+    }
+  }, [checkBonus, request])
+
+  useEffect(() => {
+    getBonus().then(result => setBonus(result))
+  }, [getBonus])
+
   return (
     <ROOT>
       <CardContent>
-        <Stack spacing={12} padding={1}>
+        <Stack spacing={6} padding={1}>
           <Stack spacing={1}>
             <H1 color="white" fontSize={{ xs: 24, sm: 36 }}>
               {didname || 'Please login'}
@@ -84,9 +111,57 @@ const ReferralCard: FC = () => {
                 buttonComponent={TwitterContent}
                 useData={() => ({
                   isUser: !!didname,
-                  twitterAccount,
+                  twitterAccount: twitter.account.account,
                 })}
               />
+            </Box>
+            <Box>
+              {bonus === 0 ? (
+                <Button
+                  variant="twitter"
+                  size="small"
+                  sx={{
+                    width: { xs: 1, sm: '200px' },
+                    borderRadius: '100px',
+                    margin: '0 5px',
+                  }}
+                  startIcon={<TwitterIcon />}
+                  onClick={onCheck}
+                  disabled={loading}
+                >
+                  <Box
+                    sx={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Verify Bonus
+                  </Box>
+                </Button>
+              ) : (
+                <Button
+                  variant="twitter"
+                  size="small"
+                  sx={{
+                    width: { xs: 1, sm: '200px' },
+                    borderRadius: '100px',
+                    margin: '0 5px',
+                  }}
+                  startIcon={<CheckIcon />}
+                  disabled
+                >
+                  <Box
+                    sx={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Bonus Verified
+                  </Box>
+                </Button>
+              )}
             </Box>
           </Stack>
 
