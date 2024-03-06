@@ -31,7 +31,7 @@ const ReferralProgram: FC = () => {
   const matches = useMediaQuery(theme.breakpoints.up('md'))
 
   return (
-    <Box position='relative'>
+    <Box position="relative">
       <Card
         sx={{
           marginTop: '30px',
@@ -45,13 +45,18 @@ const ReferralProgram: FC = () => {
               <Paragraph color="text.secondary">
                 Invite your friends to register for an ISME DID via the referral link of your account, and get rewarded
                 with $ISME.{' '}
-                <Link href="https://medium.com/nft3/announcing-the-isme-referral-program-3c55c4d6ae2b" target="_blank">
+                <Link
+                  href="https://root-labs.medium.com/announcing-the-2nd-round-isme-did-referral-program-0a1860f024d5"
+                  target="_blank"
+                >
                   Referral program rules.
                 </Link>
               </Paragraph>
               <H4>Check if you are eligible for your claimable $ISME</H4>
               <Box>
-                <Button variant='contained' href='https://gleam.io/vDR5a/nft3-eligibility-checker' target='_blank'>Check Eligibility</Button>
+                <Button variant="contained" href="https://galxe.com/rootprotocol/campaign/GCfjFt44yX" target="_blank">
+                  Check Eligibility
+                </Button>
               </Box>
             </Stack>
 
@@ -122,17 +127,18 @@ const ReferralProgram: FC = () => {
                 </Button>
               </Stack>
             </Stack>
-            {!matches && <Stack spacing={2}>
-              <H4>Get real-time updates on $ISME</H4>
-              <Links />
-            </Stack>}
+            {!matches && (
+              <Stack spacing={2}>
+                <H4>Get real-time updates on $ISME</H4>
+                <Links />
+              </Stack>
+            )}
             <Invitees />
           </Stack>
         </CardContent>
       </Card>
       {matches && <RightLinks />}
     </Box>
-
   )
 }
 
