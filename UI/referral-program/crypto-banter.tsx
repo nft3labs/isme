@@ -45,12 +45,12 @@ const ReferralProgram: FC = () => {
               <div>
                 <Image src="/crypto-banter-logo.png" alt="" width={185} height={142} />
               </div>
-              <div>
+              <Stack textAlign="left" padding={4}>
                 <div>✅ 15 $ISME for the inviter, 10 $ISME for the invitee</div>
                 <div>✅ Twitter verification is a MUST</div>
                 <div>✅ Eligibility test completion is a MUST</div>
                 <div>✅ Include your .isme address in twitter bio for ISME bonus.</div>
-              </div>
+              </Stack>
               <H2>Refer Friends and Earn Rewards</H2>
               <Paragraph color="text.secondary">
                 Invite your friends to register for an ISME DID via the referral link of your account, and get rewarded
