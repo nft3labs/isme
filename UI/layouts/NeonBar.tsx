@@ -5,9 +5,9 @@ const NeonBar: FC = () => {
 
   return (
     <Box sx={{ backgroundColor: 'primary.main', paddingY: 2, paddingX: 4, color: 'white', fontWeight: 'medium', textAlign: 'center' }}>
-      {`The $ISME Referral Program and Airdrop have an IMPORTANT UPDATE: `}
+      {`The 2nd Round $ISME Referral and Airdrop is Live! : `}
       <Link 
-        href="https://medium.com/nft3/the-isme-referral-campaign-updates-and-upgrades-68066e11abf7" 
+        href="https://root-labs.medium.com/announcing-the-2nd-round-isme-did-referral-program-0a1860f024d5" 
         target="_blank"
         sx={{
           color: 'text.primary',
