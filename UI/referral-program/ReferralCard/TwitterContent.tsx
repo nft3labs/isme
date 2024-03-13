@@ -16,7 +16,12 @@ const TwitterContent: FC<TwitterContentProps> = ({ onClick }) => {
         <Button
           variant="twitter"
           onClick={onClick}
-          sx={{ borderRadius: 100, border: 'solid 2px white' }}
+          size="small"
+          sx={{
+            width: { xs: 1, sm: '200px' },
+            borderRadius: '100px',
+            margin: '0 5px',
+          }}
           startIcon={<TwitterIcon />}
         >
           Verify Twitter
